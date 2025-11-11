@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.urban.frontend.controller.WelcomeController"
+           stylesheets="@/css/login.css,@/css/welcome.css"
+           styleClass="hero">
+    <children>
+        <VBox spacing="18" alignment="CENTER">
+            <Label text="Welcome," styleClass="heroTitle"/>
+            <Label fx:id="usernameLabel" styleClass="heroTitle"/>
+            <Label text="Plan trips. Manage bookings. Explore destinations." styleClass="heroSubtitle"/>
+
+            <HBox spacing="12" alignment="CENTER">
+                <Button text="Personal Info" onAction="#goPersonal"/>
+                <Button text="Packages" onAction="#goPackages"/>
+                <Button text="Destinations" onAction="#goDestinations"/>
+                <Button text="History" onAction="#goHistory"/>
+                <Button text="About" onAction="#goAbout"/>
+            </HBox>
+        </VBox>
+    </children>
+</StackPane>

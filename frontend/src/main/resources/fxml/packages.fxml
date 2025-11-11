@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.urban.frontend.controller.PackagesController"
+            stylesheets="@/css/login.css,@/css/packages.css"
+            styleClass="packagesPage">
+    <top>
+        <HBox spacing="12" alignment="CENTER_LEFT" id="navbar">
+            <padding><Insets topRightBottomLeft="10"/></padding>
+            <Label text="Travel &amp; Tourism — Packages" id="cardTitle"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Personal Info" onAction="#goPersonal"/>
+            <Button text="Packages" disable="true" focusTraversable="false"/>
+            <Button text="Destinations" onAction="#goDestinations"/>
+            <Button text="History" onAction="#goHistory"/>
+            <Button text="About" onAction="#goAbout"/>
+            <Button text="Logout" onAction="#onLogout"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox spacing="12">
+            <padding><Insets topRightBottomLeft="10"/></padding>
+            <Label text="Featured Packages" styleClass="sectionTitle"/>
+            <ScrollPane fitToWidth="true">
+                <content>
+                    <VBox fx:id="listContainer" spacing="14" alignment="CENTER">
+                        <padding><Insets topRightBottomLeft="10"/></padding>
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>

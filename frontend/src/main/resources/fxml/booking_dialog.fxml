@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.urban.frontend.controller.BookingDialogController"
+            stylesheets="@/css/login.css">
+    <center>
+        <VBox spacing="12">
+            <padding><Insets topRightBottomLeft="12"/></padding>
+            <GridPane hgap="12" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="35"/>
+                    <ColumnConstraints percentWidth="65"/>
+                </columnConstraints>
+
+                <Label text="Username" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <Label fx:id="usernameLabel" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Name" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <Label fx:id="nameLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="ID Number" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <Label fx:id="idNumberLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Total Persons" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <Spinner fx:id="personsSpinner" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                <Label text="Price" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <Label fx:id="priceLabel" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+            </GridPane>
+
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button text="View Price" onAction="#onViewPrice"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Button text="Confirm Booking" onAction="#onConfirm" id="primaryBtn"/>
+                <Button text="Cancel" onAction="#onCancel"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

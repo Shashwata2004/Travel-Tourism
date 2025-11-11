@@ -92,6 +92,14 @@ public final class ApiClient {
         }
     }
 
+    // --- Packages & Booking (raw helpers used by controllers) ---
+    public HttpResponse<String> rawGet(String path, boolean withAuth) throws ApiException {
+        return get(path, withAuth);
+    }
+    public HttpResponse<String> rawPostJson(String path, String body, boolean withAuth) throws ApiException {
+        return post(path, body, withAuth);
+    }
+
     // --- Low-level helpers ---
     private HttpResponse<String> post(String path, String body, boolean withAuth) throws ApiException {
         try {

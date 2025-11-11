@@ -1,0 +1,29 @@
+/* Welcome hero screen styling */
+.hero {
+    -fx-background-color: linear-gradient(to bottom right, #0ea5e9, #6366f1);
+}
+
+.heroTitle {
+    -fx-text-fill: white;
+    -fx-font-size: 42px;
+    -fx-font-weight: 900;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 18, 0.2, 0, 6);
+}
+
+.heroSubtitle {
+    -fx-text-fill: rgba(255,255,255,0.9);
+    -fx-font-size: 16px;
+}
+
+.hero .button {
+    -fx-background-radius: 12;
+    -fx-background-color: rgba(255,255,255,0.18);
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-padding: 10 14 10 14;
+    -fx-border-color: rgba(255,255,255,0.35);
+    -fx-border-radius: 12;
+}
+.hero .button:hover {
+    -fx-background-color: rgba(255,255,255,0.26);
+}

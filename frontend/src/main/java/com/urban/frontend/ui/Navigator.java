@@ -60,6 +60,8 @@ public final class Navigator {
     public static void goLogin()    { load("login.fxml"); }
     public static void goRegister() { load("register.fxml"); }
     public static void goHome()  { load("home.fxml"); }
+    public static void goPackages() { load("packages.fxml"); }
+    public static void goWelcome() { load("welcome.fxml"); }
 
     private static void ensureStage() {
         if (STAGE == null) {

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.urban.frontend.controller.PackageDetailsController"
+            stylesheets="@/css/login.css">
+    <top>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <padding><Insets topRightBottomLeft="10"/></padding>
+            <Label text="Package Details" id="cardTitle"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Book Now" onAction="#onBookNow"/>
+        </HBox>
+    </top>
+    <center>
+        <VBox spacing="12">
+            <padding><Insets topRightBottomLeft="10"/></padding>
+            <HBox spacing="12">
+                <Region prefWidth="380" prefHeight="220" styleClass="image-placeholder"/>
+                <Region prefWidth="380" prefHeight="220" styleClass="image-placeholder"/>
+            </HBox>
+            <Label fx:id="nameLabel" id="cardTitle"/>
+            <Label fx:id="locationLabel" id="cardSubtitle"/>
+            <Label fx:id="priceLabel" />
+
+            <TabPane>
+                <tabs>
+                    <Tab text="Overview" closable="false">
+                        <content>
+                            <ScrollPane fitToWidth="true">
+                                <content>
+                                    <Label fx:id="overviewText" wrapText="true"/>
+                                </content>
+                            </ScrollPane>
+                        </content>
+                    </Tab>
+                    <Tab text="Location" closable="false">
+                        <content>
+                            <ScrollPane fitToWidth="true">
+                                <content>
+                                    <Label fx:id="locationPointsText" wrapText="true"/>
+                                </content>
+                            </ScrollPane>
+                        </content>
+                    </Tab>
+                    <Tab text="Timing" closable="false">
+                        <content>
+                            <ScrollPane fitToWidth="true">
+                                <content>
+                                    <Label fx:id="timingText" wrapText="true"/>
+                                </content>
+                            </ScrollPane>
+                        </content>
+                    </Tab>
+                </tabs>
+            </TabPane>
+        </VBox>
+    </center>
+</BorderPane>

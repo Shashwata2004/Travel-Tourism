@@ -52,7 +52,7 @@ public class LoginController {
                 Session.setToken(jwt);
                 Platform.runLater(() -> {
                     statusLabel.setText("✅ Logged in!");
-                    Navigator.goHome();
+                    Navigator.goWelcome();
                 });
             } catch (ApiClient.ApiException e) {
                 Platform.runLater(() -> {

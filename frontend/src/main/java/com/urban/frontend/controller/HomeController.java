@@ -95,7 +95,12 @@ public class HomeController {
         Navigator.goLogin();
     }
 
+    // Navbar actions
+    @FXML private void goPackages() { Navigator.goPackages(); }
+    @FXML private void goDestinations() { /* placeholder */ }
+    @FXML private void goHistory() { /* placeholder */ }
+    @FXML private void goAbout() { /* placeholder */ }
+
     private static String nullToEmpty(String s) { return s == null ? "" : s; }
     private static String emptyToNull(String s) { return s == null || s.isBlank() ? null : s; }
 }
-

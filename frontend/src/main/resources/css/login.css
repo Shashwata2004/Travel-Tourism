@@ -3,6 +3,12 @@
     -fx-font-family: "Inter", "Segoe UI", system-ui, sans-serif;
 }
 
+/* === APP BACKGROUND (default for all scenes) === */
+/* Most screens use this soft gradient instead of plain white. */
+.root {
+    -fx-background-color: linear-gradient(to bottom, #f1f5f9, #ffffff);
+}
+
 /* === LAYOUT PANES === */
 #brandPane {
     -fx-background-color: linear-gradient(to bottom right, #0ea5e9, #6366f1);
@@ -110,6 +116,11 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 18, 0.2, 0, 8);
 }
 
+.image-placeholder {
+    -fx-background-color: linear-gradient(to bottom right, #d1d5db, #e5e7eb);
+    -fx-background-radius: 12;
+}
+
 /* === INPUT FIELDS (DARK MODE) === */
 .bg-gradient .text-field,
 .bg-gradient .password-field {
@@ -134,4 +145,56 @@
         -fx-visible: false;
         -fx-pref-width: 0;
     }
+}
+
+/* === NAVBAR === */
+#navbar {
+    -fx-background-color: linear-gradient(to right, rgba(248,250,252,0.92), rgba(241,245,249,0.92));
+    -fx-background-radius: 0 0 12 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 12, 0.2, 0, 2);
+}
+
+/* Remove blue focus ring on navbar buttons */
+#navbar .button:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-effect: none;
+}
+
+/* Navbar buttons: soft pill look */
+#navbar .button {
+    -fx-background-insets: 0;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-padding: 8 12 8 12;
+    -fx-background-color: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(245,247,255,0.95));
+    -fx-border-color: rgba(0,0,0,0.10);
+    -fx-text-fill: #111827;
+}
+#navbar .button:hover { -fx-background-color: rgba(255,255,255,0.98); }
+
+/* Packages list: clean cards */
+.pkg-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-padding: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 18, 0.2, 0, 8);
+}
+.pkg-card:hover { -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 22, 0.25, 0, 10); }
+
+.sectionTitle {
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f172a;
+}
+
+/* ScrollPane background fix */
+.scroll-pane, .scroll-pane > .viewport { -fx-background-color: transparent; }
+
+.subtle { -fx-text-fill: #4b5563; }
+
+.image-placeholder {
+    -fx-background-color: linear-gradient(to bottom right, #d1d5db, #e5e7eb);
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 16, 0.2, 0, 6);
 }

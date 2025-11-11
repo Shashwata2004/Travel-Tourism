@@ -1,0 +1,15 @@
+/* Profile (Personal Info) page theme */
+.profilePage {
+    -fx-background-color: linear-gradient(to bottom, #eef2ff, #f8fafc);
+}
+
+.profilePage #navbar {
+    -fx-background-color: linear-gradient(to right, rgba(99,102,241,0.18), rgba(14,165,233,0.18));
+    -fx-background-radius: 0 0 16 16;
+}
+
+/* So the card is slightly off-white, not stark */
+.profilePage #card {
+    -fx-background-color: linear-gradient(to bottom right, #ffffff, #f7fbff);
+}
+

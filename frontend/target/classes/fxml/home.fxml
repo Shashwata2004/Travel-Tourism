@@ -7,20 +7,25 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.urban.frontend.controller.HomeController"
-            stylesheets="@/css/login.css">
+            stylesheets="@/css/login.css,@/css/profile.css"
+            styleClass="profilePage">
     <top>
-        <HBox spacing="12" alignment="CENTER_LEFT">
-            <padding>
-                <Insets topRightBottomLeft="10"/>
-            </padding>
-            <Label text="Travel &amp; Tourism — Dashboard" id="cardTitle"/>
+        <HBox spacing="12" alignment="CENTER_LEFT" id="navbar">
+            <padding><Insets topRightBottomLeft="10"/></padding>
+            <Label text="Travel &amp; Tourism" id="cardTitle"/>
             <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Personal Info" disable="true" focusTraversable="false"/>
+            <Button text="Packages" onAction="#goPackages"/>
+            <Button text="Destinations" onAction="#goDestinations"/>
+            <Button text="History" onAction="#goHistory"/>
+            <Button text="About" onAction="#goAbout"/>
             <Button text="Logout" onAction="#onLogout"/>
         </HBox>
     </top>
     <center>
         <StackPane>
-            <VBox id="card" maxWidth="720" spacing="14">
+            <VBox spacing="16" maxWidth="820">
+                <VBox id="card" maxWidth="720" spacing="14">
                 <Label text="Personal Information" id="cardTitle"/>
                 <Label text="View and update your profile" id="cardSubtitle"/>
 
@@ -80,6 +85,7 @@
                     <Pane HBox.hgrow="ALWAYS"/>
                     <Button text="Update" id="primaryBtn" onAction="#onUpdate"/>
                 </HBox>
+                </VBox>
             </VBox>
         </StackPane>
     </center>
