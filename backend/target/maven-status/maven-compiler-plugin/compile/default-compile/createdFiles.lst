@@ -1,0 +1,7 @@
+com\yourcompany\loginregistration\model\User.class
+com\yourcompany\loginregistration\service\AuthService.class
+com\yourcompany\loginregistration\config\SecurityConfig.class
+com\yourcompany\loginregistration\repository\UserRepository.class
+com\yourcompany\loginregistration\controller\LoginRequest.class
+com\yourcompany\loginregistration\LoginRegistrationApplication.class
+com\yourcompany\loginregistration\controller\AuthController.class

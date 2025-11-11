@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.urban.frontend.controller.HomeController"
+            stylesheets="@/css/login.css">
+    <top>
+        <HBox spacing="12" alignment="CENTER_LEFT">
+            <padding>
+                <Insets topRightBottomLeft="10"/>
+            </padding>
+            <Label text="Travel &amp; Tourism — Dashboard" id="cardTitle"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Logout" onAction="#onLogout"/>
+        </HBox>
+    </top>
+    <center>
+        <StackPane>
+            <VBox id="card" maxWidth="720" spacing="14">
+                <Label text="Personal Information" id="cardTitle"/>
+                <Label text="View and update your profile" id="cardSubtitle"/>
+
+                <GridPane hgap="12" vgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="30"/>
+                        <ColumnConstraints percentWidth="70"/>
+                    </columnConstraints>
+
+                    <Label text="Email" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="fieldLabel"/>
+                    <TextField fx:id="emailField" GridPane.rowIndex="0" GridPane.columnIndex="1" editable="false"/>
+
+                    <Label text="Username" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="fieldLabel"/>
+                    <TextField fx:id="usernameField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                    <Label text="Full Name" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="fieldLabel"/>
+                    <TextField fx:id="fullNameField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                    <Label text="ID Type" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="fieldLabel"/>
+                    <HBox spacing="10" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                        <fx:define>
+                            <ToggleGroup fx:id="idTypeGroup" />
+                        </fx:define>
+                        <RadioButton fx:id="idNid" text="NID">
+                            <toggleGroup><fx:reference source="idTypeGroup"/></toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="idBirth" text="BIRTH_CERTIFICATE">
+                            <toggleGroup><fx:reference source="idTypeGroup"/></toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="idPassport" text="PASSPORT">
+                            <toggleGroup><fx:reference source="idTypeGroup"/></toggleGroup>
+                        </RadioButton>
+                    </HBox>
+
+                    <Label text="ID Number" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="fieldLabel"/>
+                    <TextField fx:id="idNumberField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                    <Label text="Gender" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="fieldLabel"/>
+                    <HBox spacing="10" GridPane.rowIndex="5" GridPane.columnIndex="1">
+                        <fx:define>
+                            <ToggleGroup fx:id="genderGroup" />
+                        </fx:define>
+                        <RadioButton fx:id="genderMale" text="MALE">
+                            <toggleGroup><fx:reference source="genderGroup"/></toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="genderFemale" text="FEMALE">
+                            <toggleGroup><fx:reference source="genderGroup"/></toggleGroup>
+                        </RadioButton>
+                    </HBox>
+
+                    <Label text="Location" GridPane.rowIndex="6" GridPane.columnIndex="0" styleClass="fieldLabel"/>
+                    <TextField fx:id="locationField" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+                </GridPane>
+
+                <HBox alignment="CENTER_RIGHT">
+                    <Label fx:id="statusLabel" id="statusLabel"/>
+                    <Pane HBox.hgrow="ALWAYS"/>
+                    <Button text="Update" id="primaryBtn" onAction="#onUpdate"/>
+                </HBox>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>

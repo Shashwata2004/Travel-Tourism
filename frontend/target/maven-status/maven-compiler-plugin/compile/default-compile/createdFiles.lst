@@ -1,0 +1,8 @@
+com\urban\frontend\net\ApiClient.class
+com\urban\frontend\controller\HomeController.class
+com\urban\frontend\controller\RegisterController.class
+com\urban\frontend\MainApp.class
+com\urban\frontend\session\Session.class
+com\urban\frontend\net\ApiClient$ApiException.class
+com\urban\frontend\controller\LoginController.class
+com\urban\frontend\ui\Navigator.class

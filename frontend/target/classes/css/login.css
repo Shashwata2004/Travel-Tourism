@@ -1,0 +1,137 @@
+/* --- Global --- */
+* {
+    -fx-font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+
+/* === LAYOUT PANES === */
+#brandPane {
+    -fx-background-color: linear-gradient(to bottom right, #0ea5e9, #6366f1);
+    -fx-padding: 28;
+}
+
+#card {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 18, 0.2, 0, 6);
+    -fx-background-radius: 20;
+    -fx-padding: 26;
+    -fx-alignment: center-left;
+}
+
+/* === BRAND TEXTS === */
+#brandTitle {
+    -fx-text-fill: white;
+    -fx-font-size: 28px;
+    -fx-font-weight: 800;
+}
+
+#brandSubtitle {
+    -fx-text-fill: rgba(255,255,255,0.94);
+    -fx-font-size: 14px;
+    -fx-max-width: 260px;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+/* === CARD TITLES === */
+#cardTitle {
+    -fx-font-size: 22px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #111827; /* dark gray */
+}
+
+#cardSubtitle {
+    -fx-text-fill: #6b7280; /* gray-500 */
+}
+
+/* === FIELD LABELS === */
+.fieldLabel {
+    -fx-text-fill: #374151; /* gray-700 */
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+/* === INPUT FIELDS (LIGHT MODE) === */
+.text-field, .password-field {
+    -fx-background-radius: 12;
+    -fx-padding: 10 12 10 12;
+    -fx-background-color: #f3f4f6; /* light gray background */
+    -fx-border-color: transparent;
+    -fx-text-fill: #111827; /* dark text */
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-background-color: white;
+    -fx-border-color: #60a5fa; /* blue border */
+    -fx-border-radius: 12;
+}
+
+/* === BUTTONS === */
+#primaryBtn, .primary-btn {
+    -fx-background-radius: 12;
+    -fx-background-color: linear-gradient(to right, #3b82f6, #6366f1);
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-padding: 12 14 12 14;
+    -fx-cursor: hand;
+}
+#primaryBtn:hover, .primary-btn:hover {
+    -fx-opacity: 0.95;
+}
+#primaryBtn:pressed, .primary-btn:pressed {
+    -fx-opacity: 0.90;
+}
+
+/* === STATUS LABEL === */
+#statusLabel, .status {
+    -fx-text-fill: #ef4444; /* red for errors */
+    -fx-font-size: 12px;
+}
+
+/* === DARK MODE BACKGROUNDS (Register screen) === */
+.bg-gradient {
+    -fx-background-color: linear-gradient(to bottom right, #0f172a, #1e293b);
+}
+
+.title {
+    -fx-text-fill: white;
+    -fx-font-size: 28px;
+    -fx-font-weight: 800;
+}
+
+.subtitle {
+    -fx-text-fill: #9da4b0;
+    -fx-font-size: 14px;
+}
+
+.glass-card {
+    -fx-background-color: rgba(255,255,255,0.06);
+    -fx-background-radius: 18;
+    -fx-padding: 22;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 18, 0.2, 0, 8);
+}
+
+/* === INPUT FIELDS (DARK MODE) === */
+.bg-gradient .text-field,
+.bg-gradient .password-field {
+    -fx-background-radius: 12;
+    -fx-padding: 10 12 10 12;
+    -fx-background-color: rgba(255,255,255,0.10);
+    -fx-text-fill: #f9fafb;        /* visible white text */
+    -fx-prompt-text-fill: #94a3b8; /* gray placeholder */
+    -fx-border-color: transparent;
+}
+
+.bg-gradient .text-field:focused,
+.bg-gradient .password-field:focused {
+    -fx-background-color: rgba(255,255,255,0.18);
+    -fx-border-color: #3b82f6;
+    -fx-border-radius: 12;
+}
+
+/* === RESPONSIVENESS === */
+@media screen and (max-width: 900px) {
+    #brandPane {
+        -fx-visible: false;
+        -fx-pref-width: 0;
+    }
+}
