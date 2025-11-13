@@ -6,7 +6,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.urban.frontend.controller.BookingDialogController"
+            fx:controller="com.travel.frontend.controller.BookingDialogController"
             stylesheets="@/css/login.css">
     <center>
         <VBox spacing="12">

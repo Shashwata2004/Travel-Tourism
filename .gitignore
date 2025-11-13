@@ -1,0 +1,5 @@
+# Local environment files
+backend/.env
+backend/.secrets.properties
+backend/bookings.log
+

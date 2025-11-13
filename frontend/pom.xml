@@ -4,15 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.urban</groupId>
+  <groupId>com.travel</groupId>
   <artifactId>frontend</artifactId>
   <version>1.0.0</version>
-  <name>Urban Navigator+ Frontend</name>
+  <name>Travel and Tourism Frontend</name>
   <description>JavaFX client for login/registration</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.release>24</maven.compiler.release>
+    <maven.compiler.release>21</maven.compiler.release>
     <javafx.version>21.0.4</javafx.version>
     <jackson.version>2.17.1</jackson.version>
   </properties>
@@ -65,7 +65,7 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
-          <mainClass>com.urban.frontend.MainApp</mainClass>
+          <mainClass>com.travel.frontend.MainApp</mainClass>
         </configuration>
       </plugin>
     </plugins>

@@ -6,7 +6,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.urban.frontend.controller.PackagesController"
+            fx:controller="com.travel.frontend.controller.PackagesController"
             stylesheets="@/css/login.css,@/css/packages.css"
             styleClass="packagesPage">
     <top>

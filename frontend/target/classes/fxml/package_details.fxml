@@ -6,7 +6,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.urban.frontend.controller.PackageDetailsController"
+            fx:controller="com.travel.frontend.controller.PackageDetailsController"
             stylesheets="@/css/login.css">
     <top>
         <HBox spacing="10" alignment="CENTER_LEFT">
