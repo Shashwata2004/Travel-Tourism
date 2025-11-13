@@ -1,5 +1,15 @@
-# Local environment files
-backend/.env
-backend/.secrets.properties
-backend/bookings.log
+# Maven/Gradle build outputs
+**/target/
+**/build/
+
+# IDE/editor configs
+.idea/
+.vscode/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Java
+*.class
 
