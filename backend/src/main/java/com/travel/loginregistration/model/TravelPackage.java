@@ -4,6 +4,13 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+/*
+ * java model of travel_packages table in database.
+ * Used to store travel package details like name, location, price, images, overview, location points, timing, and active status.
+ * services interact with this model to retrieve and manage travel package data.
+ * then controllers call those services to handle API requests from frontend.
+ */
+
 @Entity
 @Table(name = "travel_packages")
 public class TravelPackage {

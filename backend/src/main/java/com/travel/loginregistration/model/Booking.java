@@ -5,6 +5,13 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
+/*
+ * java model of booking table in database.
+    * Used to store booking details made by users for travel packages.
+    it is saved in database by BookingService when a user makes a booking.
+    stores booking's user id, package id, total persons, total price, customer name, id number, and creation timestamp.
+ */
+
 @Entity
 @Table(name = "bookings")
 public class Booking {

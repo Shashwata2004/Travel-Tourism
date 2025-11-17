@@ -18,6 +18,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/*
+ * sets jwt authentication filter, password encoder, cors configuration, and security rules
+ * determining which endpoints need authentication and which do not
+ * login and registration endpoints are public, all others need a valid jwt token
+ * CORS (Cross-Origin Resource Sharing) enables backend to accept requests from frontend running on different ports/domains
+ * CSRF(Cross-Site Request Forgery) disabled because csrf attacks uses cookies and we are not using cookies for authentication
+ */
+
 @Configuration
 public class SecurityConfig {
 
@@ -36,9 +44,9 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()                     // can access without jwt
                 .requestMatchers("/api/auth/register", "/api/auth/login", "/actuator/health").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().authenticated()           // all other requests need jwt                                              
             )
             // Added JWT filter before the built-in username-password filter
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -57,7 +65,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {        // This code allows frontend to send API requests to Spring Boot backend safely , by setting cors rules
         CorsConfiguration cfg = new CorsConfiguration();
         cfg.setAllowedOrigins(List.of("http://localhost:3000", "http://127.0.0.1:3000", "http://localhost"));
         cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));

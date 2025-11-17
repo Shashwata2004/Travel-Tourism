@@ -11,6 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
 
+/*
+     manages user profile data retrieval and updates
+     profilecontroller calls this service with user email from jwt and profile update data
+     this actually does the work of getting and updating profile info in the database , the profilecontroller just delegates to it
+ */
+
 @Service
 public class ProfileService {
     private final UserRepository userRepository;

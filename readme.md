@@ -1,0 +1,1 @@
+so basically this model package copies db data in java format. the services access data from there. and then it give the data to controllers via http request form frontend.

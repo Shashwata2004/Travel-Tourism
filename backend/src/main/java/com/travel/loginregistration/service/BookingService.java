@@ -20,6 +20,12 @@ import java.nio.file.StandardOpenOption;
 import java.time.Instant;
 import java.util.Locale;
 
+/*
+    handles booking travel packages for users, ensuring eligibility and logging bookings
+    bookingcontroller calls this service with booking request data and user email from jwt
+    saves booking to database and logs each booking to a file for auditing
+*/
+
 @Service
 public class BookingService {
     private final BookingRepository bookingRepo;
@@ -39,9 +45,11 @@ public class BookingService {
 
     @Transactional
     public BookingResponse book(String email, BookingRequest req) {
+        // Validate incoming payload before hitting repositories
         if (req == null || req.packageId == null) throw new IllegalArgumentException("packageId required");
         if (req.totalPersons <= 0) throw new IllegalArgumentException("totalPersons must be > 0");
 
+        // Look up user + package referenced in the request
         User user = userRepo.findByEmail(email.toLowerCase(Locale.ROOT))
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         TravelPackage pack = packageRepo.findById(req.packageId)
@@ -56,8 +64,10 @@ public class BookingService {
         String customerName = profile.getFullName();
         String idNumber = profile.getIdNumber();
 
+        // Calculate total cost = base price * number of persons
         BigDecimal total = pack.getBasePrice().multiply(BigDecimal.valueOf(req.totalPersons));
 
+        // Persist booking row and mirror key fields on the response
         Booking b = new Booking();
         b.setUserId(user.getId());
         b.setPackageId(pack.getId());
@@ -66,7 +76,7 @@ public class BookingService {
         b.setCustomerName(customerName);
         b.setIdNumber(idNumber);
         b.setCreatedAt(Instant.now());
-        bookingRepo.save(b);
+        bookingRepo.save(b);                // booking saved to database
 
         logToFile(b, user.getEmail(), pack.getName());
 
@@ -79,6 +89,7 @@ public class BookingService {
         return res;
     }
 
+    // Append each booking to backend/bookings.log for manual auditing
     private void logToFile(Booking b, String email, String packageName) {
         try {
             String line = String.format("%s | booking %s | user=%s | package=%s | persons=%d | total=%s | id=%s | name=%s%n",

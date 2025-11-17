@@ -7,6 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/*
+ * exposes endpoints for user registration and login
+ * /api/auth/register - accepts RegisterRequest, creates new user
+ * /api/auth/login - accepts LoginRequest, returns jwt token if credentials valid
+ * /api/auth/ping - optional endpoint to check if controller is alive
+ * it takes http request from frontend and calls AuthService methods to handle it.
+ */
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

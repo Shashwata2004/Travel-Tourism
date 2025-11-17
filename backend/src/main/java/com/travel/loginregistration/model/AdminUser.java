@@ -3,6 +3,13 @@ package com.travel.loginregistration.model;
 import jakarta.persistence.*;
 import java.util.UUID;
 
+/* 
+ * java versiion of admin user table in database.
+ * Used for admin authentication and authorization.
+ * Stores admin user details like email, username, password hash, and role.
+ */
+
+
 @Entity
 @Table(name = "admin_users")
 public class AdminUser {

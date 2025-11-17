@@ -10,6 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+/*
+    registers new users and logs in existing users, returning JWTs upon successful login
+    called by AuthController to handle registration and login requests
+    returns success messages or JWT tokens, or throws exceptions on errors
+*/
+
 @Service
 public class AuthService {
 
@@ -28,6 +34,7 @@ public class AuthService {
     // ---------- REGISTER ----------
     @Transactional
     public String registerUser(RegisterRequest req) {
+        // Basic field validation before touching DB
         if (req.getEmail() == null || req.getEmail().isBlank()) {
             throw new IllegalArgumentException("Email is required");
         }
@@ -44,6 +51,7 @@ public class AuthService {
             throw new IllegalArgumentException("Email already exists");
         }
 
+        // Create new user with hashed password and save
         User user = new User();
         user.setEmail(emailNorm);
         user.setUsername(req.getUsername().trim());

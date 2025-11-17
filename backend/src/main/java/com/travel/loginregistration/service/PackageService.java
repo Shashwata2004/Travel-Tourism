@@ -10,6 +10,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/*
+    Controllers call it whenever the frontend needs package data.
+    It interacts with the TravelPackageRepository to fetch package info from the database.
+    
+*/
+
 @Service
 public class PackageService {
     private final TravelPackageRepository repo;

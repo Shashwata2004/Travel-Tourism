@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+/*
+ *   Handles package-related API requests from frontend, delegating to PackageService.
+ *   list all active packages and get details of specific package by ID from PackageService.
+ *   the packageservice interacts with the database to fetch data.
+ */
+
 @RestController
 @RequestMapping("/api/packages")
 public class PackageController {

@@ -7,6 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+/*
+    Handles user profile-related API requests, delegating to ProfileService to get and update profile data for authenticated users.
+*/
+
 @RestController
 @RequestMapping("/api/profile")
 public class ProfileController {
@@ -17,13 +21,13 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @GetMapping("/me")
+    @GetMapping("/me")      // shows user profile
     public ResponseEntity<ProfileResponse> me(Authentication auth) {
-        String email = (String) auth.getPrincipal();
+        String email = (String) auth.getPrincipal();        //find current user from jwt token
         return ResponseEntity.ok(profileService.getProfile(email));
     }
 
-    @PutMapping("/me")
+    @PutMapping("/me")          // user can update profile
     public ResponseEntity<?> update(Authentication auth, @RequestBody ProfileUpdateRequest req) {
         try {
             String email = (String) auth.getPrincipal();

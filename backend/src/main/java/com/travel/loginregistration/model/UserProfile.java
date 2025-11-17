@@ -3,6 +3,14 @@ package com.travel.loginregistration.model;
 import jakarta.persistence.*;
 import java.util.UUID;
 
+/*
+ * java model of user_profiles table in database.
+ * Used to store additional profile details for users.
+ * It links to the User model via userId.
+ * ProfileService uses this model to get and update user profile information.
+ * ProfileController calls ProfileService to handle profile-related API requests from frontend.
+ */
+
 @Entity
 @Table(name = "user_profiles")
 public class UserProfile {

@@ -10,6 +10,13 @@ import io.github.cdimascio.dotenv.Dotenv;
 import java.util.Locale;
 import java.util.Optional;
 
+/*
+ * create or update an admin user based on environment variables:  (.env file)
+ * ADMIN_EMAIL - email address of the admin user to create or update (if not set, no admin user is created)
+ * ADMIN_USERNAME - username of the admin user to create or update (default: "admin")
+ * ADMIN_PASSWORD - password of the admin user to create or update (if not set, no admin user is created)
+ */
+
 @Configuration
 public class AdminSeeder implements CommandLineRunner {
     private final AdminUserRepository repo;
