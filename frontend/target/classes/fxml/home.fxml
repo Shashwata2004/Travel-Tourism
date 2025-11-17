@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- Defines the personal information dashboard with a navbar and a card of
+     editable profile fields tied to the HomeController.
+     - Top bar mirrors other screens so navigation feels familiar
+     - GridPane splits labels and inputs cleanly for readability -->
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>

@@ -1,3 +1,6 @@
+/* Shared network helper that calls the backend service for login, profile
+   updates, and package or booking requests, keeping the current token on every
+   request. Wraps Java’s HttpClient plus Jackson so controllers can stay tidy. */
 package com.travel.frontend.net;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +26,8 @@ public final class ApiClient {
     private ApiClient() {}
 
     // --- Auth ---
+    /* Sends an auth request with email/password JSON, using HttpClient to post
+       to /auth/login and storing the JWT in Session on success. */
     public String login(String email, String password) throws ApiException {
         String json = """
             {"email":"%s","password":"%s"}
@@ -38,6 +43,8 @@ public final class ApiClient {
     }
 
     // Placeholder for future admin login (UI can gate its usage)
+    /* Temporary admin login hook that currently reuses /auth/login. Keeps the
+       wiring ready for when a dedicated endpoint exists. */
     public String adminLogin(String email, String password) throws ApiException {
         String json = """
             {"email":"%s","password":"%s"}
@@ -52,6 +59,8 @@ public final class ApiClient {
         throw error(res, "Admin login failed");
     }
 
+    /* Builds a registration JSON payload and posts it without auth headers,
+       expecting the backend to confirm the new user with a 200 message. */
     public String register(String email, String username, String password, String location) throws ApiException {
         String json = """
             {"email":"%s","username":"%s","password":"%s","location":"%s"}
@@ -65,6 +74,8 @@ public final class ApiClient {
     }
 
     // --- Profile ---
+    /* Fetches the signed-in user’s profile via GET /profile/me, parsing the
+       JSON body into our Profile model. */
     public Profile getMyProfile() throws ApiException {
         HttpResponse<String> res = get("/profile/me", true);
         if (res.statusCode() == 200) {
@@ -77,6 +88,8 @@ public final class ApiClient {
         throw error(res, "Load profile failed");
     }
 
+    /* Serializes the Profile object to JSON and PUTs it back to the server,
+       then reads the updated profile so the UI shows confirmed data. */
     public Profile updateMyProfile(Profile p) throws ApiException {
         try {
             String json = mapper.writeValueAsString(p);
@@ -93,14 +106,19 @@ public final class ApiClient {
     }
 
     // --- Packages & Booking (raw helpers used by controllers) ---
+    /* Convenience pass-through for controllers that need the raw HTTP body. */
     public HttpResponse<String> rawGet(String path, boolean withAuth) throws ApiException {
         return get(path, withAuth);
     }
+    /* Posts arbitrary JSON to an endpoint, honoring the withAuth flag to add
+       the Bearer header when sessions exist. */
     public HttpResponse<String> rawPostJson(String path, String body, boolean withAuth) throws ApiException {
         return post(path, body, withAuth);
     }
 
     // --- Low-level helpers ---
+    /* Core POST builder using HttpClient; attaches JSON headers and the token
+       when requested. */
     private HttpResponse<String> post(String path, String body, boolean withAuth) throws ApiException {
         try {
             HttpRequest.Builder b = HttpRequest.newBuilder()
@@ -118,6 +136,7 @@ public final class ApiClient {
         }
     }
 
+    /* Shared GET path that handles Authorization header wiring before sending. */
     private HttpResponse<String> get(String path, boolean withAuth) throws ApiException {
         try {
             HttpRequest.Builder b = HttpRequest.newBuilder()
@@ -132,6 +151,7 @@ public final class ApiClient {
         }
     }
 
+    /* PUT helper similar to post(...), used mainly for profile updates. */
     private HttpResponse<String> put(String path, String body, boolean withAuth) throws ApiException {
         try {
             HttpRequest.Builder b = HttpRequest.newBuilder()

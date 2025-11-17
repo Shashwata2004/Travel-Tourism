@@ -1,3 +1,7 @@
+/* Loads the list of travel packages from the server, shows each one as a card,
+   and lets people open detailed views or hop to other sections from the navbar.
+   Combines DataCache, background threads, and JavaFX UI building so the page
+   feels smooth even while waiting on HTTP responses. */
 package com.travel.frontend.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -22,11 +26,15 @@ public class PackagesController {
     private final ApiClient api = ApiClient.get();
     private final ObjectMapper mapper = new ObjectMapper();
 
+    /* JavaFX lifecycle hook that kicks off the first load so visitors instantly
+       see featured trips once the screen renders. */
     @FXML
     private void initialize() {
         loadPackages();
     }
 
+    /* Core data flow: runs the network request in a background Thread, caches
+       the JSON response, and marshals back to the FX thread via Platform.runLater. */
     private void loadPackages() {
         new Thread(() -> {
             try {
@@ -44,6 +52,8 @@ public class PackagesController {
         }).start();
     }
 
+    /* Rebuilds the list of cards. Called on the FX thread with the freshest
+       list so UI updates are safe and flicker-free. */
     private void render(List<PackageCard> items) {
         listContainer.getChildren().clear();
         for (PackageCard p : items) {
@@ -51,6 +61,8 @@ public class PackagesController {
         }
     }
 
+    /* Creates the visual card for one package using standard layout nodes and
+       wires the “View Details” button to open the modal controller. */
     private Pane createCard(PackageCard p) {
         HBox card = new HBox(18);
         card.getStyleClass().add("pkg-card");
@@ -78,6 +90,8 @@ public class PackagesController {
         return card;
     }
 
+    /* Small record that mirrors what the /packages endpoint returns, making it
+       easy to bind fields to labels without deeper models. */
     public static class PackageCard {
         public UUID id;
         public String name;

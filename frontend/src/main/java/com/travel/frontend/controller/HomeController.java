@@ -1,3 +1,7 @@
+/* Drives the personal information page by loading the user’s profile, letting
+   them update key fields, and offering shortcuts to other sections.
+   Fetches data through ApiClient + DataCache on worker threads so the form
+   feels snappy even while hitting the network. */
 package com.travel.frontend.controller;
 
 import com.travel.frontend.model.Profile;
@@ -27,6 +31,8 @@ public class HomeController {
     private final ApiClient api = ApiClient.get();
     private Profile profile;
 
+    /* Runs once the FXML is ready: loads cached profile (or calls the API) on
+       a background Thread and fills the form via Platform.runLater. */
     @FXML
     private void initialize() {
         statusLabel.setText("Loading profile...");
@@ -41,6 +47,8 @@ public class HomeController {
         }).start();
     }
 
+    /* Copies profile data into the form controls. Handles radio button mapping
+       so enum strings like “PASSPORT” turn into the right toggle selections. */
     private void fillForm(Profile p) {
         emailField.setText(p.email);
         usernameField.setText(p.username);
@@ -66,6 +74,8 @@ public class HomeController {
         statusLabel.setText("");
     }
 
+    /* Sends updated personal info to the server using ApiClient.updateMyProfile
+       and stores the response back in DataCache so other screens stay in sync. */
     @FXML
     private void onUpdate() {
         statusLabel.setText("Updating...");
@@ -92,6 +102,7 @@ public class HomeController {
         }).start();
     }
 
+    /* Navbar logout action: clears cached data and returns to the login screen. */
     @FXML
     private void onLogout() {
         com.travel.frontend.cache.DataCache.clear();

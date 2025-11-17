@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- Structures the admin dashboard: toolbar of actions, list of packages on
+     the left, and the editable form for the selected package on the right.
+     - SplitPane keeps list and form resizable
+     - Toolbar buttons trigger the matching controller methods (Refresh/New/Save/Delete) -->
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>

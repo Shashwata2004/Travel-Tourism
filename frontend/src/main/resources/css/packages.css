@@ -1,3 +1,7 @@
+/* Shapes the packages list view with airy gradients, glassy navbar buttons,
+   and card tweaks so each destination preview looks consistent.
+   - Uses light glass panels to hint at travel posters
+   - Adds subtle drop shadows so package cards feel clickable */
 /* Packages page theming */
 .packagesPage {
     -fx-background-color: linear-gradient(to bottom, #e6f1ff, #f7fbff);

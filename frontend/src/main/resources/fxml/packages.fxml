@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- Sets up the packages screen layout with a shared navbar and scrollable
+     list container where the controller injects package cards.
+     - ScrollPane keeps cards centered no matter how many load
+     - Uses the same nav buttons as other pages for easy muscle memory -->
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>

@@ -1,3 +1,7 @@
+/* Powers the login form for both regular users and admins by checking basic
+   input, calling the right backend channel, and switching to the proper view
+   once someone signs in. Splits between the REST ApiClient and the socket-based
+   admin client so each role keeps its own journey but shares the same UI. */
 package com.travel.frontend.controller;
 
 import com.travel.frontend.net.ApiClient;
@@ -25,6 +29,9 @@ public class LoginController {
     private final ApiClient api = ApiClient.get();
     private final AdminSocketClient adminClient = new AdminSocketClient();
 
+    /* Runs when the user presses “Sign in.” Validates form fields, decides
+       whether to use the REST login or the AdminSocketClient, then runs the
+       network work on a background Thread while updating the UI via Platform.runLater. */
     @FXML
     private void onLogin() {
         statusLabel.setText("");
@@ -99,4 +106,3 @@ public class LoginController {
         a.showAndWait();
     }
 }
-

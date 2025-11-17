@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- Describes the booking pop-up with traveler info, person count spinner,
+     live price label, and confirm/cancel buttons.
+     - GridPane keeps labels aligned even when text grows
+     - Footer buttons mirror the controller actions (price, confirm, cancel) -->
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>

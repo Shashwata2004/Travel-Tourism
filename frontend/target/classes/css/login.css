@@ -1,3 +1,8 @@
+/* Provides the shared visual language—fonts, gradients, cards, nav bar, and
+   responsive tweaks—for most screens including login, register, and package
+   lists.
+   - Sets the typography and colors that tie every view together
+   - Offers both light and dark card treatments to match each scene */
 /* --- Global --- */
 * {
     -fx-font-family: "Inter", "Segoe UI", system-ui, sans-serif;

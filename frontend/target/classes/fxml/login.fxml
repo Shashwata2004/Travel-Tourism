@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- Lays out the login view: branding on the left and the sign-in form,
+     including user/admin toggle and navigation links, on the right.
+     - Uses a BorderPane so the hero art stays fixed beside the form
+     - Packs controls in a card for clear spacing and validation messages -->
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>

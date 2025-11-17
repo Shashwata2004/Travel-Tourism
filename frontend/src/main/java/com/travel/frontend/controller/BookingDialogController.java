@@ -1,3 +1,7 @@
+/* Represents the pop-up booking flow: shows the selected package info, checks
+   the user’s profile for eligibility, calculates pricing, and submits the
+   booking request back to the server. Uses JavaFX dialogs, background threads,
+   and the HTTP ApiClient to keep the flow smooth. */
 package com.travel.frontend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +34,8 @@ public class BookingDialogController {
     private final ApiClient api = ApiClient.get();
     private final ObjectMapper mapper = new ObjectMapper();
 
+    /* Static helper that loads the booking_dialog.fxml file, seeds the controller
+       with the chosen package id + base price, and opens a modal Stage. */
     public static void open(UUID packageId, String packageName, String priceText) {
         try {
             URL url = BookingDialogController.class.getResource("/fxml/booking_dialog.fxml");
@@ -49,6 +55,8 @@ public class BookingDialogController {
         }
     }
 
+    /* Sets up the spinner defaults, resets price text, then fetches the user’s
+       profile on a worker Thread to ensure they filled in ID information first. */
     @FXML
     private void initialize() {
         personsSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0));
@@ -72,11 +80,15 @@ public class BookingDialogController {
         }).start();
     }
 
+    /* Reads the spinner count and multiplies it with the base price using
+       BigDecimal so money math stays accurate. */
     @FXML private void onViewPrice() {
         int n = personsSpinner.getValue();
         priceLabel.setText("BDT " + basePrice.multiply(BigDecimal.valueOf(n)));
     }
 
+    /* Validates the number of travelers, crafts a booking JSON payload, and
+       posts it via ApiClient.rawPostJson on a background Thread. */
     @FXML private void onConfirm() {
         int n = personsSpinner.getValue();
         if (n <= 0) { showAlert("Please select at least 1 person."); return; }

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- Lays out the modal window that shows large package images, summary labels,
+     and tabs for overview/location/timing, plus a “Book Now” button.
+     - Dual Regions mimic hero photos when real images are missing
+     - TabPane keeps long descriptions organized without overwhelming the user -->
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>

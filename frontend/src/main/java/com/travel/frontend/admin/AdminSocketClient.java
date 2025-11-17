@@ -1,3 +1,7 @@
+/* Talks to the lightweight admin server over a direct socket connection so
+   admins can log in and list, add, edit, or delete packages from the dashboard.
+   Speaks simple JSON over TCP using Jackson, which keeps the admin tools
+   decoupled from the main REST API. */
 package com.travel.frontend.admin;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -14,6 +18,9 @@ public class AdminSocketClient {
     private final ObjectMapper mapper = new ObjectMapper();
     private String token;
 
+    /* Default constructor reads host/port from system properties or
+       environment variables so the admin channel can be pointed at staging or
+       production without code edits. */
     public AdminSocketClient() {
         String envHost = System.getenv("ADMIN_SOCKET_HOST");
         String envPort = System.getenv("ADMIN_SOCKET_PORT");
@@ -31,8 +38,12 @@ public class AdminSocketClient {
         }
         this.host = h; this.port = p;
     }
+    /* Direct constructor, useful for tests or custom wiring when we want to
+       mock out the socket server. */
     public AdminSocketClient(String host, int port) { this.host = host; this.port = port; }
 
+    /* Sends an AUTH request with the provided email and password, storing the
+       returned token on success so later LIST/CREATE calls stay authorized. */
     public boolean auth(String email, String password) throws IOException {
         Map<String, Object> req = new HashMap<>();
         req.put("type", "AUTH");
@@ -47,6 +58,9 @@ public class AdminSocketClient {
         return false;
     }
 
+    /* Pulls the full package list by sending a LIST command over the socket.
+       Uses Jackson’s TypeReference to convert the JSON array into Java objects
+       before handing them to the UI. */
     public List<PackageVM> list() throws IOException {
         Map<String, Object> req = new HashMap<>();
         req.put("type", "LIST");
@@ -57,6 +71,8 @@ public class AdminSocketClient {
         return items == null ? List.of() : items;
     }
 
+    /* Sends a new package record to the server. Relies on the server to return
+       a generated id so the UI can keep selections in sync. */
     public String create(PackageVM vm) throws IOException {
         Map<String, Object> req = new HashMap<>();
         req.put("type", "CREATE");
@@ -67,6 +83,8 @@ public class AdminSocketClient {
         return (String) res.get("id");
     }
 
+    /* Issues an UPDATE command with the chosen package id and the edited form
+       values, leaning on the socket token to prove admin rights. */
     public void update(String id, PackageVM vm) throws IOException {
         Map<String, Object> req = new HashMap<>();
         req.put("type", "UPDATE");
@@ -77,6 +95,8 @@ public class AdminSocketClient {
         if (!Boolean.TRUE.equals(res.get("ok"))) throw new IOException("UPDATE failed: " + res.get("msg"));
     }
 
+    /* Removes a package by id. The dashboard calls this when the admin presses
+       Delete, and the server is expected to broadcast the change. */
     public void delete(String id) throws IOException {
         Map<String, Object> req = new HashMap<>();
         req.put("type", "DELETE");
@@ -86,10 +106,16 @@ public class AdminSocketClient {
         if (!Boolean.TRUE.equals(res.get("ok"))) throw new IOException("DELETE failed: " + res.get("msg"));
     }
 
+    /* Chooses between the token captured during this client’s auth() call and
+       the shared AdminSession copy, so dashboard screens stay logged in even
+       if they spin up a second client. */
     private String effectiveToken() {
         return token != null ? token : AdminSession.getToken();
     }
 
+    /* Low-level helper: opens a Socket, writes a single JSON line, waits for a
+       reply, and converts it back into a map. Covers connection timeouts and
+       stream handling so each action method stays small. */
     private Map<String, Object> call(Map<String, Object> req) throws IOException {
         try (Socket s = new Socket()) {
             try {
@@ -110,6 +136,8 @@ public class AdminSocketClient {
         }
     }
 
+    /* Lightweight view-model that mirrors what the admin socket sends back.
+       Keeps only the fields needed on the dashboard list and edit form. */
     public static class PackageVM {
         public String id;
         public String name;

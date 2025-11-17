@@ -1,3 +1,6 @@
+/* Opens a pop-up window for a specific package, fetches its full description,
+   and hands off to the booking dialog when someone clicks “Book Now.”
+   Uses cached API responses so re-opening the same package feels instant. */
 package com.travel.frontend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,6 +35,8 @@ public class PackageDetailsController {
     private final ObjectMapper mapper = new ObjectMapper();
     private UUID packageId;
 
+    /* Entry point from the packages list: stores the selected id, loads the
+       FXML layout, and displays a modal Stage sized for content-heavy tabs. */
     public static void open(UUID packageId) {
         try {
             // Set selected package id before loading so initialize() can read it
@@ -48,6 +53,8 @@ public class PackageDetailsController {
         }
     }
 
+    /* Loads the selected package id, then fetches details on a new Thread,
+       caching the JSON response via DataCache and updating labels on the FX thread. */
     @FXML
     private void initialize() {
         this.packageId = PackageDetailsState.pendingPackageId;
@@ -67,6 +74,8 @@ public class PackageDetailsController {
         }).start();
     }
 
+    /* Moves fields from PackageDetailsVM into labels so the UI reflects the
+       latest info (name, location, overview, etc.). */
     private void fill(PackageDetailsVM vm) {
         nameLabel.setText(vm.name);
         locationLabel.setText(vm.location);
@@ -76,6 +85,8 @@ public class PackageDetailsController {
         timingText.setText(n(vm.timing));
     }
 
+    /* Button handler bridging to the booking dialog, sending through the id and
+       price text gathered on this screen. */
     @FXML
     private void onBookNow() {
         BookingDialogController.open(packageId, nameLabel.getText(), priceLabel.getText());
@@ -84,6 +95,7 @@ public class PackageDetailsController {
     private static String n(String s) { return s == null ? "" : s; }
 
     // VM classes
+    /* Simple data holder mirroring the backend’s package details response. */
     public static class PackageDetailsVM {
         public UUID id;
         public String name;
@@ -97,5 +109,7 @@ public class PackageDetailsController {
     }
 
     // Quick holder to pass selected package id into newly loaded controller
+    /* Tiny static helper for passing the chosen id from the list controller to
+       this modal without building a global event bus. */
     static class PackageDetailsState { static UUID pendingPackageId; }
 }

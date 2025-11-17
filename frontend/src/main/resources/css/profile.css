@@ -1,3 +1,7 @@
+/* Gives the personal info screen its soft gradients and card styling so the
+   form feels calm and easy to scan while editing your details.
+   - Focuses on gentle blues so personal data screens feel friendly
+   - Keeps cards slightly raised to separate sections without clutter */
 /* Profile (Personal Info) page theme */
 .profilePage {
     -fx-background-color: linear-gradient(to bottom, #eef2ff, #f8fafc);
@@ -12,4 +16,3 @@
 .profilePage #card {
     -fx-background-color: linear-gradient(to bottom right, #ffffff, #f7fbff);
 }
-

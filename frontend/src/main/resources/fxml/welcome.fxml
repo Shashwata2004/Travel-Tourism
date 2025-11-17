@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- Creates the gradient hero banner that greets a signed-in user with their
+     name and offers quick links to other sections.
+     - StackPane keeps the hero centered on all screen sizes
+     - Buttons match the navbar shortcuts so navigation is instant -->
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>

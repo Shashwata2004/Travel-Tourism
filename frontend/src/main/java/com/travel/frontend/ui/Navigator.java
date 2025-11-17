@@ -1,3 +1,7 @@
+/* Centralized router that keeps the main window alive and swaps in each FXML
+   screen so navigation buttons can simply call methods like goLogin().
+   Owns the shared Stage + Scene combo, which gives us quick fades between
+   pages without creating new windows. */
 package com.travel.frontend.ui;
 
 import java.net.URL;
@@ -13,14 +17,18 @@ public final class Navigator {
 
     private Navigator() {}
 
-    /** Call once from MainApp.start(...) */
+    /* Called once during app startup so we can capture the Stage that JavaFX
+       hands us. Uses Objects.requireNonNull to fail fast if the platform is
+       misconfigured. */
     public static void init(Stage stage) {
         STAGE = Objects.requireNonNull(stage, "Primary Stage must not be null");
         STAGE.setTitle("Travel & Tourism — Auth");
         STAGE.setResizable(true);
     }
 
-    /** Generic loader that swaps the root of the single Scene (creating it if needed). */
+    /* Generic loader that finds an FXML file on the classpath, creates or reuses
+       the shared Scene, and applies the login.css stylesheet. Keeps navigation
+       code tiny while relying on FXMLLoader to build the UI tree. */
     public static void load(String fxmlFileName) {
         ensureStage();
         final String fxmlPath = "/fxml/" + fxmlFileName;
@@ -66,6 +74,8 @@ public final class Navigator {
     public static void goAdminLogin() { load("login.fxml"); }
     public static void goAdminDashboard() { load("admin_dashboard.fxml"); }
 
+    /* Sanity check before loading anything: reminds developers to call init(...)
+       before touching navigation, otherwise JavaFX would throw null pointers. */
     private static void ensureStage() {
         if (STAGE == null) {
             throw new IllegalStateException("Navigator.init(primaryStage) must be called before navigation.");

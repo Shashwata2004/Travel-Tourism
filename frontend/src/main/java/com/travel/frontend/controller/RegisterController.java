@@ -1,3 +1,7 @@
+/* Handles the account creation form: collects the typed details, validates the
+   basics, calls the signup API, and guides the user back to the login screen.
+   Balances simple client-side checks with async HTTP calls so the UI stays
+   responsive while the backend confirms the new user. */
 package com.travel.frontend.controller;
 
 import com.travel.frontend.net.ApiClient;
@@ -22,6 +26,9 @@ public class RegisterController {
     private final ApiClient api = ApiClient.get();
 
     // Called by: <Button onAction="#onRegister"/>
+    /* Main registration handler: trims inputs, runs simple validation, calls
+       ApiClient.register(...) on a background Thread, then uses Platform.runLater
+       to update the UI based on the server response. */
     @FXML
     private void onRegister() {
         statusLabel.setText("");

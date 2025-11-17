@@ -1,3 +1,7 @@
+/* Styles the bright hero banner that greets the user with bold type, subtle
+   shadows, and buttons that float over the gradient background.
+   - Pairs deep blues and purples for an uplifting first look
+   - Keeps buttons translucent so the gradient shines through */
 /* Welcome hero screen styling */
 .hero {
     -fx-background-color: linear-gradient(to bottom right, #0ea5e9, #6366f1);

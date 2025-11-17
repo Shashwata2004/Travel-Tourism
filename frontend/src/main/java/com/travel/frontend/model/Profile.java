@@ -1,3 +1,7 @@
+/* Simple container for the personal details we show and edit on the profile
+   screen, matching the fields the backend sends back in JSON. Uses Jackson’s
+   annotations so extra backend fields are ignored, keeping the UI resilient
+   as the API evolves. */
 package com.travel.frontend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -14,4 +18,3 @@ public class Profile {
     public String idNumber;
     public String gender;    // MALE | FEMALE
 }
-

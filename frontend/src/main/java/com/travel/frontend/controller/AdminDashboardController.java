@@ -1,3 +1,7 @@
+/* Lets an authenticated admin review, create, edit, and delete packages by
+   wiring the dashboard form fields to the admin network helper and keeping
+   the list of packages in sync with the server. Runs socket calls on worker
+   threads and uses JavaFX bindings so staff can manage everything in one pane. */
 package com.travel.frontend.controller;
 
 import com.travel.frontend.admin.AdminSocketClient;
@@ -25,6 +29,8 @@ public class AdminDashboardController {
     private final AdminSocketClient client = new AdminSocketClient();
     private PackageVM current;
 
+    /* Sets up the selection listener so clicking a package populates the form,
+       then immediately fetches data from the admin socket. */
     @FXML private void initialize() {
         listView.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
             current = n;
@@ -33,6 +39,8 @@ public class AdminDashboardController {
         onRefresh();
     }
 
+    /* Pulls the latest packages from the AdminSocketClient.list() call on a
+       background thread and updates the ListView once finished. */
     @FXML public void onRefresh() {
         if (com.travel.frontend.admin.AdminSession.getToken() == null) {
             statusLabel.setText("Please login as admin first.");
@@ -57,6 +65,8 @@ public class AdminDashboardController {
         clearForm();
     }
 
+    /* Reads the form, decides whether to create or update, and performs the
+       socket call in a Thread so the dashboard stays responsive. */
     @FXML public void onSave() {
         PackageVM vm = readForm();
         statusLabel.setText("Saving...");
@@ -93,6 +103,8 @@ public class AdminDashboardController {
         }).start();
     }
 
+    /* Deletes the selected package by id and clears the form so we never show
+       stale data after the server removes the entry. */
     @FXML public void onDelete() {
         PackageVM sel = listView.getSelectionModel().getSelectedItem();
         if (sel == null || sel.id == null) { statusLabel.setText("Select a package to delete"); return; }
@@ -111,6 +123,8 @@ public class AdminDashboardController {
         }).start();
     }
 
+    /* Populates the form controls from a PackageVM, helping the admin see what
+       they’re editing right after selecting an item from the ListView. */
     private void fillForm(PackageVM vm) {
         nameField.setText(n(vm.name));
         locationField.setText(n(vm.location));
@@ -123,6 +137,8 @@ public class AdminDashboardController {
         activeBox.setSelected(vm.active);
     }
 
+    /* Builds a PackageVM from whatever is currently typed into the form,
+       including parsing the price into BigDecimal so the socket payload is clean. */
     private PackageVM readForm() {
         PackageVM vm = new PackageVM();
         if (current != null) vm.id = current.id;
