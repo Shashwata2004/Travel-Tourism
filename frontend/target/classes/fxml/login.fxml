@@ -18,7 +18,7 @@
     <left>
         <StackPane prefWidth="360" id="brandPane">
             <VBox alignment="CENTER" spacing="18">
-                <Label text="Travel &amp; Tourism Management" id="brandTitle"/>
+                <Label text="Travel &amp; Tourism" id="brandTitle"/>
                 <Label text="Plan trips. Manage bookings. Explore destinations." id="brandSubtitle" wrapText="true"/>
             </VBox>
         </StackPane>

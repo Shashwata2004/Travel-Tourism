@@ -16,7 +16,11 @@
 
 /* === LAYOUT PANES === */
 #brandPane {
-    -fx-background-color: linear-gradient(to bottom right, #0ea5e9, #6366f1);
+    -fx-background-color: rgba(15, 23, 42, 0.78); /* fallback overlay */
+    -fx-background-image: url("../images/sajek.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
     -fx-padding: 28;
 }
 
