@@ -9,6 +9,7 @@ import java.util.UUID;
  * Stores user details like email, username, password hash, and location.
  * ProfileService interacts with this model to get and update user profile data.
  * ProfileController calls ProfileService to handle profile-related API requests from frontend.
+ * repsitory layer uses this model to perform CRUD operations on app_users table.
  */
 
 @Entity

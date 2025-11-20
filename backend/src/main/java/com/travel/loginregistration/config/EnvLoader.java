@@ -7,7 +7,6 @@ import java.util.Map;
 /**
  * Loads variables from a .env file (if present) before Spring starts
  * and maps them to Spring property keys so the app can run with
- * just a .env file (no system-wide env needed).
  */
 public final class EnvLoader {
     private EnvLoader() {}

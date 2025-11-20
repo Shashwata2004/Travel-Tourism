@@ -7,6 +7,7 @@ import java.util.UUID;
  * java versiion of admin user table in database.
  * Used for admin authentication and authorization.
  * Stores admin user details like email, username, password hash, and role.
+ * repository layer uses this model to perform CRUD operations on admin_users table.
  */
 
 

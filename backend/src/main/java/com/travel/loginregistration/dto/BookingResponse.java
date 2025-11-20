@@ -4,6 +4,11 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
+/*
+ * Simple DTO representing a booking response sent to the frontend.
+    it is the java object form of json response.
+ */
+
 public class BookingResponse {
     public UUID id;
     public UUID packageId;

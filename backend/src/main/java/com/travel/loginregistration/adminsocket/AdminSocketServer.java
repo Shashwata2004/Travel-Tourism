@@ -16,6 +16,12 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/*
+ * A simple socket server for admin operations on travel packages.
+ * This listens on a TCP port (default 9090) for JSON requests from the AdminSocketClient, allowing admins to authenticate and perform
+ * the admin operations of listing, creating, updating, and deleting travel packages (CRUD).
+ */
+
 @Component
 public class AdminSocketServer {
     private final AdminUserRepository adminRepo;
@@ -30,6 +36,7 @@ public class AdminSocketServer {
         this.encoder = encoder;
     }
 
+    // Starts the socket server thread as soon as Spring finishes wiring this bean.
     @PostConstruct
     public void start() {
         Thread t = new Thread(this::listen, "admin-socket-server");
@@ -37,6 +44,7 @@ public class AdminSocketServer {
         t.start();
     }
 
+    // Binds ServerSocket to port 9090 and spawns a worker thread per incoming connection.
     private void listen() {
         int port = 9090;
         try (ServerSocket ss = new ServerSocket(port)) {
@@ -50,6 +58,7 @@ public class AdminSocketServer {
         }
     }
 
+    // Parses a request line, routes by type, and writes the JSON response.
     private void handle(Socket s) {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
              BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()))) {
@@ -88,11 +97,13 @@ public class AdminSocketServer {
         }
     }
 
+    // Checks whether the request contains a valid session token.
     private boolean authorized(Map<String, Object> req) {
         String token = (String) req.get("token");
         return token != null && sessions.containsKey(token);
     }
 
+    // Validates admin credentials and issues a session token.
     private Map<String, Object> doAuth(Map<String, Object> req) {
         String email = (String) req.get("email");
         String password = (String) req.get("password");
@@ -109,6 +120,7 @@ public class AdminSocketServer {
         return ok;
     }
 
+    // Returns every travel package without filtering (admin view).
     private Map<String, Object> listPackages() {
         List<TravelPackage> items = pkgRepo.findAll();
         Map<String, Object> ok = ok();
@@ -116,6 +128,8 @@ public class AdminSocketServer {
         return ok;
     }
 
+    // Creates a new TravelPackage entity from the payload.
+    // A payload is the actual data being sent in a request or response. 
     private Map<String, Object> createPackage(Map<String, Object> req) {
         Map<String, Object> item = (Map<String, Object>) req.get("item");
         TravelPackage p = new TravelPackage();
@@ -126,6 +140,7 @@ public class AdminSocketServer {
         return ok;
     }
 
+    // Applies the payload to an existing TravelPackage and saves it.
     private Map<String, Object> updatePackage(Map<String, Object> req) {
         String idStr = (String) req.get("id");
         if (idStr == null) return err("MISSING_ID");
@@ -138,6 +153,7 @@ public class AdminSocketServer {
         return ok();
     }
 
+    // Deletes the package with the provided id (if it exists).
     private Map<String, Object> deletePackage(Map<String, Object> req) {
         String idStr = (String) req.get("id");
         if (idStr == null) return err("MISSING_ID");
@@ -146,6 +162,7 @@ public class AdminSocketServer {
         return ok();
     }
 
+    // Copies allowed fields from the arbitrary map into the entity.
     private void apply(TravelPackage p, Map<String, Object> item) {
         if (item == null) return;
         if (item.containsKey("name")) p.setName(str(item.get("name")));
@@ -159,14 +176,17 @@ public class AdminSocketServer {
         if (item.containsKey("active")) p.setActive(Boolean.TRUE.equals(item.get("active")) || "true".equalsIgnoreCase(str(item.get("active"))));
     }
 
+    // Helper to convert any object to String while tolerating nulls.
     private String str(Object o) { return o == null ? null : String.valueOf(o); }
+    // Helper to convert payload values into BigDecimal.
     private BigDecimal toBigDecimal(Object o) {
         if (o == null) return null;
         if (o instanceof Number n) return new BigDecimal(n.toString());
         return new BigDecimal(o.toString());
     }
 
+    // Builds a success response map with ok=true.
     private Map<String, Object> ok() { Map<String, Object> m = new HashMap<>(); m.put("ok", true); return m; }
+    // Builds an error response map with ok=false and a message.
     private Map<String, Object> err(String msg) { Map<String, Object> m = new HashMap<>(); m.put("ok", false); m.put("msg", msg); return m; }
 }
-

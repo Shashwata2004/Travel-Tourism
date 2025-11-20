@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 
+/*
+    creates and validates JWT tokens for user authentication.
+    finds email from token and checks token integrity and expiration.
+ */
+
 @Component
 public class JwtUtil {
 

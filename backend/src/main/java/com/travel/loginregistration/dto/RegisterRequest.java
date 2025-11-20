@@ -1,5 +1,9 @@
 package com.travel.loginregistration.dto;
 
+/*
+    * Simple DTO representing a register request from the frontend.
+*/
+
 public class RegisterRequest {
     private String email;
     private String username;

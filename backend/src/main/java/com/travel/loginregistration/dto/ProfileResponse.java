@@ -2,6 +2,11 @@ package com.travel.loginregistration.dto;
 
 import java.util.UUID;
 
+/*
+ * Simple DTO representing a user profile response.
+ * This maps the JSON data sent to/from the frontend.
+ */
+
 public class ProfileResponse {
     private UUID userId;
     private String email;       // immutable

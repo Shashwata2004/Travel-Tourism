@@ -1,5 +1,8 @@
 package com.travel.loginregistration.dto;
 
+/*
+ * Simple DTO representing a profile update request from the frontend.
+ */
 public class ProfileUpdateRequest {
     // Base (allowed to update except email)
     private String username;

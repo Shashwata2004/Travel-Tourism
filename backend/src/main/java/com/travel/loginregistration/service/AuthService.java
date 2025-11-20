@@ -9,6 +9,7 @@ import com.travel.loginregistration.exception.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.util.regex.Pattern;
 
 /*
     registers new users and logs in existing users, returning JWTs upon successful login
@@ -22,6 +23,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$");
 
     public AuthService(UserRepository userRepository,
                        BCryptPasswordEncoder passwordEncoder,
@@ -37,6 +39,9 @@ public class AuthService {
         // Basic field validation before touching DB
         if (req.getEmail() == null || req.getEmail().isBlank()) {
             throw new IllegalArgumentException("Email is required");
+        }
+        if (!isValidEmail(req.getEmail())) {
+            throw new IllegalArgumentException("Invalid email format");
         }
         if (req.getPassword() == null || req.getPassword().isBlank()) {
             throw new IllegalArgumentException("Password is required");
@@ -67,6 +72,9 @@ public class AuthService {
         if (email == null || email.isBlank() || password == null || password.isBlank()) {
             throw new IllegalArgumentException("Email and password are required");
         }
+        if (!isValidEmail(email)) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
 
         String emailNorm = email.trim().toLowerCase();
 
@@ -81,5 +89,9 @@ public class AuthService {
 
         // Return JWT on success
         return jwtUtil.generateToken(emailNorm);
+    }
+
+    private boolean isValidEmail(String email) {
+        return EMAIL_PATTERN.matcher(email.trim()).matches();
     }
 }

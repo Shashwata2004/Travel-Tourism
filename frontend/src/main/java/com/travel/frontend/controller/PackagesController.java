@@ -13,10 +13,11 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 import java.math.BigDecimal;
-import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,11 +70,6 @@ public class PackagesController {
         card.setPadding(new Insets(16));
         card.setMaxWidth(960);
 
-        Region image = new Region();
-        image.setMinSize(220, 140);
-        image.setPrefSize(220, 140);
-        image.getStyleClass().add("image-placeholder");
-
         VBox content = new VBox(8);
         Label title = new Label(p.name);
         title.setId("cardTitle");
@@ -86,7 +82,7 @@ public class PackagesController {
         details.setOnAction(e -> PackageDetailsController.open(p.id));
 
         content.getChildren().addAll(title, loc, price, details);
-        card.getChildren().addAll(image, content);
+        card.getChildren().addAll(createImageNode(p.destImageUrl), content);
         return card;
     }
 
@@ -98,6 +94,36 @@ public class PackagesController {
         public String location;
         public BigDecimal basePrice;
         public String destImageUrl;
+    }
+
+    private StackPane createImageNode(String url) {
+        StackPane wrapper = new StackPane();
+        wrapper.setMinSize(220, 140);
+        wrapper.setPrefSize(220, 140);
+
+        ImageView view = new ImageView();
+        view.setFitWidth(220);
+        view.setFitHeight(140);
+        view.setPreserveRatio(true);
+        view.setSmooth(true);
+
+        Image img = loadCachedImage(url, 220, 140);
+        if (img != null) {
+            view.setImage(img);
+        }
+
+        wrapper.getChildren().add(view);
+        return wrapper;
+    }
+
+    private Image loadCachedImage(String url, double width, double height) {
+        if (url == null || url.isBlank()) return null;
+        try {
+            return DataCache.getOrLoad("img:" + width + "x" + height + ":" + url,
+                    () -> new Image(url, width, height, true, true, false));
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @FXML private void goPersonal() { Navigator.goHome(); }

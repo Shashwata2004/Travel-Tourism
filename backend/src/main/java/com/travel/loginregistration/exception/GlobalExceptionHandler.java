@@ -5,6 +5,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/*
+    when it finds exceptions thrown from anywhere in the application,
+    it returns a json response of the error message and code and give it to frontend.
+ */
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

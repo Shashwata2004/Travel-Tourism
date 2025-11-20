@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.UUID;
 
+// Repository for accessing the travel_packages table using the TravelPackage entity
 public interface TravelPackageRepository extends JpaRepository<TravelPackage, UUID> {
     List<TravelPackage> findByActiveTrueOrderByNameAsc();
 }

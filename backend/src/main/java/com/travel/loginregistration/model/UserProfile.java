@@ -9,6 +9,7 @@ import java.util.UUID;
  * It links to the User model via userId.
  * ProfileService uses this model to get and update user profile information.
  * ProfileController calls ProfileService to handle profile-related API requests from frontend.
+ * repsitory layer uses this model to perform CRUD operations on user_profiles table.
  */
 
 @Entity

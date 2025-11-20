@@ -4,17 +4,16 @@
 package com.travel.frontend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.travel.frontend.net.ApiClient;
 import com.travel.frontend.cache.DataCache;
+import com.travel.frontend.net.ApiClient;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
-import javafx.scene.layout.Region;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -30,6 +29,8 @@ public class PackageDetailsController {
     @FXML private Label overviewText;
     @FXML private Label locationPointsText;
     @FXML private Label timingText;
+    @FXML private ImageView destImageView;
+    @FXML private ImageView hotelImageView;
 
     private final ApiClient api = ApiClient.get();
     private final ObjectMapper mapper = new ObjectMapper();
@@ -83,6 +84,8 @@ public class PackageDetailsController {
         overviewText.setText(n(vm.overview));
         locationPointsText.setText(n(vm.locationPoints));
         timingText.setText(n(vm.timing));
+        loadImage(destImageView, vm.destImageUrl);
+        loadImage(hotelImageView, vm.hotelImageUrl);
     }
 
     /* Button handler bridging to the booking dialog, sending through the id and
@@ -93,6 +96,20 @@ public class PackageDetailsController {
     }
 
     private static String n(String s) { return s == null ? "" : s; }
+
+    private void loadImage(ImageView view, String url) {
+        if (view == null) return;
+        if (url == null || url.isBlank()) {
+            view.setImage(null);
+            return;
+        }
+        try {
+            Image img = DataCache.getOrLoad("img:detail:" + url, () -> new Image(url, true));
+            view.setImage(img);
+        } catch (Exception e) {
+            view.setImage(null);
+        }
+    }
 
     // VM classes
     /* Simple data holder mirroring the backend’s package details response. */

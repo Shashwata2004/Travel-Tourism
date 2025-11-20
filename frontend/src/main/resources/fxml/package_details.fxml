@@ -6,6 +6,7 @@
      - TabPane keeps long descriptions organized without overwhelming the user -->
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
@@ -24,8 +25,12 @@
         <VBox spacing="12">
             <padding><Insets topRightBottomLeft="10"/></padding>
             <HBox spacing="12">
-                <Region prefWidth="380" prefHeight="220" styleClass="image-placeholder"/>
-                <Region prefWidth="380" prefHeight="220" styleClass="image-placeholder"/>
+                <StackPane prefWidth="380" prefHeight="220">
+                    <ImageView fx:id="destImageView" fitWidth="380" fitHeight="220" preserveRatio="true" smooth="true"/>
+                </StackPane>
+                <StackPane prefWidth="380" prefHeight="220">
+                    <ImageView fx:id="hotelImageView" fitWidth="380" fitHeight="220" preserveRatio="true" smooth="true"/>
+                </StackPane>
             </HBox>
             <Label fx:id="nameLabel" id="cardTitle"/>
             <Label fx:id="locationLabel" id="cardSubtitle"/>

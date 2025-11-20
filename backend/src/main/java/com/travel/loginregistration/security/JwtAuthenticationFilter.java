@@ -15,10 +15,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Collections;
 
-/**
- * Looks for `Authorization: Bearer <token>` on each request,
- * validates the JWT, and sets the authenticated user (email) into the SecurityContext.
- */
+/*
+    * Filter that intercepts HTTP requests to validate JWT tokens.
+    * it decodes the token, extracts user info, and sets authentication in security context.
+    * skips filtering for public endpoints like login and registration.
+    * then it gives the request to controller after setting authentication.
+*/
+
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;

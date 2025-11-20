@@ -9,6 +9,7 @@ import java.util.UUID;
  * Used to store travel package details like name, location, price, images, overview, location points, timing, and active status.
  * services interact with this model to retrieve and manage travel package data.
  * then controllers call those services to handle API requests from frontend.
+ * repository layer uses this model to perform CRUD operations on travel_packages table.
  */
 
 @Entity
