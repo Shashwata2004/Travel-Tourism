@@ -5,4 +5,4 @@ JSON first hits Controller
 👉 Controller sends DTO to Service
 👉 Service uses Entities + DB
 👉 Service returns result
-👉 Controller sends JSON back to frontend
+👉 Controller sends JSON back to frontend.
