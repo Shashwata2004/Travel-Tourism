@@ -46,6 +46,7 @@
       <artifactId>jackson-core</artifactId>
       <version>${jackson.version}</version>
     </dependency>
+
   </dependencies>
 
   <build>
@@ -66,6 +67,15 @@
         <version>0.0.8</version>
         <configuration>
           <mainClass>com.travel.frontend.MainApp</mainClass>
+          <!-- Keep runtime stable on low-memory Windows runners and silence native access warnings -->
+          <jvmArgs>
+            <!-- Trim heap to avoid native OOM and cap what Java grabs up front -->
+            -Xms256m
+            -Xmx1024m
+            -XX:MaxRAMPercentage=75
+            <!-- Allow JavaFX native libs without warning spam -->
+            --enable-native-access=ALL-UNNAMED
+          </jvmArgs>
         </configuration>
       </plugin>
     </plugins>

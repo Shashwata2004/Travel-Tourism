@@ -9,6 +9,11 @@ import com.travel.frontend.session.Session;
 import com.travel.frontend.ui.Navigator;
 import com.travel.frontend.admin.AdminSocketClient;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -17,6 +22,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class LoginController {
 
@@ -25,9 +33,17 @@ public class LoginController {
     @FXML private Label statusLabel;
     @FXML private RadioButton userMode;
     @FXML private RadioButton adminMode;
+    @FXML private StackPane brandPane;
+    @FXML private VBox brandCopy;
+    @FXML private VBox cardBox;
 
     private final ApiClient api = ApiClient.get();
     private final AdminSocketClient adminClient = new AdminSocketClient();
+
+    @FXML
+    private void initialize() {
+        runEntranceAnimation();
+    }
 
     /* Runs when the user presses “Sign in.” Validates form fields, decides
        whether to use the REST login or the AdminSocketClient, then runs the
@@ -104,5 +120,61 @@ public class LoginController {
         a.setHeaderText(null);
         a.setContentText(msg);
         a.showAndWait();
+    }
+
+    // Soft entrance animation in pure Java (no scripts)
+    private void runEntranceAnimation() {
+        if (brandPane == null || cardBox == null) return;
+
+        // Delay start until layout is ready so width is accurate for the slide-in.
+        Platform.runLater(() -> {
+            double width = brandPane.getWidth();
+            if (width <= 0) width = brandPane.getPrefWidth() > 0 ? brandPane.getPrefWidth() : 480;
+            double startX = -width; // slide from fully offscreen left
+
+            brandPane.setTranslateX(startX);
+            brandPane.setOpacity(1.0); // keep image visible during slide
+            if (brandCopy != null) {
+                brandCopy.setOpacity(0.0);
+                brandCopy.setTranslateY(6);
+            }
+            cardBox.setOpacity(0.0);
+            cardBox.setTranslateY(20);
+
+            TranslateTransition slideHero = new TranslateTransition(Duration.millis(650), brandPane);
+            slideHero.setFromX(startX);
+            slideHero.setToX(0);
+            slideHero.setInterpolator(javafx.animation.Interpolator.EASE_BOTH);
+
+            FadeTransition fadeCopy = brandCopy == null ? null : new FadeTransition(Duration.millis(450), brandCopy);
+            if (fadeCopy != null) {
+                fadeCopy.setFromValue(0.0);
+                fadeCopy.setToValue(1.0);
+            }
+            TranslateTransition liftCopy = brandCopy == null ? null : new TranslateTransition(Duration.millis(450), brandCopy);
+            if (liftCopy != null) {
+                liftCopy.setFromY(6);
+                liftCopy.setToY(0);
+            }
+
+            FadeTransition fadeCard = new FadeTransition(Duration.millis(500), cardBox);
+            fadeCard.setFromValue(0.0);
+            fadeCard.setToValue(1.0);
+            TranslateTransition slideCard = new TranslateTransition(Duration.millis(500), cardBox);
+            slideCard.setFromY(20);
+            slideCard.setToY(0);
+
+            SequentialTransition seq = new SequentialTransition(
+                    slideHero,
+                    new PauseTransition(Duration.millis(80)),
+                    new ParallelTransition(
+                            fadeCopy == null ? new PauseTransition(Duration.ZERO) : fadeCopy,
+                            liftCopy == null ? new PauseTransition(Duration.ZERO) : liftCopy
+                    ),
+                    new PauseTransition(Duration.millis(80)),
+                    new ParallelTransition(fadeCard, slideCard)
+            );
+            seq.play();
+        });
     }
 }

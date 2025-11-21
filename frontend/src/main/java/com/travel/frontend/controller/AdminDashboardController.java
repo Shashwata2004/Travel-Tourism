@@ -18,11 +18,16 @@ public class AdminDashboardController {
     @FXML private TextField nameField;
     @FXML private TextField locationField;
     @FXML private TextField priceField;
-    @FXML private TextField destImageField;
-    @FXML private TextField hotelImageField;
+    @FXML private TextField image1Field;
+    @FXML private TextField image2Field;
+    @FXML private TextField image3Field;
+    @FXML private TextField image4Field;
+    @FXML private TextField image5Field;
     @FXML private TextArea overviewArea;
     @FXML private TextArea pointsArea;
     @FXML private TextArea timingArea;
+    @FXML private TextArea itineraryArea;
+    @FXML private TextField groupSizeField;
     @FXML private CheckBox activeBox;
     @FXML private Label statusLabel;
 
@@ -55,7 +60,8 @@ public class AdminDashboardController {
                     statusLabel.setText("");
                 });
             } catch (Exception e) {
-                Platform.runLater(() -> statusLabel.setText("Load failed: " + e.getMessage()));
+                e.printStackTrace();
+                Platform.runLater(() -> statusLabel.setText("Load failed: " + detailedMessage(e)));
             }
         }).start();
     }
@@ -87,18 +93,23 @@ public class AdminDashboardController {
                         current.name = vm.name;
                         current.location = vm.location;
                         current.basePrice = vm.basePrice;
-                        current.destImageUrl = vm.destImageUrl;
-                        current.hotelImageUrl = vm.hotelImageUrl;
+                        current.image1 = vm.image1;
+                        current.image2 = vm.image2;
+                        current.image3 = vm.image3;
+                        current.image4 = vm.image4;
+                        current.image5 = vm.image5;
                         current.overview = vm.overview;
                         current.locationPoints = vm.locationPoints;
                         current.timing = vm.timing;
+                        current.itinerary = vm.itinerary;
                         current.active = vm.active;
                         listView.refresh();
                         statusLabel.setText("Saved");
                     });
                 }
             } catch (Exception e) {
-                Platform.runLater(() -> statusLabel.setText("Save failed: " + e.getMessage()));
+                e.printStackTrace();
+                Platform.runLater(() -> statusLabel.setText("Save failed: " + detailedMessage(e)));
             }
         }).start();
     }
@@ -118,7 +129,8 @@ public class AdminDashboardController {
                     statusLabel.setText("Deleted");
                 });
             } catch (Exception e) {
-                Platform.runLater(() -> statusLabel.setText("Delete failed: " + e.getMessage()));
+                e.printStackTrace();
+                Platform.runLater(() -> statusLabel.setText("Delete failed: " + detailedMessage(e)));
             }
         }).start();
     }
@@ -129,11 +141,16 @@ public class AdminDashboardController {
         nameField.setText(n(vm.name));
         locationField.setText(n(vm.location));
         priceField.setText(vm.basePrice == null ? "" : vm.basePrice.toString());
-        destImageField.setText(n(vm.destImageUrl));
-        hotelImageField.setText(n(vm.hotelImageUrl));
+        image1Field.setText(n(vm.image1));
+        image2Field.setText(n(vm.image2));
+        image3Field.setText(n(vm.image3));
+        image4Field.setText(n(vm.image4));
+        image5Field.setText(n(vm.image5));
         overviewArea.setText(n(vm.overview));
         pointsArea.setText(n(vm.locationPoints));
         timingArea.setText(n(vm.timing));
+        itineraryArea.setText(toItineraryLines(vm));
+        groupSizeField.setText(n(vm.groupSize));
         activeBox.setSelected(vm.active);
     }
 
@@ -146,11 +163,18 @@ public class AdminDashboardController {
         vm.location = t(locationField);
         String p = t(priceField);
         vm.basePrice = p.isBlank() ? null : new BigDecimal(p);
-        vm.destImageUrl = t(destImageField);
-        vm.hotelImageUrl = t(hotelImageField);
+        vm.image1 = t(image1Field);
+        vm.image2 = t(image2Field);
+        vm.image3 = t(image3Field);
+        vm.image4 = t(image4Field);
+        vm.image5 = t(image5Field);
+        vm.destImageUrl = vm.image1; // use first as destination card
+        vm.hotelImageUrl = vm.image5; // use fifth as hotel image
         vm.overview = overviewArea.getText();
         vm.locationPoints = pointsArea.getText();
         vm.timing = timingArea.getText();
+        vm.itinerary = parseItinerary(itineraryArea.getText());
+        vm.groupSize = t(groupSizeField);
         vm.active = activeBox.isSelected();
         return vm;
     }
@@ -159,15 +183,57 @@ public class AdminDashboardController {
         nameField.clear();
         locationField.clear();
         priceField.clear();
-        destImageField.clear();
-        hotelImageField.clear();
+        image1Field.clear();
+        image2Field.clear();
+        image3Field.clear();
+        image4Field.clear();
+        image5Field.clear();
         overviewArea.clear();
         pointsArea.clear();
         timingArea.clear();
+        itineraryArea.clear();
+        groupSizeField.clear();
         activeBox.setSelected(true);
     }
 
     private static String t(TextField f) { return f.getText() == null ? "" : f.getText().trim(); }
     private static String n(String s) { return s == null ? "" : s; }
+    private String detailedMessage(Exception e) {
+        if (e.getMessage() != null && !e.getMessage().isBlank()) return e.getMessage();
+        Throwable c = e.getCause();
+        while (c != null) {
+            if (c.getMessage() != null && !c.getMessage().isBlank()) return c.getMessage();
+            c = c.getCause();
+        }
+        return e.toString();
+    }
+
+    // Converts itinerary list to editable lines.
+    private String toItineraryLines(PackageVM vm) {
+        if (vm == null || vm.itinerary == null || vm.itinerary.isEmpty()) return "";
+        StringBuilder sb = new StringBuilder();
+        for (AdminSocketClient.ItineraryVM it : vm.itinerary) {
+            if (sb.length() > 0) sb.append("\n");
+            sb.append(it.dayNumber).append("|").append(n(it.title)).append("|").append(n(it.subtitle));
+        }
+        return sb.toString();
+    }
+
+    // Parses textarea lines into itinerary items (day|title|subtitle).
+    private List<AdminSocketClient.ItineraryVM> parseItinerary(String text) {
+        if (text == null || text.isBlank()) return List.of();
+        String[] lines = text.split("\\r?\\n");
+        java.util.ArrayList<AdminSocketClient.ItineraryVM> list = new java.util.ArrayList<>();
+        for (String line : lines) {
+            if (line.isBlank()) continue;
+            String[] parts = line.split("\\|", 3);
+            AdminSocketClient.ItineraryVM it = new AdminSocketClient.ItineraryVM();
+            try { it.dayNumber = Integer.parseInt(parts[0].trim()); } catch (Exception e) { it.dayNumber = list.size()+1; }
+            it.title = parts.length > 1 ? parts[1].trim() : "";
+            it.subtitle = parts.length > 2 ? parts[2].trim() : "";
+            list.add(it);
+        }
+        return list;
+    }
 }
 

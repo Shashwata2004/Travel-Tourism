@@ -2,6 +2,7 @@ package com.travel.loginregistration.dto;
 
 import java.math.BigDecimal;
 import java.util.UUID;
+import java.util.List;
 
 /*
  * Simple DTO representing travel package details.
@@ -15,8 +16,14 @@ public class PackageDetails {
     public BigDecimal basePrice;
     public String destImageUrl;
     public String hotelImageUrl;
+    public String image1;
+    public String image2;
+    public String image3;
+    public String image4;
+    public String image5;
     public String overview;
     public String locationPoints;
     public String timing;
+    public List<ItineraryItem> itinerary;
+    public String groupSize;
 }
-

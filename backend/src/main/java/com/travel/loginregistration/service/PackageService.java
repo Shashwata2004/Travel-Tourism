@@ -1,8 +1,11 @@
 package com.travel.loginregistration.service;
 
 import com.travel.loginregistration.dto.PackageDetails;
+import com.travel.loginregistration.dto.ItineraryItem;
 import com.travel.loginregistration.dto.PackageSummary;
+import com.travel.loginregistration.model.PackageItinerary;
 import com.travel.loginregistration.model.TravelPackage;
+import com.travel.loginregistration.repository.PackageItineraryRepository;
 import com.travel.loginregistration.repository.TravelPackageRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +22,11 @@ import java.util.stream.Collectors;
 @Service
 public class PackageService {
     private final TravelPackageRepository repo;
+    private final PackageItineraryRepository itineraryRepo;
 
-    public PackageService(TravelPackageRepository repo) {
+    public PackageService(TravelPackageRepository repo, PackageItineraryRepository itineraryRepo) {
         this.repo = repo;
+        this.itineraryRepo = itineraryRepo;
     }
 
     public List<PackageSummary> listActive() {
@@ -30,7 +35,8 @@ public class PackageService {
 
     public PackageDetails details(UUID id) {
         TravelPackage p = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Package not found"));
-        return toDetails(p);
+        List<PackageItinerary> steps = itineraryRepo.findByTravelPackageIdOrderByDayNumberAsc(p.getId());
+        return toDetails(p, steps);
     }
 
     private PackageSummary toSummary(TravelPackage p) {
@@ -43,7 +49,7 @@ public class PackageService {
         return s;
     }
 
-    private PackageDetails toDetails(TravelPackage p) {
+    private PackageDetails toDetails(TravelPackage p, List<PackageItinerary> steps) {
         PackageDetails d = new PackageDetails();
         d.id = p.getId();
         d.name = p.getName();
@@ -51,10 +57,25 @@ public class PackageService {
         d.basePrice = p.getBasePrice();
         d.destImageUrl = p.getDestImageUrl();
         d.hotelImageUrl = p.getHotelImageUrl();
+        d.image1 = p.getImage1();
+        d.image2 = p.getImage2();
+        d.image3 = p.getImage3();
+        d.image4 = p.getImage4();
+        d.image5 = p.getImage5();
         d.overview = p.getOverview();
         d.locationPoints = p.getLocationPoints();
         d.timing = p.getTiming();
+        d.itinerary = steps.stream().map(this::toItineraryItem).collect(Collectors.toList());
+        d.groupSize = p.getGroupSize();
         return d;
+    }
+
+    private ItineraryItem toItineraryItem(PackageItinerary it) {
+        ItineraryItem i = new ItineraryItem();
+        i.dayNumber = it.getDayNumber();
+        i.title = it.getTitle();
+        i.subtitle = it.getSubtitle();
+        return i;
     }
 }
 

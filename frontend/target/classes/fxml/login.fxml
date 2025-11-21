@@ -13,23 +13,27 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.travel.frontend.controller.LoginController"
-            stylesheets="@/css/login.css">
-    <!-- Left: brand panel -->
+            stylesheets="@/css/login.css"
+            styleClass="loginRoot">
+    <!-- Left: brand hero with overlay -->
     <left>
-        <StackPane prefWidth="360" id="brandPane">
-            <VBox alignment="CENTER" spacing="18">
+        <StackPane prefWidth="520" id="brandPane" fx:id="brandPane">
+            <Pane styleClass="brandScrim"/>
+            <VBox alignment="CENTER" spacing="16" styleClass="brandCopy" fx:id="brandCopy">
                 <Label text="Travel &amp; Tourism" id="brandTitle"/>
                 <Label text="Plan trips. Manage bookings. Explore destinations." id="brandSubtitle" wrapText="true"/>
             </VBox>
         </StackPane>
     </left>
 
-    <!-- Center: login card -->
+    <!-- Right: gradient backdrop + glass card -->
     <center>
-        <StackPane>
-            <VBox id="card" maxWidth="420" spacing="18">
-                <Label text="Welcome back 👋" id="cardTitle"/>
-                <Label text="Sign in to continue" id="cardSubtitle"/>
+        <StackPane styleClass="formHost">
+            <VBox id="card" fx:id="cardBox" styleClass="loginCard" maxWidth="480" spacing="18">
+                <VBox spacing="6">
+                    <Label text="Welcome back 👋" id="cardTitle"/>
+                    <Label text="Sign in to continue your journey" id="cardSubtitle"/>
+                </VBox>
 
                 <VBox spacing="10">
                     <Label text="Email" styleClass="fieldLabel"/>
@@ -42,7 +46,7 @@
                 </VBox>
 
                 <!-- Login mode selection: User (default) or Admin -->
-                <HBox spacing="12" alignment="CENTER_LEFT">
+                <HBox spacing="12" alignment="CENTER_LEFT" styleClass="roleRow">
                     <fx:define>
                         <ToggleGroup fx:id="roleToggle"/>
                     </fx:define>
@@ -63,11 +67,11 @@
                     <Hyperlink fx:id="forgotLink" text="Forgot password?" onAction="#onForgotPassword"/>
                 </HBox>
 
-                <Button text="Sign in" id="primaryBtn" onAction="#onLogin"/>
+                <Button text="Sign in" id="primaryBtn" onAction="#onLogin" maxWidth="Infinity"/>
 
                 <HBox alignment="CENTER" spacing="6">
-                    <Label text="New here?"/>
-                    <Hyperlink text="Create account" onAction="#goToRegister"/>
+                    <Label text="New here?" />
+                    <Hyperlink text="Create account" onAction="#goToRegister" styleClass="createAccount"/>
                 </HBox>
 
                 <Label fx:id="statusLabel" id="statusLabel" wrapText="true"/>

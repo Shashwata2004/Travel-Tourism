@@ -3,9 +3,14 @@ package com.travel.loginregistration.adminsocket;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travel.loginregistration.model.AdminUser;
 import com.travel.loginregistration.model.TravelPackage;
+import com.travel.loginregistration.model.PackageItinerary;
 import com.travel.loginregistration.repository.AdminUserRepository;
 import com.travel.loginregistration.repository.TravelPackageRepository;
+import com.travel.loginregistration.repository.PackageItineraryRepository;
 import jakarta.annotation.PostConstruct;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -26,14 +31,20 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AdminSocketServer {
     private final AdminUserRepository adminRepo;
     private final TravelPackageRepository pkgRepo;
+    private final PackageItineraryRepository itineraryRepo;
     private final BCryptPasswordEncoder encoder;
+    private final TransactionTemplate txTemplate;
     private final ObjectMapper mapper = new ObjectMapper();
     private final Map<String, UUID> sessions = new ConcurrentHashMap<>();
 
-    public AdminSocketServer(AdminUserRepository adminRepo, TravelPackageRepository pkgRepo, BCryptPasswordEncoder encoder) {
+    public AdminSocketServer(AdminUserRepository adminRepo, TravelPackageRepository pkgRepo,
+                             PackageItineraryRepository itineraryRepo, BCryptPasswordEncoder encoder,
+                             PlatformTransactionManager txManager) {
         this.adminRepo = adminRepo;
         this.pkgRepo = pkgRepo;
+        this.itineraryRepo = itineraryRepo;
         this.encoder = encoder;
+        this.txTemplate = new TransactionTemplate(txManager);
     }
 
     // Starts the socket server thread as soon as Spring finishes wiring this bean.
@@ -75,15 +86,15 @@ public class AdminSocketServer {
                 }
                 case "CREATE" -> {
                     if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
-                    res = createPackage(req);
+                    res = txTemplate.execute(status -> createPackage(req));
                 }
                 case "UPDATE" -> {
                     if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
-                    res = updatePackage(req);
+                    res = txTemplate.execute(status -> updatePackage(req));
                 }
                 case "DELETE" -> {
                     if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
-                    res = deletePackage(req);
+                    res = txTemplate.execute(status -> deletePackage(req));
                 }
                 default -> res = err("UNKNOWN_TYPE");
             }
@@ -91,7 +102,7 @@ public class AdminSocketServer {
             bw.write("\n");
             bw.flush();
         } catch (Exception e) {
-            // ignore per-connection errors
+            System.err.println("[AdminSocket] Error handling request: " + e.getMessage());
         } finally {
             try { s.close(); } catch (IOException ignore) {}
         }
@@ -130,17 +141,20 @@ public class AdminSocketServer {
 
     // Creates a new TravelPackage entity from the payload.
     // A payload is the actual data being sent in a request or response. 
+    @Transactional
     private Map<String, Object> createPackage(Map<String, Object> req) {
         Map<String, Object> item = (Map<String, Object>) req.get("item");
         TravelPackage p = new TravelPackage();
         apply(p, item);
         pkgRepo.save(p);
+        applyItinerary(p, item);
         Map<String, Object> ok = ok();
         ok.put("id", p.getId());
         return ok;
     }
 
     // Applies the payload to an existing TravelPackage and saves it.
+    @Transactional
     private Map<String, Object> updatePackage(Map<String, Object> req) {
         String idStr = (String) req.get("id");
         if (idStr == null) return err("MISSING_ID");
@@ -150,10 +164,12 @@ public class AdminSocketServer {
         Map<String, Object> item = (Map<String, Object>) req.get("item");
         apply(p, item);
         pkgRepo.save(p);
+        applyItinerary(p, item);
         return ok();
     }
 
     // Deletes the package with the provided id (if it exists).
+    @Transactional
     private Map<String, Object> deletePackage(Map<String, Object> req) {
         String idStr = (String) req.get("id");
         if (idStr == null) return err("MISSING_ID");
@@ -170,10 +186,46 @@ public class AdminSocketServer {
         if (item.containsKey("basePrice")) p.setBasePrice(toBigDecimal(item.get("basePrice")));
         if (item.containsKey("destImageUrl")) p.setDestImageUrl(str(item.get("destImageUrl")));
         if (item.containsKey("hotelImageUrl")) p.setHotelImageUrl(str(item.get("hotelImageUrl")));
+        if (item.containsKey("image1")) p.setImage1(str(item.get("image1")));
+        if (item.containsKey("image2")) p.setImage2(str(item.get("image2")));
+        if (item.containsKey("image3")) p.setImage3(str(item.get("image3")));
+        if (item.containsKey("image4")) p.setImage4(str(item.get("image4")));
+        if (item.containsKey("image5")) p.setImage5(str(item.get("image5")));
+        // Default destination/hotel images from first/last if not explicitly provided
+        if (!item.containsKey("destImageUrl") && p.getDestImageUrl() == null) p.setDestImageUrl(p.getImage1());
+        if (!item.containsKey("hotelImageUrl") && p.getHotelImageUrl() == null) p.setHotelImageUrl(p.getImage5());
+        if (item.containsKey("destImageUrl")) p.setDestImageUrl(str(item.get("destImageUrl")));
+        if (item.containsKey("hotelImageUrl")) p.setHotelImageUrl(str(item.get("hotelImageUrl")));
         if (item.containsKey("overview")) p.setOverview(str(item.get("overview")));
         if (item.containsKey("locationPoints")) p.setLocationPoints(str(item.get("locationPoints")));
         if (item.containsKey("timing")) p.setTiming(str(item.get("timing")));
+        if (item.containsKey("groupSize")) p.setGroupSize(str(item.get("groupSize")));
         if (item.containsKey("active")) p.setActive(Boolean.TRUE.equals(item.get("active")) || "true".equalsIgnoreCase(str(item.get("active"))));
+    }
+
+    // Handles itineraries: clears old rows for this package and inserts the new list if provided.
+    private void applyItinerary(TravelPackage p, Map<String, Object> item) {
+        if (p == null || item == null) return;
+        Object rawList = item.get("itinerary");
+        if (!(rawList instanceof List<?> list)) return;
+        itineraryRepo.deleteByTravelPackageId(p.getId());
+        List<PackageItinerary> saved = new ArrayList<>();
+        for (Object o : list) {
+            if (!(o instanceof Map<?,?> m)) continue;
+            PackageItinerary it = new PackageItinerary();
+            it.setTravelPackage(p);
+            Object dn = m.get("dayNumber");
+            int day = 0;
+            if (dn instanceof Number n) { day = n.intValue(); }
+            else {
+                try { day = Integer.parseInt(String.valueOf(dn)); } catch (Exception ignore) {}
+            }
+            it.setDayNumber(day <= 0 ? 1 : day);
+            it.setTitle(str(m.get("title")));
+            it.setSubtitle(str(m.get("subtitle")));
+            saved.add(it);
+        }
+        if (!saved.isEmpty()) itineraryRepo.saveAll(saved);
     }
 
     // Helper to convert any object to String while tolerating nulls.

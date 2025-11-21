@@ -1,44 +1,226 @@
-/* Shapes the packages list view with airy gradients, glassy navbar buttons,
-   and card tweaks so each destination preview looks consistent.
-   - Uses light glass panels to hint at travel posters
-   - Adds subtle drop shadows so package cards feel clickable */
-/* Packages page theming */
-.packagesPage {
-    -fx-background-color: linear-gradient(to bottom, #e6f1ff, #f7fbff);
+/* New packages screen styling matching the provided design */
+.packagesRoot {
+    -fx-background-color: linear-gradient(to bottom right, #f3f6ff, #e9f2ff);
 }
 
-/* Navbar override: light blue glass */
-.packagesPage #navbar {
-    -fx-background-color: linear-gradient(to right, rgba(14,165,233,0.18), rgba(99,102,241,0.18));
-    -fx-background-radius: 0 0 16 16;
-    -fx-effect: dropshadow(gaussian, rgba(14,165,233,0.20), 20, 0.25, 0, 4);
+.blobLayer { -fx-opacity: 1; }
+.blobLayer .circle { -fx-opacity: 0.35; }
+.blobA { -fx-fill: rgba(99,102,241,0.28); -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.35), 120, 0.8, 0, 0); }
+.blobB { -fx-fill: rgba(14,165,233,0.26); -fx-effect: dropshadow(gaussian, rgba(14,165,233,0.35), 120, 0.8, 0, 0); }
+.blobC { -fx-fill: rgba(79,70,229,0.22); -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.35), 120, 0.8, 0, 0); }
+
+.packagesContent {
+    -fx-padding: 16 18 24 18;
 }
 
-.packagesPage #navbar .button {
-    -fx-background-color: linear-gradient(to bottom, rgba(255,255,255,0.90), rgba(245,245,255,0.90));
-    -fx-border-color: rgba(99,102,241,0.25);
+.pkgNavbar {
+    -fx-background-color: rgba(255,255,255,0.85);
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: rgba(255,255,255,0.3);
+    -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.12), 26, 0.3, 0, 8);
 }
-.packagesPage #navbar .button:hover {
-    -fx-background-color: rgba(255,255,255,0.98);
+.brandMark {
+    -fx-min-width: 42;
+    -fx-min-height: 42;
+    -fx-max-width: 42;
+    -fx-max-height: 42;
+    -fx-alignment: center;
+    -fx-background-color: linear-gradient(to bottom right, #4f46e5, #2563eb);
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.32), 18, 0.28, 0, 6);
 }
-
-/* Section title accent */
-.packagesPage .sectionTitle {
+.brandIcon {
+    -fx-font-size: 18px;
+    -fx-text-fill: white;
+}
+.brandTitle {
+    -fx-font-size: 16px;
+    -fx-font-weight: 800;
     -fx-text-fill: #0f172a;
-    -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.18), 18, 0.2, 0, 2);
+}
+.brandSubtitle {
+    -fx-text-fill: #6366f1;
+    -fx-font-size: 12px;
 }
 
-/* Card tweaks for packages */
-.packagesPage .pkg-card {
-    -fx-background-color: linear-gradient(to bottom right, #ffffff, #f3f8ff);
-    -fx-border-color: rgba(99,102,241,0.10);
-    -fx-border-radius: 16;
-}
-
-.packagesPage .image-placeholder {
-    -fx-background-color: linear-gradient(to bottom right, #e0e7ff, #dbeafe);
-}
-
-.packagesPage .button {
+.navItem {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-text-fill: #334155;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
     -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-padding: 8 14 8 14;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
+.navItem:hover {
+    -fx-text-fill: #111827;
+    -fx-background-color: rgba(255,255,255,0.8);
+}
+.navItem:focused, .navItem:armed {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-effect: none;
+    -fx-text-fill: #334155;
+}
+.navItem:disabled {
+    -fx-opacity: 1;
+    -fx-text-fill: #334155;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.activeNav, .navItem.activeNav {
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to right, #4f46e5, #2563eb);
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.32), 18, 0.25, 0, 6);
+}
+.navItem.activeNav:hover,
+.navItem.activeNav:focused,
+.navItem.activeNav:armed {
+    -fx-background-color: linear-gradient(to right, #4f46e5, #2563eb);
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.32), 18, 0.25, 0, 6);
+}
+.navItem:default,
+.navItem:default:hover,
+.navItem:default:focused,
+.navItem:default:armed,
+.navItem:cancel,
+.navItem:cancel:hover,
+.navItem:cancel:focused,
+.navItem:cancel:armed,
+.navItem:defaulted,
+.navItem:defaulted:hover,
+.navItem:defaulted:focused,
+.navItem:defaulted:armed {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-effect: none;
+    -fx-text-fill: #334155;
+}
+
+.logoutNav {
+    -fx-background-radius: 14;
+    -fx-background-color: linear-gradient(to right, #4f46e5, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-padding: 8 18 8 18;
+    -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.32), 18, 0.25, 0, 6);
+}
+.logoutNav:hover {
+    -fx-translate-y: -1;
+}
+.logoutNav:pressed {
+    -fx-translate-y: 0;
+    -fx-opacity: 0.95;
+}
+
+.pkgScroll {
+    -fx-background-color: transparent;
+}
+.pkgScroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.headerBlock .sectionTitle {
+    -fx-text-fill: #0f172a;
+    -fx-font-size: 22px;
+    -fx-font-weight: 800;
+}
+.headerBlock .sectionSubtitle {
+    -fx-text-fill: #475569;
+    -fx-font-size: 14px;
+}
+.accentBar {
+    -fx-min-width: 4;
+    -fx-max-width: 4;
+    -fx-min-height: 24;
+    -fx-background-color: linear-gradient(to bottom, #4f46e5, #2563eb);
+    -fx-background-radius: 4;
+}
+
+.cardsGrid {
+    -fx-padding: 4 0 40 4;
+}
+
+.pkg-card {
+    -fx-background-color: white;
+    -fx-background-radius: 24;
+    -fx-border-radius: 24;
+    -fx-border-color: rgba(255,255,255,0.35);
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.12), 24, 0.25, 0, 10);
+    -fx-padding: 0;
+}
+.pkg-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.24), 28, 0.3, 0, 10);
+}
+
+.pkg-card .imageWrap {
+    -fx-background-color: transparent;
+    -fx-background-radius: 22 22 0 0;
+    -fx-min-height: 260;
+    -fx-max-height: 260;
+    -fx-padding: 0;
+}
+.pkg-card .imageWrap .imageView {
+    -fx-background-radius: 22 22 0 0;
+    -fx-opacity: 1;
+}
+.pkg-card .badge {
+    -fx-background-color: rgba(255,255,255,0.94);
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-padding: 4 10 4 10;
+    -fx-text-fill: #0f172a;
+    -fx-font-weight: 600;
+    -fx-font-size: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0.2, 0, 2);
+}
+.pkg-card .cardBody {
+    -fx-padding: 14 16 16 16;
+    -fx-background-radius: 0 0 22 22;
+    -fx-background-color: white;
+}
+.pkg-card .cardTitle {
+    -fx-font-size: 16px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f172a;
+}
+.pkg-card .cardMeta {
+    -fx-text-fill: #475569;
+    -fx-font-size: 12px;
+}
+.pkg-card .metaRow {
+    -fx-spacing: 14;
+    -fx-alignment: CENTER_LEFT;
+}
+.pkg-card .metaRow .metaItem {
+    -fx-spacing: 6;
+    -fx-alignment: CENTER_LEFT;
+}
+.pkg-card .priceRow {
+    -fx-text-fill: #0f172a;
+    -fx-font-weight: 700;
+}
+.pkg-card .priceHint {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 12px;
+}
+.pkg-card .primaryBtn {
+    -fx-background-radius: 14;
+    -fx-background-color: linear-gradient(to right, #4f46e5, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-padding: 10 12 10 12;
+    -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.26), 18, 0.25, 0, 6);
+}
+.pkg-card .primaryBtn:hover { -fx-translate-y: -1; }
+.pkg-card .primaryBtn:pressed { -fx-translate-y: 0; -fx-opacity: 0.95; }

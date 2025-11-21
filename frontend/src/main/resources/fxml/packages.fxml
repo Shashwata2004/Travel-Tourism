@@ -1,42 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- Sets up the packages screen layout with a shared navbar and scrollable
-     list container where the controller injects package cards.
-     - ScrollPane keeps cards centered no matter how many load
-     - Uses the same nav buttons as other pages for easy muscle memory -->
+<!-- Reimagined packages page with animated background blobs, glassy navbar,
+     and floating travel cards. Controllers inject cards into the FlowPane. -->
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.shape.Circle?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.travel.frontend.controller.PackagesController"
-            stylesheets="@/css/login.css,@/css/packages.css"
-            styleClass="packagesPage">
-    <top>
-        <HBox spacing="12" alignment="CENTER_LEFT" id="navbar">
-            <padding><Insets topRightBottomLeft="10"/></padding>
-            <Label text="Travel &amp; Tourism — Packages" id="cardTitle"/>
-            <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Personal Info" onAction="#goPersonal"/>
-            <Button text="Packages" disable="true" focusTraversable="false"/>
-            <Button text="Destinations" onAction="#goDestinations"/>
-            <Button text="History" onAction="#goHistory"/>
-            <Button text="About" onAction="#goAbout"/>
-            <Button text="Logout" onAction="#onLogout"/>
-        </HBox>
-    </top>
-    <center>
-        <VBox spacing="12">
-            <padding><Insets topRightBottomLeft="10"/></padding>
-            <Label text="Featured Packages" styleClass="sectionTitle"/>
-            <ScrollPane fitToWidth="true">
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.travel.frontend.controller.PackagesController"
+           stylesheets="@/css/login.css,@/css/packages.css"
+           styleClass="packagesRoot">
+    <!-- Animated blurred blobs -->
+    <children>
+        <Pane fx:id="blobLayer" styleClass="blobLayer">
+            <children>
+                <Circle fx:id="blobA" centerX="160" centerY="160" radius="180" styleClass="blobA"/>
+                <Circle fx:id="blobB" centerX="840" centerY="520" radius="200" styleClass="blobB"/>
+                <Circle fx:id="blobC" centerX="1180" centerY="240" radius="180" styleClass="blobC"/>
+            </children>
+        </Pane>
+
+        <VBox spacing="18" fillWidth="true" styleClass="packagesContent">
+            <!-- Navbar -->
+            <fx:include source="navbar.fxml" fx:id="navbar"/>
+
+            <ScrollPane fitToWidth="true" vbarPolicy="NEVER" hbarPolicy="NEVER" styleClass="pkgScroll">
                 <content>
-                    <VBox fx:id="listContainer" spacing="14" alignment="CENTER">
-                        <padding><Insets topRightBottomLeft="10"/></padding>
+                    <VBox spacing="18" alignment="TOP_LEFT">
+                        <VBox spacing="6" styleClass="headerBlock">
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Pane styleClass="accentBar"/>
+                                <Label text="Featured Packages" styleClass="sectionTitle"/>
+                            </HBox>
+                            <Label text="Discover breathtaking destinations and create unforgettable memories" styleClass="sectionSubtitle"/>
+                        </VBox>
+
+                        <FlowPane fx:id="listContainer"
+                                  hgap="18" vgap="18"
+                                  prefWrapLength="1200"
+                                  alignment="TOP_LEFT"
+                                  styleClass="cardsGrid"/>
                     </VBox>
                 </content>
             </ScrollPane>
         </VBox>
-    </center>
-</BorderPane>
+    </children>
+</StackPane>

@@ -1,72 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- Lays out the modal window that shows large package images, summary labels,
-     and tabs for overview/location/timing, plus a “Book Now” button.
-     - Dual Regions mimic hero photos when real images are missing
-     - TabPane keeps long descriptions organized without overwhelming the user -->
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.travel.frontend.controller.PackageDetailsController"
-            stylesheets="@/css/login.css">
-    <top>
-        <HBox spacing="10" alignment="CENTER_LEFT">
-            <padding><Insets topRightBottomLeft="10"/></padding>
-            <Label text="Package Details" id="cardTitle"/>
-            <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Book Now" onAction="#onBookNow"/>
-        </HBox>
-    </top>
-    <center>
-        <VBox spacing="12">
-            <padding><Insets topRightBottomLeft="10"/></padding>
-            <HBox spacing="12">
-                <StackPane prefWidth="380" prefHeight="220">
-                    <ImageView fx:id="destImageView" fitWidth="380" fitHeight="220" preserveRatio="true" smooth="true"/>
-                </StackPane>
-                <StackPane prefWidth="380" prefHeight="220">
-                    <ImageView fx:id="hotelImageView" fitWidth="380" fitHeight="220" preserveRatio="true" smooth="true"/>
-                </StackPane>
-            </HBox>
-            <Label fx:id="nameLabel" id="cardTitle"/>
-            <Label fx:id="locationLabel" id="cardSubtitle"/>
-            <Label fx:id="priceLabel" />
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.travel.frontend.controller.PackageDetailsController"
+           fx:id="detailRoot"
+           stylesheets="@/css/login.css,@/css/package_details.css"
+           styleClass="detailRoot">
+    <children>
+        <Pane fx:id="blobLayer" styleClass="blobLayer">
+            <children>
+                <Circle centerX="180" centerY="120" radius="180" styleClass="blobA"/>
+                <Circle centerX="680" centerY="520" radius="200" styleClass="blobB"/>
+                <Circle centerX="1100" centerY="560" radius="350" styleClass="blobC"/>
+            </children>
+        </Pane>
+        <Pane styleClass="gridOverlay"/>
+        <Pane fx:id="particleLayer" />
 
-            <TabPane>
-                <tabs>
-                    <Tab text="Overview" closable="false">
-                        <content>
-                            <ScrollPane fitToWidth="true">
-                                <content>
-                                    <Label fx:id="overviewText" wrapText="true"/>
-                                </content>
-                            </ScrollPane>
-                        </content>
-                    </Tab>
-                    <Tab text="Location" closable="false">
-                        <content>
-                            <ScrollPane fitToWidth="true">
-                                <content>
-                                    <Label fx:id="locationPointsText" wrapText="true"/>
-                                </content>
-                            </ScrollPane>
-                        </content>
-                    </Tab>
-                    <Tab text="Timing" closable="false">
-                        <content>
-                            <ScrollPane fitToWidth="true">
-                                <content>
-                                    <Label fx:id="timingText" wrapText="true"/>
-                                </content>
-                            </ScrollPane>
-                        </content>
-                    </Tab>
-                </tabs>
-            </TabPane>
-        </VBox>
-    </center>
-</BorderPane>
+        <BorderPane fx:id="detailShell" styleClass="detailShell">
+            <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+            <top>
+                <HBox fx:id="topBar" spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Package Details" styleClass="detailTitle"/>
+                </HBox>
+            </top>
+            <center>
+                <ScrollPane fitToWidth="true" fitToHeight="false" styleClass="pageScroll">
+                    <content>
+                        <HBox spacing="18" alignment="TOP_LEFT">
+                            <VBox fx:id="heroColumn" spacing="16" alignment="TOP_LEFT" maxWidth="720" HBox.hgrow="ALWAYS" styleClass="heroColumn">
+                                <StackPane fx:id="heroContainer" prefWidth="740" prefHeight="460" styleClass="detailHero">
+                                    <ImageView fx:id="mainImage" fitWidth="740" fitHeight="460" preserveRatio="false" smooth="true"/>
+                                </StackPane>
+                                <HBox spacing="10">
+                                    <StackPane styleClass="thumbWrap">
+                                        <ImageView fx:id="thumbMain" fitWidth="120" fitHeight="80" preserveRatio="true" smooth="true"
+                                                   onMouseClicked="#showMain"/>
+                                    </StackPane>
+                                    <StackPane styleClass="thumbWrap">
+                                        <ImageView fx:id="thumbAlt" fitWidth="120" fitHeight="80" preserveRatio="true" smooth="true"
+                                                   onMouseClicked="#showAlt"/>
+                                    </StackPane>
+                                    <StackPane styleClass="thumbWrap">
+                                        <ImageView fx:id="thumb3" fitWidth="120" fitHeight="80" preserveRatio="true" smooth="true"
+                                                   onMouseClicked="#show3"/>
+                                    </StackPane>
+                                    <StackPane styleClass="thumbWrap">
+                                        <ImageView fx:id="thumb4" fitWidth="120" fitHeight="80" preserveRatio="true" smooth="true"
+                                                   onMouseClicked="#show4"/>
+                                    </StackPane>
+                                    <StackPane styleClass="thumbWrap">
+                                        <ImageView fx:id="thumb5" fitWidth="120" fitHeight="80" preserveRatio="true" smooth="true"
+                                                   onMouseClicked="#show5"/>
+                                    </StackPane>
+                                </HBox>
+                                <TabPane styleClass="detailTabs"
+                                         HBox.hgrow="ALWAYS"
+                                         maxWidth="Infinity">
+                                    <tabs>
+                                        <Tab text="Overview" closable="false">
+                                            <content>
+                                                <Label fx:id="overviewText"
+                                                       wrapText="true"
+                                                       textOverrun="CLIP"
+                                                       styleClass="detailBodyText"
+                                                       maxWidth="Infinity"
+                                                       prefWidth="760"/>
+                                            </content>
+                                        </Tab>
+                                        <Tab text="Location" closable="false">
+                                            <content>
+                                                <Label fx:id="locationPointsText"
+                                                       wrapText="true"
+                                                       textOverrun="CLIP"
+                                                       styleClass="detailBodyText"
+                                                       maxWidth="Infinity"
+                                                       prefWidth="760"/>
+                                            </content>
+                                        </Tab>
+                                        <Tab text="Timing" closable="false">
+                                            <content>
+                                                <VBox fx:id="timingContainer" spacing="10" styleClass="itineraryList"/>
+                                            </content>
+                                        </Tab>
+                                    </tabs>
+                                </TabPane>
+                            </VBox>
+
+                            <VBox fx:id="infoCardBox" spacing="14" prefWidth="420" maxWidth="450" styleClass="infoCard">
+                                <Label text="Premium Experience" styleClass="infoBadge"/>
+                                <Label fx:id="nameLabel" styleClass="infoName"/>
+                                <HBox spacing="6" alignment="CENTER_LEFT">
+                                    <Label text="📍" />
+                                    <Label fx:id="locationLabel" styleClass="infoLocation"/>
+                                </HBox>
+                                <VBox fx:id="pricePanel" spacing="4" styleClass="pricePanel">
+                                    <Label text="Starting From" styleClass="priceHint"/>
+                                    <Label fx:id="priceLabel" styleClass="priceBig" wrapText="true"/>
+                                    <Label text="per person" styleClass="priceHint"/>
+                                </VBox>
+                                <VBox spacing="10">
+                                    <HBox spacing="8" alignment="CENTER_LEFT" styleClass="infoRow">
+                                        <Label text="⏲" styleClass="infoIcon"/>
+                                        <Label text="Duration" styleClass="infoLabel"/>
+                                        <Pane HBox.hgrow="ALWAYS"/>
+                                        <Label fx:id="durationLabel" styleClass="infoValue"/>
+                                    </HBox>
+                                    <HBox spacing="8" alignment="CENTER_LEFT" styleClass="infoRow">
+                                        <Label text="👥" styleClass="infoIcon"/>
+                    <Label text="Group Size" styleClass="infoLabel"/>
+                    <Pane HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="groupLabel" styleClass="infoValue"/>
+                                    </HBox>
+                                </VBox>
+                                <Button text="Book Now →" onAction="#onBookNow" styleClass="infoBook"/>
+                            </VBox>
+                        </HBox>
+                    </content>
+                </ScrollPane>
+            </center>
+        </BorderPane>
+    </children>
+</StackPane>

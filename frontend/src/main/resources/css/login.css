@@ -1,9 +1,4 @@
-/* Provides the shared visual language—fonts, gradients, cards, nav bar, and
-   responsive tweaks—for most screens including login, register, and package
-   lists.
-   - Sets the typography and colors that tie every view together
-   - Offers both light and dark card treatments to match each scene */
-/* --- Global --- */
+
 * {
     -fx-font-family: "Inter", "Segoe UI", system-ui, sans-serif;
 }
@@ -12,6 +7,117 @@
 /* Most screens use this soft gradient instead of plain white. */
 .root {
     -fx-background-color: linear-gradient(to bottom, #f1f5f9, #ffffff);
+}
+
+.loginRoot {
+    -fx-background-color: linear-gradient(to bottom right, #eef2ff, #e0f2fe, #f8fafc);
+}
+.loginRoot .formHost {
+    -fx-padding: 46 56 46 56;
+    -fx-alignment: center;
+}
+.loginRoot #brandPane {
+    -fx-min-width: 420;
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/sajek.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+.loginRoot .brandScrim {
+    -fx-background-color: transparent;
+}
+.loginRoot .brandCopy {
+    -fx-padding: 22;
+}
+.loginRoot #brandTitle {
+    -fx-font-size: 30px;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 8, 0.3, 0, 3);
+}
+.loginRoot #brandSubtitle {
+    -fx-font-size: 15px;
+    -fx-text-fill: rgba(255,255,255,0.92);
+    -fx-max-width: 320px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 6, 0.25, 0, 2);
+}
+
+.loginRoot .loginCard, .loginRoot #card {
+    -fx-background-color: rgba(255,255,255,0.90);
+    -fx-background-radius: 28;
+    -fx-border-radius: 28;
+    -fx-border-color: rgba(255,255,255,0.35);
+    -fx-border-insets: 0;
+    -fx-border-width: 1;
+    -fx-padding: 26 28 26 28;
+    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.22), 28, 0.25, 0, 16);
+}
+.loginRoot #cardTitle {
+    -fx-font-size: 24px;
+    -fx-text-fill: linear-gradient(to right, #4f46e5, #2563eb);
+}
+.loginRoot #cardSubtitle {
+    -fx-text-fill: #475569;
+}
+
+.loginRoot .text-field, .loginRoot .password-field {
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-background-color: rgba(255,255,255,0.6);
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 2;
+    -fx-padding: 12 14 12 14;
+    -fx-text-fill: #0f172a;
+    -fx-prompt-text-fill: #94a3b8;
+}
+.loginRoot .text-field:focused, .loginRoot .password-field:focused {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #6366f1;
+    -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.25), 12, 0.3, 0, 4);
+}
+
+.loginRoot #primaryBtn {
+    -fx-padding: 16 16 16 16;
+    -fx-background-radius: 16;
+    -fx-background-color: linear-gradient(to right, #4f46e5, #2563eb);
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.35), 22, 0.3, 0, 6);
+    -fx-pref-width: Infinity;
+    -fx-max-width: Infinity;
+}
+.loginRoot #primaryBtn:hover { -fx-translate-y: -1; }
+.loginRoot #primaryBtn:pressed { -fx-translate-y: 0; -fx-opacity: 0.92; }
+
+.loginRoot .roleRow .radio-button {
+    -fx-text-fill: #475569;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}
+.loginRoot .roleRow .radio-button > .radio {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 50%;
+    -fx-padding: 3;
+}
+.loginRoot .roleRow .radio-button:selected > .radio {
+    -fx-border-color: #6366f1;
+}
+.loginRoot .roleRow .radio-button:selected > .radio > .dot {
+    -fx-background-color: #4f46e5;
+}
+
+.loginRoot .hyperlink {
+    -fx-text-fill: #4f46e5;
+    -fx-font-weight: 600;
+    -fx-border-color: transparent;
+}
+.loginRoot .hyperlink:hover { -fx-text-fill: #1d4ed8; }
+
+/* Register link emphasis */
+.loginRoot .createAccount {
+    -fx-font-size: 16px;
+    -fx-font-weight: 800;
 }
 
 /* === LAYOUT PANES === */

@@ -1,33 +1,80 @@
-/* Styles the bright hero banner that greets the user with bold type, subtle
-   shadows, and buttons that float over the gradient background.
-   - Pairs deep blues and purples for an uplifting first look
-   - Keeps buttons translucent so the gradient shines through */
-/* Welcome hero screen styling */
-.hero {
-    -fx-background-color: linear-gradient(to bottom right, #0ea5e9, #6366f1);
+/* Welcome screen: matches the bright, airy hero from the provided reference.
+   Gradient sky, floating dots, bold headline, and soft glass buttons. */
+
+.heroRoot {
+    -fx-background-color: linear-gradient(to bottom right, #1cb5e0, #6687ff);
+    -fx-padding: 32 24 32 24;
+}
+
+.floatingDots .dot {
+    -fx-fill: rgba(255,255,255,0.35);
 }
 
 .heroTitle {
     -fx-text-fill: white;
-    -fx-font-size: 42px;
+    -fx-font-size: 54px;
     -fx-font-weight: 900;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 18, 0.2, 0, 6);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 18, 0.25, 0, 6);
+}
+
+.heroName {
+    -fx-font-size: 54px;
+    -fx-font-weight: 900;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 18, 0.25, 0, 6);
+}
+.heroTitle.heroName {
+    -fx-font-size: 54px;
+    -fx-font-weight: 900;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 18, 0.25, 0, 6);
+}
+#usernameLabel, .userName {
+    -fx-font-size: 54px;
+    -fx-font-weight: 900;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 18, 0.25, 0, 6);
 }
 
 .heroSubtitle {
-    -fx-text-fill: rgba(255,255,255,0.9);
-    -fx-font-size: 16px;
+    -fx-text-fill: rgba(255,255,255,0.92);
+    -fx-font-size: 18px;
+    -fx-font-weight: 500;
 }
 
-.hero .button {
-    -fx-background-radius: 12;
-    -fx-background-color: rgba(255,255,255,0.18);
+.heroAction {
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-background-color: rgba(255,255,255,0.12);
+    -fx-border-color: rgba(255,255,255,0.45);
     -fx-text-fill: white;
     -fx-font-weight: 700;
-    -fx-padding: 10 14 10 14;
-    -fx-border-color: rgba(255,255,255,0.35);
-    -fx-border-radius: 12;
+    -fx-padding: 14 18 14 18;
+    -fx-min-width: 150px;
 }
-.hero .button:hover {
-    -fx-background-color: rgba(255,255,255,0.26);
+.heroAction:hover {
+    -fx-background-color: rgba(255,255,255,0.18);
+}
+.heroAction:pressed {
+    -fx-background-color: rgba(255,255,255,0.22);
+}
+
+.heroIcon {
+    -fx-font-size: 22px;
+    -fx-text-fill: rgba(255,255,255,0.9);
+}
+.heroIconWrap {
+    -fx-min-width: 32;
+    -fx-min-height: 32;
+    -fx-alignment: center;
+}
+.pinIcon {
+    -fx-fill: transparent;
+    -fx-stroke: rgba(255,255,255,0.9);
+    -fx-stroke-width: 2;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+.pinCenter {
+    -fx-fill: rgba(255,255,255,0.9);
 }

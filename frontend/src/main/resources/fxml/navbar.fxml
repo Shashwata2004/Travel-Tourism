@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.travel.frontend.controller.NavbarController"
+      fx:id="navbarRoot"
+      spacing="12"
+      alignment="CENTER_LEFT"
+      styleClass="pkgNavbar">
+    <padding><Insets top="14" right="18" bottom="14" left="18"/></padding>
+
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="brand">
+        <StackPane styleClass="brandMark">
+            <Label text="✈" styleClass="brandIcon"/>
+        </StackPane>
+        <VBox spacing="2">
+            <Label text="Travel &amp; Tourism" styleClass="brandTitle"/>
+            <Label fx:id="brandSubtitle" text="Packages" styleClass="brandSubtitle"/>
+        </VBox>
+    </HBox>
+    <Pane HBox.hgrow="ALWAYS"/>
+
+    <HBox spacing="18" alignment="CENTER" styleClass="navActions" HBox.hgrow="ALWAYS">
+        <Pane HBox.hgrow="ALWAYS"/>
+        <HBox spacing="10" alignment="CENTER">
+            <Button fx:id="personalBtn" text="Personal Info" styleClass="navItem"/>
+            <Button fx:id="packagesBtn" text="Packages" styleClass="navItem"/>
+            <Button fx:id="destinationsBtn" text="Destinations" styleClass="navItem"/>
+            <Button fx:id="historyBtn" text="History" styleClass="navItem"/>
+            <Button fx:id="aboutBtn" text="About" styleClass="navItem"/>
+        </HBox>
+        <Pane HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <Button fx:id="logoutBtn"
+            text="Logout"
+            styleClass="logoutNav"
+            defaultButton="false"
+            cancelButton="false"
+            focusTraversable="false"/>
+</HBox>

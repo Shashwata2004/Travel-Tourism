@@ -47,23 +47,38 @@
                         <Label text="Base Price" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                         <TextField fx:id="priceField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-                        <Label text="Dest Image URL" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                        <TextField fx:id="destImageField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                        <Label text="Image 1" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                        <TextField fx:id="image1Field" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
-                        <Label text="Hotel Image URL" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-                        <TextField fx:id="hotelImageField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                        <Label text="Image 2" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                        <TextField fx:id="image2Field" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
 
-                        <Label text="Overview" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-                        <TextArea fx:id="overviewArea" GridPane.rowIndex="5" GridPane.columnIndex="1" prefRowCount="3"/>
+                        <Label text="Image 3" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                        <TextField fx:id="image3Field" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
 
-                        <Label text="Location Points" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
-                        <TextArea fx:id="pointsArea" GridPane.rowIndex="6" GridPane.columnIndex="1" prefRowCount="3"/>
+                        <Label text="Image 4" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                        <TextField fx:id="image4Field" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
 
-                        <Label text="Timing" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
-                        <TextArea fx:id="timingArea" GridPane.rowIndex="7" GridPane.columnIndex="1" prefRowCount="2"/>
+                        <Label text="Image 5" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+                        <TextField fx:id="image5Field" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
 
-                        <Label text="Active" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
-                        <CheckBox fx:id="activeBox" GridPane.rowIndex="8" GridPane.columnIndex="1" selected="true"/>
+                        <Label text="Overview" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+                        <TextArea fx:id="overviewArea" GridPane.rowIndex="8" GridPane.columnIndex="1" prefRowCount="3"/>
+
+                        <Label text="Location Points" GridPane.rowIndex="9" GridPane.columnIndex="0"/>
+                        <TextArea fx:id="pointsArea" GridPane.rowIndex="9" GridPane.columnIndex="1" prefRowCount="3"/>
+
+                        <Label text="Timing" GridPane.rowIndex="10" GridPane.columnIndex="0"/>
+                        <TextArea fx:id="timingArea" GridPane.rowIndex="10" GridPane.columnIndex="1" prefRowCount="2"/>
+
+                        <Label text="Group Size" GridPane.rowIndex="11" GridPane.columnIndex="0"/>
+                        <TextField fx:id="groupSizeField" GridPane.rowIndex="11" GridPane.columnIndex="1"/>
+
+                        <Label text="Itinerary (one per line: day|title|subtitle)" GridPane.rowIndex="12" GridPane.columnIndex="0"/>
+                        <TextArea fx:id="itineraryArea" GridPane.rowIndex="12" GridPane.columnIndex="1" prefRowCount="3"/>
+
+                        <Label text="Active" GridPane.rowIndex="13" GridPane.columnIndex="0"/>
+                        <CheckBox fx:id="activeBox" GridPane.rowIndex="13" GridPane.columnIndex="1" selected="true"/>
                     </GridPane>
                     <Label fx:id="statusLabel" id="statusLabel"/>
                 </VBox>

@@ -1,14 +1,10 @@
 com\travel\frontend\cache\DataCache$SupplierX.class
-com\travel\frontend\controller\WelcomeController.class
 com\travel\frontend\net\ApiClient$ApiException.class
 com\travel\frontend\controller\LoginController.class
 com\travel\frontend\controller\RegisterController.class
 com\travel\frontend\cache\DataCache$Entry.class
 com\travel\frontend\ui\Navigator.class
-com\travel\frontend\controller\PackageDetailsController$PackageDetailsState.class
 com\travel\frontend\admin\AdminSocketClient$1.class
-com\travel\frontend\controller\PackageDetailsController$PackageDetailsVM.class
-com\travel\frontend\controller\PackageDetailsController.class
 com\travel\frontend\net\ApiClient.class
 com\travel\frontend\MainApp.class
 com\travel\frontend\admin\AdminSession.class
@@ -19,8 +15,6 @@ com\travel\frontend\cache\DataCache.class
 com\travel\frontend\controller\PackagesController$1.class
 com\travel\frontend\admin\AdminSocketClient$PackageVM.class
 com\travel\frontend\controller\HomeController.class
-com\travel\frontend\controller\PackagesController$PackageCard.class
-com\travel\frontend\controller\PackagesController.class
 com\travel\frontend\controller\AdminDashboardController.class
 com\travel\frontend\admin\AdminSocketClient$2.class
 com\travel\frontend\controller\BookingDialogController.class

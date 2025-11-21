@@ -11,8 +11,14 @@ import com.travel.frontend.cache.DataCache;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.animation.TranslateTransition;
+import javafx.animation.Interpolator;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
 public class HomeController {
+    @FXML private NavbarController navbarController;
     @FXML private TextField emailField;
     @FXML private TextField usernameField;
     @FXML private TextField fullNameField;
@@ -27,6 +33,10 @@ public class HomeController {
     @FXML private RadioButton genderFemale;
 
     @FXML private Label statusLabel;
+    @FXML private Pane blobLayer;
+    @FXML private Circle blobA;
+    @FXML private Circle blobB;
+    @FXML private Circle blobC;
 
     private final ApiClient api = ApiClient.get();
     private Profile profile;
@@ -35,7 +45,9 @@ public class HomeController {
        a background Thread and fills the form via Platform.runLater. */
     @FXML
     private void initialize() {
+        if (navbarController != null) navbarController.setActive(NavbarController.ActivePage.PERSONAL);
         statusLabel.setText("Loading profile...");
+        animateBlobs();
         new Thread(() -> {
             try {
                 Profile p = com.travel.frontend.cache.DataCache.getOrLoad("myProfile", api::getMyProfile);
@@ -117,5 +129,36 @@ public class HomeController {
 
     private static String nullToEmpty(String s) { return s == null ? "" : s; }
     private static String emptyToNull(String s) { return s == null || s.isBlank() ? null : s; }
+
+    private void animateBlobs() {
+        if (blobLayer == null) return;
+        if (blobA != null) {
+            TranslateTransition tt = new TranslateTransition(Duration.seconds(18), blobA);
+            tt.setFromX(0); tt.setToX(80);
+            tt.setFromY(0); tt.setToY(40);
+            tt.setAutoReverse(true);
+            tt.setCycleCount(TranslateTransition.INDEFINITE);
+            tt.setInterpolator(Interpolator.EASE_BOTH);
+            tt.play();
+        }
+        if (blobB != null) {
+            TranslateTransition tt = new TranslateTransition(Duration.seconds(16), blobB);
+            tt.setFromX(0); tt.setToX(-80);
+            tt.setFromY(0); tt.setToY(-50);
+            tt.setAutoReverse(true);
+            tt.setCycleCount(TranslateTransition.INDEFINITE);
+            tt.setInterpolator(Interpolator.EASE_BOTH);
+            tt.play();
+        }
+        if (blobC != null) {
+            TranslateTransition tt = new TranslateTransition(Duration.seconds(20), blobC);
+            tt.setFromX(0); tt.setToX(90);
+            tt.setFromY(0); tt.setToY(30);
+            tt.setAutoReverse(true);
+            tt.setCycleCount(TranslateTransition.INDEFINITE);
+            tt.setInterpolator(Interpolator.EASE_BOTH);
+            tt.play();
+        }
+    }
 }
 

@@ -1,96 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- Defines the personal information dashboard with a navbar and a card of
-     editable profile fields tied to the HomeController.
-     - Top bar mirrors other screens so navigation feels familiar
-     - GridPane splits labels and inputs cleanly for readability -->
+<!-- Defines the personal information dashboard with unified navbar, moving blobs, and profile form. -->
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.travel.frontend.controller.HomeController"
-            stylesheets="@/css/login.css,@/css/profile.css"
-            styleClass="profilePage">
-    <top>
-        <HBox spacing="12" alignment="CENTER_LEFT" id="navbar">
-            <padding><Insets topRightBottomLeft="10"/></padding>
-            <Label text="Travel &amp; Tourism" id="cardTitle"/>
-            <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Personal Info" disable="true" focusTraversable="false"/>
-            <Button text="Packages" onAction="#goPackages"/>
-            <Button text="Destinations" onAction="#goDestinations"/>
-            <Button text="History" onAction="#goHistory"/>
-            <Button text="About" onAction="#goAbout"/>
-            <Button text="Logout" onAction="#onLogout"/>
-        </HBox>
-    </top>
-    <center>
-        <StackPane>
-            <VBox spacing="16" maxWidth="820">
-                <VBox id="card" maxWidth="720" spacing="14">
-                <Label text="Personal Information" id="cardTitle"/>
-                <Label text="View and update your profile" id="cardSubtitle"/>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.travel.frontend.controller.HomeController"
+           stylesheets="@/css/login.css,@/css/profile.css,@/css/packages.css"
+           styleClass="profilePage packagesRoot">
+    <children>
+        <Pane fx:id="blobLayer" styleClass="blobLayer">
+            <children>
+                <Circle fx:id="blobA" centerX="160" centerY="160" radius="180" styleClass="blobA"/>
+                <Circle fx:id="blobB" centerX="840" centerY="520" radius="200" styleClass="blobB"/>
+                <Circle fx:id="blobC" centerX="1180" centerY="240" radius="180" styleClass="blobC"/>
+            </children>
+        </Pane>
 
-                <GridPane hgap="12" vgap="10">
-                    <columnConstraints>
-                        <ColumnConstraints percentWidth="30"/>
-                        <ColumnConstraints percentWidth="70"/>
-                    </columnConstraints>
+        <BorderPane>
+            <top>
+                <fx:include source="navbar.fxml" fx:id="navbar"/>
+            </top>
+            <center>
+                <StackPane>
+                    <VBox spacing="16" maxWidth="820">
+                        <VBox id="card" maxWidth="720" spacing="14">
+                        <Label text="Personal Information" id="cardTitle"/>
+                        <Label text="View and update your profile" id="cardSubtitle"/>
 
-                    <Label text="Email" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="fieldLabel"/>
-                    <TextField fx:id="emailField" GridPane.rowIndex="0" GridPane.columnIndex="1" editable="false"/>
+                        <GridPane hgap="12" vgap="10">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="30"/>
+                                <ColumnConstraints percentWidth="70"/>
+                            </columnConstraints>
 
-                    <Label text="Username" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="fieldLabel"/>
-                    <TextField fx:id="usernameField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                            <Label text="Email" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="fieldLabel"/>
+                            <TextField fx:id="emailField" GridPane.rowIndex="0" GridPane.columnIndex="1" editable="false"/>
 
-                    <Label text="Full Name" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="fieldLabel"/>
-                    <TextField fx:id="fullNameField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                            <Label text="Username" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="fieldLabel"/>
+                            <TextField fx:id="usernameField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-                    <Label text="ID Type" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="fieldLabel"/>
-                    <HBox spacing="10" GridPane.rowIndex="3" GridPane.columnIndex="1">
-                        <fx:define>
-                            <ToggleGroup fx:id="idTypeGroup" />
-                        </fx:define>
-                        <RadioButton fx:id="idNid" text="NID">
-                            <toggleGroup><fx:reference source="idTypeGroup"/></toggleGroup>
-                        </RadioButton>
-                        <RadioButton fx:id="idBirth" text="BIRTH_CERTIFICATE">
-                            <toggleGroup><fx:reference source="idTypeGroup"/></toggleGroup>
-                        </RadioButton>
-                        <RadioButton fx:id="idPassport" text="PASSPORT">
-                            <toggleGroup><fx:reference source="idTypeGroup"/></toggleGroup>
-                        </RadioButton>
-                    </HBox>
+                            <Label text="Full Name" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="fieldLabel"/>
+                            <TextField fx:id="fullNameField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-                    <Label text="ID Number" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="fieldLabel"/>
-                    <TextField fx:id="idNumberField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                            <Label text="ID Type" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="fieldLabel"/>
+                            <HBox spacing="10" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                                <fx:define>
+                                    <ToggleGroup fx:id="idTypeGroup" />
+                                </fx:define>
+                                <RadioButton fx:id="idNid" text="NID">
+                                    <toggleGroup><fx:reference source="idTypeGroup"/></toggleGroup>
+                                </RadioButton>
+                                <RadioButton fx:id="idBirth" text="BIRTH_CERTIFICATE">
+                                    <toggleGroup><fx:reference source="idTypeGroup"/></toggleGroup>
+                                </RadioButton>
+                                <RadioButton fx:id="idPassport" text="PASSPORT">
+                                    <toggleGroup><fx:reference source="idTypeGroup"/></toggleGroup>
+                                </RadioButton>
+                            </HBox>
 
-                    <Label text="Gender" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="fieldLabel"/>
-                    <HBox spacing="10" GridPane.rowIndex="5" GridPane.columnIndex="1">
-                        <fx:define>
-                            <ToggleGroup fx:id="genderGroup" />
-                        </fx:define>
-                        <RadioButton fx:id="genderMale" text="MALE">
-                            <toggleGroup><fx:reference source="genderGroup"/></toggleGroup>
-                        </RadioButton>
-                        <RadioButton fx:id="genderFemale" text="FEMALE">
-                            <toggleGroup><fx:reference source="genderGroup"/></toggleGroup>
-                        </RadioButton>
-                    </HBox>
+                            <Label text="ID Number" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="fieldLabel"/>
+                            <TextField fx:id="idNumberField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
 
-                    <Label text="Location" GridPane.rowIndex="6" GridPane.columnIndex="0" styleClass="fieldLabel"/>
-                    <TextField fx:id="locationField" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
-                </GridPane>
+                            <Label text="Gender" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="fieldLabel"/>
+                            <HBox spacing="10" GridPane.rowIndex="5" GridPane.columnIndex="1">
+                                <fx:define>
+                                    <ToggleGroup fx:id="genderGroup" />
+                                </fx:define>
+                                <RadioButton fx:id="genderMale" text="MALE">
+                                    <toggleGroup><fx:reference source="genderGroup"/></toggleGroup>
+                                </RadioButton>
+                                <RadioButton fx:id="genderFemale" text="FEMALE">
+                                    <toggleGroup><fx:reference source="genderGroup"/></toggleGroup>
+                                </RadioButton>
+                            </HBox>
 
-                <HBox alignment="CENTER_RIGHT">
-                    <Label fx:id="statusLabel" id="statusLabel"/>
-                    <Pane HBox.hgrow="ALWAYS"/>
-                    <Button text="Update" id="primaryBtn" onAction="#onUpdate"/>
-                </HBox>
-                </VBox>
-            </VBox>
-        </StackPane>
-    </center>
-</BorderPane>
+                            <Label text="Location" GridPane.rowIndex="6" GridPane.columnIndex="0" styleClass="fieldLabel"/>
+                            <TextField fx:id="locationField" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+                        </GridPane>
+
+                        <HBox alignment="CENTER_RIGHT">
+                            <Label fx:id="statusLabel" id="statusLabel"/>
+                            <Pane HBox.hgrow="ALWAYS"/>
+                            <Button text="Update" id="primaryBtn" onAction="#onUpdate"/>
+                        </HBox>
+                        </VBox>
+                    </VBox>
+                </StackPane>
+            </center>
+        </BorderPane>
+    </children>
+</StackPane>

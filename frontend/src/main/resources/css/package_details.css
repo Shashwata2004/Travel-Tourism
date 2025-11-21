@@ -1,0 +1,186 @@
+.detailRoot {
+    -fx-background-color: linear-gradient(to bottom right, #0b1024, #0a1b36, #06254a);
+}
+.pageScroll {
+    -fx-background-color: transparent;
+}
+.pageScroll > .viewport {
+    -fx-background-color: transparent;
+}
+.detailShell {
+    -fx-background-color: transparent;
+}
+.detailTitle {
+    -fx-text-fill: #8bb5ff;
+    -fx-font-size: 16px;
+    -fx-font-weight: 800;
+}
+.detailHero {
+    -fx-background-radius: 24;
+    -fx-border-radius: 24;
+    -fx-background-color: rgba(255,255,255,0.05);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 30, 0.35, 0, 8);
+    -fx-padding: 6;
+}
+.thumbWrap {
+    -fx-background-color: rgba(255,255,255,0.06);
+    -fx-background-radius: 14;
+    -fx-padding: 4;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 18, 0.35, 0, 6);
+}
+.thumbWrap ImageView {
+    -fx-clip: null;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.25), 6, 0.3, 0, 0);
+    -fx-background-radius: 12;
+}
+.detailTabs {
+    -fx-background-color: rgba(255,255,255,0.08);
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-border-color: rgba(255,255,255,0.14);
+    -fx-padding: 14 18 16 18;
+}
+.detailTabs .tab-header-area,
+.detailTabs .tab-header-area .tab-header-background,
+.detailTabs .tab-header-area .control-buttons-tab {
+    -fx-background-color: transparent;
+}
+.detailTabs .tab-header-area .tab {
+    -fx-background-color: transparent;
+    -fx-text-base-color: #e2e8f0;
+    -fx-font-weight: 700;
+    -fx-font-size: 14px;
+    -fx-padding: 10 14 10 14;
+    -fx-background-radius: 12;
+}
+.detailTabs .tab-header-area .tab:selected {
+    -fx-background-color: linear-gradient(to right, #4f46e5, #2563eb);
+    -fx-background-radius: 12;
+    -fx-text-base-color: white;
+}
+.detailTabs .tab-content-area {
+    -fx-background-color: transparent;
+}
+.detailBodyText {
+    -fx-text-fill: #e2e8f0;
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+    -fx-padding: 12 14 14 14;
+    -fx-text-overrun: clip;
+}
+.itineraryList {
+    -fx-spacing: 12;
+    -fx-padding: 6 0 6 0;
+}
+.itineraryCard {
+    -fx-background-color: rgba(255,255,255,0.06);
+    -fx-border-color: rgba(255,255,255,0.14);
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-padding: 10 14 10 14;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 18, 0.35, 0, 6);
+    -fx-pref-width: 680;
+}
+.itineraryIcon {
+    -fx-text-fill: #facc15;
+}
+.itineraryTitle {
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-font-size: 13px;
+}
+.itinerarySubtitle {
+    -fx-text-fill: #cbd5f5;
+    -fx-font-size: 12px;
+}
+
+/* Background blobs/patterns */
+.blobLayer { -fx-opacity: 1; }
+.blobA { -fx-fill: rgba(79,70,229,0.28); -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.35), 120, 0.8, 0, 0); }
+.blobB { -fx-fill: rgba(14,165,233,0.26); -fx-effect: dropshadow(gaussian, rgba(14,165,233,0.35), 120, 0.8, 0, 0); }
+.blobC { -fx-fill: rgba(37,99,235,0.32); -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.35), 140, 0.8, 0, 0); }
+.gridOverlay {
+    -fx-background-color: transparent;
+    -fx-background-image: linear-gradient(rgba(79,70,229,0.05) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(79,70,229,0.05) 1px, transparent 1px);
+    -fx-background-size: 100px 100px, 100px 100px;
+    -fx-opacity: 0.08;
+}
+
+/* Info card on the right */
+.infoCard {
+    -fx-background-color: linear-gradient(to bottom right, rgba(60,74,140,0.55), rgba(38,61,120,0.6));
+    -fx-background-radius: 22;
+    -fx-border-radius: 22;
+    -fx-border-color: rgba(255,255,255,0.15);
+    -fx-padding: 18;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.35), 24, 0.3, 0, 8);
+}
+.infoBadge {
+    -fx-text-fill: #fbbf24;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+}
+.infoName {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+}
+.infoLocation {
+    -fx-text-fill: #d5ddff;
+    -fx-font-size: 14px;
+}
+.pricePanel {
+    -fx-background-color: linear-gradient(to right, #4f46e5, #2563eb);
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: rgba(255,255,255,0.16);
+    -fx-padding: 10 12 12 12;
+    -fx-background-size: 200% 200%;
+    -fx-animation: waveGradient 6s ease-in-out infinite;
+}
+.priceHint {
+    -fx-text-fill: #d2d9ff;
+    -fx-font-size: 11px;
+}
+.priceBig {
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+    -fx-font-weight: 800;
+}
+.infoRow {
+    -fx-background-color: rgba(255,255,255,0.06);
+    -fx-background-radius: 12;
+    -fx-padding: 10 12 10 12;
+    -fx-border-color: rgba(255,255,255,0.10);
+    -fx-border-radius: 12;
+}
+.infoIcon {
+    -fx-text-fill: #cbd5f5;
+}
+.infoLabel {
+    -fx-text-fill: #dbe0ff;
+    -fx-font-size: 14px;
+}
+.infoValue {
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-font-size: 15px;
+}
+.infoBook {
+    -fx-background-color: linear-gradient(to right, #4f46e5, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-font-size: 13px;
+    -fx-background-radius: 14;
+    -fx-padding: 10 14 10 14;
+    -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.32), 18, 0.26, 0, 6);
+}
+.infoBook:hover { -fx-translate-y: -1; }
+.infoBook:pressed { -fx-translate-y: 0; -fx-opacity: 0.95; }
+
+@keyframes waveGradient {
+    0%   { -fx-background-position: 0% 50%; }
+    50%  { -fx-background-position: 100% 50%; }
+    100% { -fx-background-position: 0% 50%; }
+}

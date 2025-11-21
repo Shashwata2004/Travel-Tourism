@@ -126,12 +126,16 @@ public class AdminSocketClient {
             }
             try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
                  BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()))) {
-            bw.write(mapper.writeValueAsString(req));
-            bw.write("\n");
-            bw.flush();
-            String line = br.readLine();
-            if (line == null) throw new IOException("No response");
-            return mapper.readValue(line, new TypeReference<Map<String, Object>>(){});
+                bw.write(mapper.writeValueAsString(req));
+                bw.write("\n");
+                bw.flush();
+                String line = br.readLine();
+                if (line == null) throw new IOException("No response from admin socket " + host + ":" + port);
+                try {
+                    return mapper.readValue(line, new TypeReference<Map<String, Object>>(){});
+                } catch (IOException parseEx) {
+                    throw new IOException("Bad response from admin socket: " + line, parseEx);
+                }
             }
         }
     }
@@ -145,10 +149,23 @@ public class AdminSocketClient {
         public BigDecimal basePrice;
         public String destImageUrl;
         public String hotelImageUrl;
+        public String image1;
+        public String image2;
+        public String image3;
+        public String image4;
+        public String image5;
         public String overview;
         public String locationPoints;
         public String timing;
+        public List<ItineraryVM> itinerary;
+        public String groupSize;
         public boolean active = true;
         public String toString() { return name + " (" + location + ")"; }
+    }
+
+    public static class ItineraryVM {
+        public int dayNumber;
+        public String title;
+        public String subtitle;
     }
 }
