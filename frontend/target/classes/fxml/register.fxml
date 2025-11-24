@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- Builds the registration scene with a glassmorphism card, text fields for
-     new account details, and links back to the login screen.
-     - Fullscreen gradient keeps focus on the form
-     - Button and status label live together so feedback stays obvious -->
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
