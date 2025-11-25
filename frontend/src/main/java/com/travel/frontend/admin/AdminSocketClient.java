@@ -71,6 +71,46 @@ public class AdminSocketClient {
         return items == null ? List.of() : items;
     }
 
+    /* Destination helpers so the admin can manage destinations over the same socket channel. */
+    public List<DestinationVM> listDestinations() throws IOException {
+        Map<String, Object> req = new HashMap<>();
+        req.put("type", "DEST_LIST");
+        req.put("token", effectiveToken());
+        Map<String, Object> res = call(req);
+        if (!Boolean.TRUE.equals(res.get("ok"))) throw new IOException("DEST_LIST failed: " + res.get("msg"));
+        List<DestinationVM> items = mapper.convertValue(res.get("items"), new TypeReference<List<DestinationVM>>() {});
+        return items == null ? List.of() : items;
+    }
+
+    public String createDestination(DestinationVM vm) throws IOException {
+        Map<String, Object> req = new HashMap<>();
+        req.put("type", "DEST_CREATE");
+        req.put("token", effectiveToken());
+        req.put("item", vm);
+        Map<String, Object> res = call(req);
+        if (!Boolean.TRUE.equals(res.get("ok"))) throw new IOException("DEST_CREATE failed: " + res.get("msg"));
+        return (String) res.get("id");
+    }
+
+    public void updateDestination(String id, DestinationVM vm) throws IOException {
+        Map<String, Object> req = new HashMap<>();
+        req.put("type", "DEST_UPDATE");
+        req.put("token", effectiveToken());
+        req.put("id", id);
+        req.put("item", vm);
+        Map<String, Object> res = call(req);
+        if (!Boolean.TRUE.equals(res.get("ok"))) throw new IOException("DEST_UPDATE failed: " + res.get("msg"));
+    }
+
+    public void deleteDestination(String id) throws IOException {
+        Map<String, Object> req = new HashMap<>();
+        req.put("type", "DEST_DELETE");
+        req.put("token", effectiveToken());
+        req.put("id", id);
+        Map<String, Object> res = call(req);
+        if (!Boolean.TRUE.equals(res.get("ok"))) throw new IOException("DEST_DELETE failed: " + res.get("msg"));
+    }
+
     /* Sends a new package record to the server. Relies on the server to return
        a generated id so the UI can keep selections in sync. */
     public String create(PackageVM vm) throws IOException {
@@ -160,6 +200,7 @@ public class AdminSocketClient {
         public List<ItineraryVM> itinerary;
         public String groupSize;
         public boolean active = true;
+        public boolean packageAvailable;
         public String toString() { return name + " (" + location + ")"; }
     }
 
@@ -167,5 +208,19 @@ public class AdminSocketClient {
         public int dayNumber;
         public String title;
         public String subtitle;
+    }
+
+    public static class DestinationVM {
+        public String id;
+        public String name;
+        public String region;
+        public String tags;
+        public String bestSeason;
+        public String imageUrl;
+        public Integer hotelsCount;
+        public boolean active = true;
+        public boolean packageAvailable; // server computed for display
+        public String packageId;
+        public String toString() { return name + " (" + region + ")"; }
     }
 }

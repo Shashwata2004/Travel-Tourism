@@ -55,6 +55,8 @@ public class TravelPackage {
     @Column(name = "group_size")
     private String groupSize;
     private boolean active = true;
+    @Column(name = "package_available")
+    private boolean packageAvailable = false;
 
     public UUID getId() { return id; }
     public void setId(UUID id) { this.id = id; }
@@ -88,5 +90,7 @@ public class TravelPackage {
     public void setGroupSize(String groupSize) { this.groupSize = groupSize; }
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
+    public boolean isPackageAvailable() { return packageAvailable; }
+    public void setPackageAvailable(boolean packageAvailable) { this.packageAvailable = packageAvailable; }
 }
 

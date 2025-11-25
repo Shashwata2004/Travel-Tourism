@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travel.loginregistration.model.AdminUser;
 import com.travel.loginregistration.model.TravelPackage;
 import com.travel.loginregistration.model.PackageItinerary;
+import com.travel.loginregistration.model.Destination;
 import com.travel.loginregistration.repository.AdminUserRepository;
 import com.travel.loginregistration.repository.TravelPackageRepository;
 import com.travel.loginregistration.repository.PackageItineraryRepository;
+import com.travel.loginregistration.repository.DestinationRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,17 +34,20 @@ public class AdminSocketServer {
     private final AdminUserRepository adminRepo;
     private final TravelPackageRepository pkgRepo;
     private final PackageItineraryRepository itineraryRepo;
+    private final DestinationRepository destinationRepo;
     private final BCryptPasswordEncoder encoder;
     private final TransactionTemplate txTemplate;
     private final ObjectMapper mapper = new ObjectMapper();
     private final Map<String, UUID> sessions = new ConcurrentHashMap<>();
 
     public AdminSocketServer(AdminUserRepository adminRepo, TravelPackageRepository pkgRepo,
-                             PackageItineraryRepository itineraryRepo, BCryptPasswordEncoder encoder,
+                             PackageItineraryRepository itineraryRepo, DestinationRepository destinationRepo,
+                             BCryptPasswordEncoder encoder,
                              PlatformTransactionManager txManager) {
         this.adminRepo = adminRepo;
         this.pkgRepo = pkgRepo;
         this.itineraryRepo = itineraryRepo;
+        this.destinationRepo = destinationRepo;
         this.encoder = encoder;
         this.txTemplate = new TransactionTemplate(txManager);
     }
@@ -84,17 +89,33 @@ public class AdminSocketServer {
                     if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
                     res = listPackages();
                 }
+                case "DEST_LIST" -> {
+                    if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
+                    res = listDestinations();
+                }
                 case "CREATE" -> {
                     if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
                     res = txTemplate.execute(status -> createPackage(req));
+                }
+                case "DEST_CREATE" -> {
+                    if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
+                    res = txTemplate.execute(status -> createDestination(req));
                 }
                 case "UPDATE" -> {
                     if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
                     res = txTemplate.execute(status -> updatePackage(req));
                 }
+                case "DEST_UPDATE" -> {
+                    if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
+                    res = txTemplate.execute(status -> updateDestination(req));
+                }
                 case "DELETE" -> {
                     if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
                     res = txTemplate.execute(status -> deletePackage(req));
+                }
+                case "DEST_DELETE" -> {
+                    if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
+                    res = txTemplate.execute(status -> deleteDestination(req));
                 }
                 default -> res = err("UNKNOWN_TYPE");
             }
@@ -134,8 +155,35 @@ public class AdminSocketServer {
     // Returns every travel package without filtering (admin view).
     private Map<String, Object> listPackages() {
         List<TravelPackage> items = pkgRepo.findAll();
+        for (TravelPackage p : items) {
+            boolean match = hasMatchingDestination(p.getLocation());
+            p.setPackageAvailable(match);
+        }
         Map<String, Object> ok = ok();
         ok.put("items", items);
+        return ok;
+    }
+
+    private Map<String, Object> listDestinations() {
+        List<Destination> items = destinationRepo.findAll();
+        List<Map<String,Object>> decorated = new ArrayList<>();
+        for (Destination d : items) {
+            Map<String,Object> m = new HashMap<>();
+            m.put("id", d.getId());
+            m.put("name", d.getName());
+            m.put("region", d.getRegion());
+            m.put("tags", d.getTags());
+            m.put("bestSeason", d.getBestSeason());
+            m.put("imageUrl", d.getImageUrl());
+            m.put("hotelsCount", d.getHotelsCount());
+            m.put("active", d.isActive());
+            Optional<UUID> pkgId = findMatchingPackageId(d.getName());
+            m.put("packageAvailable", pkgId.isPresent());
+            pkgId.ifPresent(id -> m.put("packageId", id));
+            decorated.add(m);
+        }
+        Map<String, Object> ok = ok();
+        ok.put("items", decorated);
         return ok;
     }
 
@@ -178,11 +226,44 @@ public class AdminSocketServer {
         return ok();
     }
 
+    @Transactional
+    private Map<String, Object> createDestination(Map<String, Object> req) {
+        Map<String, Object> item = (Map<String, Object>) req.get("item");
+        Destination d = new Destination();
+        applyDest(d, item);
+        destinationRepo.save(d);
+        Map<String, Object> ok = ok();
+        ok.put("id", d.getId());
+        return ok;
+    }
+
+    @Transactional
+    private Map<String, Object> updateDestination(Map<String, Object> req) {
+        String idStr = (String) req.get("id");
+        if (idStr == null) return err("MISSING_ID");
+        UUID id = UUID.fromString(idStr);
+        Destination d = destinationRepo.findById(id).orElse(null);
+        if (d == null) return err("NOT_FOUND");
+        Map<String, Object> item = (Map<String, Object>) req.get("item");
+        applyDest(d, item);
+        destinationRepo.save(d);
+        return ok();
+    }
+
+    @Transactional
+    private Map<String, Object> deleteDestination(Map<String, Object> req) {
+        String idStr = (String) req.get("id");
+        if (idStr == null) return err("MISSING_ID");
+        UUID id = UUID.fromString(idStr);
+        if (destinationRepo.existsById(id)) destinationRepo.deleteById(id);
+        return ok();
+    }
+
     // Copies allowed fields from the arbitrary map into the entity.
     private void apply(TravelPackage p, Map<String, Object> item) {
         if (item == null) return;
-        if (item.containsKey("name")) p.setName(str(item.get("name")));
-        if (item.containsKey("location")) p.setLocation(str(item.get("location")));
+        if (item.containsKey("name")) p.setName(norm(str(item.get("name"))));
+        if (item.containsKey("location")) p.setLocation(norm(str(item.get("location"))));
         if (item.containsKey("basePrice")) p.setBasePrice(toBigDecimal(item.get("basePrice")));
         if (item.containsKey("destImageUrl")) p.setDestImageUrl(str(item.get("destImageUrl")));
         if (item.containsKey("hotelImageUrl")) p.setHotelImageUrl(str(item.get("hotelImageUrl")));
@@ -201,6 +282,18 @@ public class AdminSocketServer {
         if (item.containsKey("timing")) p.setTiming(str(item.get("timing")));
         if (item.containsKey("groupSize")) p.setGroupSize(str(item.get("groupSize")));
         if (item.containsKey("active")) p.setActive(Boolean.TRUE.equals(item.get("active")) || "true".equalsIgnoreCase(str(item.get("active"))));
+        if (item.containsKey("packageAvailable")) p.setPackageAvailable(bool(item.get("packageAvailable")));
+    }
+
+    private void applyDest(Destination d, Map<String, Object> item) {
+        if (item == null) return;
+        if (item.containsKey("name")) d.setName(norm(str(item.get("name"))));
+        if (item.containsKey("region")) d.setRegion(norm(str(item.get("region"))));
+        if (item.containsKey("tags")) d.setTags(str(item.get("tags")));
+        if (item.containsKey("bestSeason")) d.setBestSeason(str(item.get("bestSeason")));
+        if (item.containsKey("imageUrl")) d.setImageUrl(str(item.get("imageUrl")));
+        if (item.containsKey("hotelsCount")) d.setHotelsCount(intVal(item.get("hotelsCount")));
+        if (item.containsKey("active")) d.setActive(bool(item.get("active")));
     }
 
     // Handles itineraries: clears old rows for this package and inserts the new list if provided.
@@ -230,11 +323,30 @@ public class AdminSocketServer {
 
     // Helper to convert any object to String while tolerating nulls.
     private String str(Object o) { return o == null ? null : String.valueOf(o); }
+    private String norm(String s) { return s == null ? null : s.trim(); }
     // Helper to convert payload values into BigDecimal.
     private BigDecimal toBigDecimal(Object o) {
         if (o == null) return null;
         if (o instanceof Number n) return new BigDecimal(n.toString());
         return new BigDecimal(o.toString());
+    }
+
+    private int intVal(Object o) { try { return o == null ? 0 : Integer.parseInt(String.valueOf(o)); } catch (Exception e) { return 0; } }
+    private boolean bool(Object o) { return o != null && Boolean.parseBoolean(String.valueOf(o)); }
+    private boolean hasMatchingDestination(String location) {
+        String loc = norm(location);
+        if (loc == null || loc.isEmpty()) return false;
+        return destinationRepo.existsByNameIgnoreCaseAndActiveTrue(loc);
+    }
+    private boolean hasMatchingPackage(String destinationName) {
+        return findMatchingPackageId(destinationName).isPresent();
+    }
+
+    private Optional<UUID> findMatchingPackageId(String destinationName) {
+        String name = norm(destinationName);
+        if (name == null || name.isEmpty()) return Optional.empty();
+        return pkgRepo.findFirstByLocationIgnoreCaseAndActiveTrueOrderByNameAsc(name)
+                .map(TravelPackage::getId);
     }
 
     // Builds a success response map with ok=true.

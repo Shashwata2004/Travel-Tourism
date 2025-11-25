@@ -46,6 +46,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()                     // can access without jwt
                 .requestMatchers("/api/auth/register", "/api/auth/login", "/actuator/health").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/destinations/**").permitAll()
                 .anyRequest().authenticated()           // all other requests need jwt                                              
             )
             // Added JWT filter before the built-in username-password filter

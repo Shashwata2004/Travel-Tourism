@@ -15,6 +15,8 @@
     <top>
         <HBox spacing="10" alignment="CENTER_LEFT" id="navbar">
             <padding><Insets topRightBottomLeft="10"/></padding>
+            <Button text="Back" onAction="#onBack"/>
+            <Button text="Destinations" onAction="#goDestinations"/>
             <Label text="Admin — Manage Packages" id="cardTitle"/>
             <Pane HBox.hgrow="ALWAYS"/>
             <Button text="Refresh" onAction="#onRefresh"/>
@@ -77,8 +79,11 @@
                         <Label text="Itinerary (one per line: day|title|subtitle)" GridPane.rowIndex="12" GridPane.columnIndex="0"/>
                         <TextArea fx:id="itineraryArea" GridPane.rowIndex="12" GridPane.columnIndex="1" prefRowCount="3"/>
 
-                        <Label text="Active" GridPane.rowIndex="13" GridPane.columnIndex="0"/>
-                        <CheckBox fx:id="activeBox" GridPane.rowIndex="13" GridPane.columnIndex="1" selected="true"/>
+                        <Label text="Package Available" GridPane.rowIndex="13" GridPane.columnIndex="0"/>
+                        <CheckBox fx:id="packageAvailableBox" GridPane.rowIndex="13" GridPane.columnIndex="1"/>
+
+                        <Label text="Active" GridPane.rowIndex="14" GridPane.columnIndex="0"/>
+                        <CheckBox fx:id="activeBox" GridPane.rowIndex="14" GridPane.columnIndex="1" selected="true"/>
                     </GridPane>
                     <Label fx:id="statusLabel" id="statusLabel"/>
                 </VBox>

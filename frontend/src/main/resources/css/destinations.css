@@ -1,0 +1,244 @@
+/* Destinations page styling inspired by the Tailwind design reference */
+.destinationsRoot {
+    -fx-background-color: linear-gradient(to bottom right, #f4f6ff, #edf1ff);
+}
+
+.orbLayer { -fx-opacity: 1; }
+.orbA { -fx-fill: rgba(99,102,241,0.28); -fx-effect: dropshadow(gaussian, rgba(99,102,241,0.3), 150, 0.6, 0, 0); }
+.orbB { -fx-fill: rgba(14,165,233,0.25); -fx-effect: dropshadow(gaussian, rgba(14,165,233,0.28), 150, 0.6, 0, 0); }
+.orbC { -fx-fill: rgba(79,70,229,0.22); -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.28), 150, 0.6, 0, 0); }
+
+.destContent {
+    -fx-padding: 16 22 32 22;
+}
+
+.destScroll {
+    -fx-background-color: transparent;
+}
+.destScroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.heroSection {
+    -fx-background-radius: 38;
+    -fx-border-radius: 38;
+    -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.18), 36, 0.4, 0, 14);
+    -fx-padding: 36 32 42 32;
+    -fx-min-height: 320;
+    -fx-alignment: center;
+}
+
+.heroBadge {
+    -fx-background-color: rgba(79,70,229,0.15);
+    -fx-padding: 6 18 6 18;
+    -fx-background-radius: 999;
+    -fx-alignment: center;
+}
+
+.heroBadgeText {
+    -fx-text-fill: #4338ca;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+}
+
+.heroTitle {
+    -fx-font-size: 36px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f172a;
+}
+
+.heroSubtitle {
+    -fx-text-fill: #475569;
+    -fx-font-size: 15px;
+    -fx-alignment: center;
+}
+
+.searchWrap {
+    -fx-background-color: white;
+    -fx-background-radius: 32;
+    -fx-border-radius: 32;
+    -fx-padding: 12 20 12 20;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.16), 24, 0.4, 0, 6);
+    -fx-max-width: 560;
+    -fx-border-color: transparent;
+    -fx-border-width: 2;
+}
+
+.searchIcon {
+    -fx-text-fill: #6366f1;
+    -fx-font-size: 18px;
+}
+
+.searchInput {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-prompt-text-fill: rgba(100,116,139,0.8);
+    -fx-font-size: 15px;
+}
+
+.searchWrap:focused-within .searchInput {
+    -fx-prompt-text-fill: rgba(79,70,229,0.6);
+}
+
+.destCardsGrid {
+    -fx-padding: 12 4 50 4;
+}
+
+.emptyState {
+    -fx-text-fill: #475569;
+    -fx-font-size: 14px;
+    -fx-padding: 10 0 0 4;
+}
+
+.dest-card {
+    -fx-background-color: rgba(255,255,255,0.95);
+    -fx-background-radius: 28;
+    -fx-border-radius: 28;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.12), 28, 0.35, 0, 12);
+}
+.dest-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.25), 32, 0.4, 0, 14);
+}
+
+.destImageWrap {
+    -fx-background-radius: 28 28 0 0;
+}
+
+.overlayInfo {
+    -fx-alignment: bottom-left;
+    -fx-padding: 0;
+}
+.overlayName {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: 800;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.35), 18, 0.5, 0, 0);
+}
+.overlayRegionRow {
+    -fx-alignment: center-left;
+}
+.overlayRegionIcon {
+    -fx-text-fill: rgba(226,232,240,0.95);
+    -fx-font-size: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.35), 12, 0.5, 0, 0);
+}
+.overlayRegionText {
+    -fx-text-fill: rgba(226,232,240,0.95);
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.35), 12, 0.5, 0, 0);
+}
+
+.packageChip {
+    -fx-background-color: linear-gradient(to right, #22c55e, #16a34a);
+    -fx-background-radius: 999;
+    -fx-padding: 4 14 4 14;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+}
+.packageChipButton {
+    -fx-background-color: linear-gradient(to right, #22c55e, #16a34a);
+    -fx-background-radius: 999;
+    -fx-padding: 4 18 4 18;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-effect: dropshadow(gaussian, rgba(16,185,129,0.4), 16, 0.45, 0, 6);
+    -fx-border-color: transparent;
+}
+.packageChipButton:hover {
+    -fx-cursor: hand;
+    -fx-opacity: 0.9;
+}
+
+.destCardBody {
+    -fx-padding: 24 24 30 24;
+    -fx-background-radius: 0 0 28 28;
+    -fx-spacing: 6;
+}
+
+.destName {
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f172a;
+}
+
+.regionRow .label {
+    -fx-text-fill: #475569;
+    -fx-font-size: 13px;
+}
+.regionIcon {
+    -fx-font-size: 12px;
+}
+.regionText {
+    -fx-font-size: 13px;
+    -fx-text-fill: #475569;
+}
+
+.tagRow {
+    -fx-text-fill: #0f172a;
+    -fx-font-size: 16px;
+    -fx-font-weight: 600;
+    -fx-line-spacing: 4;
+}
+
+.seasonRow .label {
+    -fx-text-fill: #475569;
+    -fx-font-size: 15px;
+}
+
+.hotelsBadge {
+    -fx-background-color: rgba(99,102,241,0.12);
+    -fx-background-radius: 20;
+    -fx-padding: 8 14 8 14;
+}
+.hotelIcon {
+    -fx-text-fill: #4f46e5;
+}
+.hotelText {
+    -fx-text-fill: #4338ca;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.exploreBtn {
+    -fx-background-radius: 22;
+    -fx-background-color: linear-gradient(to right, #4f46e5, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-font-size: 14px;
+    -fx-padding: 10 18 10 18;
+    -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.35), 24, 0.4, 0, 10);
+}
+.exploreBtn:hover {
+    -fx-cursor: hand;
+}
+.exploreBtn:pressed {
+    -fx-opacity: 0.95;
+}
+
+.dest-card .label {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+}
+
+/* Shared pin icon used on hero badge and destination cards */
+.pinIcon {
+    -fx-fill: transparent;
+    -fx-stroke: rgba(255,255,255,0.9);
+    -fx-stroke-width: 2;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+.pinCenter {
+    -fx-fill: rgba(255,255,255,0.96);
+}
+
+/* Tint the pin icon to brand color inside the hero badge */
+.heroBadge .pinIcon {
+    -fx-stroke: #4338ca;
+}
+.heroBadge .pinCenter {
+    -fx-fill: #4338ca;
+}

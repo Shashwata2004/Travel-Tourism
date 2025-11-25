@@ -202,7 +202,7 @@ public class PackagesController {
     }
 
     @FXML private void goPersonal() { Navigator.goHome(); }
-    @FXML private void goDestinations() { /* placeholder */ }
+    @FXML private void goDestinations() { Navigator.goDestinations(); }
     @FXML private void goHistory() { /* placeholder */ }
     @FXML private void goAbout() { /* placeholder */ }
     @FXML private void onLogout() { com.travel.frontend.cache.DataCache.clear(); Navigator.goLogin(); }

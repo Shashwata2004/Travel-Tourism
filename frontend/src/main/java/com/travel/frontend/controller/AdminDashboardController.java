@@ -6,6 +6,7 @@ package com.travel.frontend.controller;
 
 import com.travel.frontend.admin.AdminSocketClient;
 import com.travel.frontend.admin.AdminSocketClient.PackageVM;
+import com.travel.frontend.ui.Navigator;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -28,6 +29,7 @@ public class AdminDashboardController {
     @FXML private TextArea timingArea;
     @FXML private TextArea itineraryArea;
     @FXML private TextField groupSizeField;
+    @FXML private CheckBox packageAvailableBox;
     @FXML private CheckBox activeBox;
     @FXML private Label statusLabel;
 
@@ -43,6 +45,9 @@ public class AdminDashboardController {
         });
         onRefresh();
     }
+
+    @FXML public void onBack() { Navigator.goLogin(); }
+    @FXML public void goDestinations() { Navigator.goAdminDestinations(); }
 
     /* Pulls the latest packages from the AdminSocketClient.list() call on a
        background thread and updates the ListView once finished. */
@@ -151,6 +156,7 @@ public class AdminDashboardController {
         timingArea.setText(n(vm.timing));
         itineraryArea.setText(toItineraryLines(vm));
         groupSizeField.setText(n(vm.groupSize));
+        packageAvailableBox.setSelected(vm.packageAvailable);
         activeBox.setSelected(vm.active);
     }
 
@@ -175,6 +181,7 @@ public class AdminDashboardController {
         vm.timing = timingArea.getText();
         vm.itinerary = parseItinerary(itineraryArea.getText());
         vm.groupSize = t(groupSizeField);
+        vm.packageAvailable = packageAvailableBox.isSelected();
         vm.active = activeBox.isSelected();
         return vm;
     }
@@ -193,6 +200,7 @@ public class AdminDashboardController {
         timingArea.clear();
         itineraryArea.clear();
         groupSizeField.clear();
+        packageAvailableBox.setSelected(false);
         activeBox.setSelected(true);
     }
 

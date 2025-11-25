@@ -123,7 +123,7 @@ public class HomeController {
 
     // Navbar actions
     @FXML private void goPackages() { Navigator.goPackages(); }
-    @FXML private void goDestinations() { /* placeholder */ }
+    @FXML private void goDestinations() { Navigator.goDestinations(); }
     @FXML private void goHistory() { /* placeholder */ }
     @FXML private void goAbout() { /* placeholder */ }
 

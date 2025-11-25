@@ -1,21 +1,30 @@
-/* Holds on to the admin socket token so the dashboard and network helper know
-   whether the privileged channel is still signed in. Mirrors the user Session
-   class but keeps things separate so admin-only sockets never leak into the
-   regular API calls. */
 package com.travel.frontend.admin;
 
+/**
+ * Simple holder for the authenticated admin session token that is shared
+ * between the login screen, admin dashboard, and admin socket client.
+ */
 public final class AdminSession {
-    private static volatile String token;
 
-    private AdminSession() {}
+    private static String token;
 
-    /* Saves the latest token received from the AdminSocketClient AUTH call so
-       future requests can reuse it without prompting the admin again. */
-    public static void setToken(String t) { token = t; }
-    /* Allows controllers to quickly confirm whether an admin is still logged
-       in before showing staff-only screens. */
-    public static String getToken() { return token; }
-    /* Wipes the stored token, usually after logout or a socket failure, so the
-       dashboard doesn’t accidentally keep elevated access. */
-    public static void clear() { token = null; }
+    private AdminSession() {
+        // Utility class
+    }
+
+    public static void setToken(String value) {
+        token = value;
+    }
+
+    public static String getToken() {
+        return token;
+    }
+
+    public static void clear() {
+        token = null;
+    }
+
+    public static boolean isAuthenticated() {
+        return token != null && !token.isBlank();
+    }
 }

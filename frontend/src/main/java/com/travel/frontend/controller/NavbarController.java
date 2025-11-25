@@ -38,7 +38,7 @@ public class NavbarController {
 
         personalBtn.setOnAction(e -> Navigator.goHome());
         packagesBtn.setOnAction(e -> Navigator.goPackages());
-        destinationsBtn.setOnAction(e -> { /* no-op until implemented */ });
+        destinationsBtn.setOnAction(e -> Navigator.goDestinations());
         historyBtn.setOnAction(e -> { /* no-op until implemented */ });
         aboutBtn.setOnAction(e -> { /* no-op until implemented */ });
         logoutBtn.setOnAction(e -> {
