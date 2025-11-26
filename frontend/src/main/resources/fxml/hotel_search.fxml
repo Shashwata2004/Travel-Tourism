@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.SVGPath?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.travel.frontend.controller.HotelSearchController"
+           stylesheets="@/css/login.css,@/css/packages.css,@/css/destinations.css,@/css/hotel_search.css"
+           styleClass="hotelRoot">
+
+    <children>
+        <!-- Background orbs -->
+        <Pane styleClass="orbLayer">
+            <children>
+                <Circle centerX="180" centerY="160" radius="200" styleClass="orbA"/>
+                <Circle centerX="1080" centerY="520" radius="220" styleClass="orbB"/>
+                <Circle centerX="1240" centerY="280" radius="210" styleClass="orbC"/>
+            </children>
+        </Pane>
+
+        <StackPane fx:id="rootStack">
+            <VBox spacing="14" fillWidth="true" styleClass="hotelContent">
+                <!-- Navbar -->
+                <fx:include source="navbar.fxml" fx:id="navbar"/>
+
+                <!-- Back button -->
+                <Button text="←  Back to Destinations"
+                        alignment="CENTER_LEFT"
+                        onAction="#goBack"
+                        styleClass="backLink"
+                        maxWidth="180"/>
+
+                <!-- Hero card -->
+                <StackPane styleClass="hotelHero">
+                    <VBox alignment="CENTER" spacing="14">
+                        <!-- Badge -->
+                        <Label styleClass="heroBadge">
+                            <graphic>
+                                <HBox alignment="CENTER" spacing="8">
+                                    <StackPane>
+                                        <SVGPath styleClass="pinIcon"
+                                                 content="M12 2c-3.3137 0-6 2.6863-6 6 0 4.5 6 10 6 10s6-5.5 6-10c0-3.3137-2.6863-6-6-6zm0 8.2c-1.215 0-2.2-.985-2.2-2.2 0-1.215.985-2.2 2.2-2.2 1.215 0 2.2.985 2.2 2.2 0 1.215-.985 2.2-2.2 2.2z"/>
+                                        <Circle radius="2" styleClass="pinCenter"/>
+                                    </StackPane>
+                                    <Label fx:id="heroBadgeText"
+                                           text="Explore Bangladesh"
+                                           styleClass="heroBadgeText"/>
+                                </HBox>
+                            </graphic>
+                        </Label>
+
+                        <!-- Title & subtitle -->
+                        <Label fx:id="heroTitle"
+                               text="Find Stays You’ll Love"
+                               styleClass="heroTitle"/>
+
+                        <Label fx:id="heroSubtitle"
+                               text="From boutique resorts to hillside retreats, pick the perfect stay with just a few taps."
+                               wrapText="true"
+                               maxWidth="680"
+                               alignment="CENTER"
+                               textAlignment="CENTER"
+                               styleClass="heroSubtitle"/>
+
+                        <!-- Search capsule -->
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="14"
+                              styleClass="searchCapsule">
+
+                            <!-- CHECK IN -->
+                            <VBox spacing="6"
+                                  alignment="CENTER_LEFT"
+                                  styleClass="searchPill">
+                                <Label text="CHECK IN" styleClass="pillLabel"/>
+                                <HBox alignment="CENTER_LEFT" spacing="6">
+                                    <Label text="📅" styleClass="pillIcon"/>
+                                    <DatePicker fx:id="checkInPicker"
+                                                promptText="Select date"
+                                                editable="false"
+                                                styleClass="pillValue"/>
+                                </HBox>
+                            </VBox>
+
+                            <!-- CHECK OUT -->
+                            <VBox spacing="6"
+                                  alignment="CENTER_LEFT"
+                                  styleClass="searchPill">
+                                <Label text="CHECK OUT" styleClass="pillLabel"/>
+                                <HBox alignment="CENTER_LEFT" spacing="6">
+                                    <Label text="📅" styleClass="pillIcon"/>
+                                    <DatePicker fx:id="checkOutPicker"
+                                                promptText="Select date"
+                                                editable="false"
+                                                styleClass="pillValue"/>
+                                </HBox>
+                            </VBox>
+
+                            <!-- TOTAL GUESTS -->
+                            <VBox spacing="6"
+                                  alignment="CENTER_LEFT"
+                                  styleClass="searchPill"
+                                  onMouseClicked="#toggleGuests">
+                                <Label text="TOTAL GUESTS" styleClass="pillLabel"/>
+                                <HBox alignment="CENTER_LEFT" spacing="6">
+                                    <Label text="👥" styleClass="pillIcon"/>
+                                    <Label fx:id="guestValue"
+                                           text="2 Guests"
+                                           styleClass="pillValue"/>
+                                </HBox>
+                            </VBox>
+
+                            <!-- Spacer -->
+                            <Region HBox.hgrow="ALWAYS"/>
+
+                            <!-- Search button -->
+                            <Button text="Search"
+                                    onAction="#handleSearch"
+                                    styleClass="searchCTA"/>
+                        </HBox>
+                    </VBox>
+                </StackPane>
+            </VBox>
+
+            <!-- Guest overlay -->
+            <StackPane fx:id="guestOverlay"
+                       visible="false"
+                       managed="false"
+                       styleClass="guestOverlay"
+                       onMouseClicked="#closeGuests">
+                <StackPane alignment="CENTER">
+                    <VBox fx:id="guestCard"
+                          alignment="CENTER"
+                          spacing="14"
+                          styleClass="guestCard"
+                          onMouseClicked="#consumeGuestCard">
+                        <Label text="TOTAL PERSON" styleClass="pillLabel"/>
+
+                        <HBox alignment="CENTER"
+                              spacing="18"
+                              styleClass="guestStepper">
+                            <Button text="-"
+                                    onAction="#decrementGuests"
+                                    styleClass="roundBtn"/>
+                            <Label fx:id="overlayGuestValue"
+                                   text="2"
+                                   styleClass="pillValue"/>
+                            <Button text="+"
+                                    onAction="#incrementGuests"
+                                    styleClass="roundBtn"/>
+                        </HBox>
+
+                        <Label text="Above 10 years are all considered as adults"
+                               styleClass="helperNote"/>
+
+                        <Button text="Done"
+                                onAction="#closeGuests"
+                                styleClass="doneBtn"/>
+                    </VBox>
+                </StackPane>
+            </StackPane>
+        </StackPane>
+    </children>
+</StackPane>

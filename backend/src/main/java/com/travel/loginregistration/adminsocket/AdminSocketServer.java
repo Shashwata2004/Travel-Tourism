@@ -196,6 +196,7 @@ public class AdminSocketServer {
         apply(p, item);
         pkgRepo.save(p);
         applyItinerary(p, item);
+        
         Map<String, Object> ok = ok();
         ok.put("id", p.getId());
         return ok;

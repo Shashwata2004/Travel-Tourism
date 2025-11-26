@@ -4,13 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travel.frontend.cache.DataCache;
 import com.travel.frontend.net.ApiClient;
+import com.travel.frontend.ui.Navigator;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -231,7 +231,7 @@ public class DestinationsController {
         explore.getStyleClass().add("exploreBtn");
         explore.setPrefWidth(150);
         explore.setMaxWidth(Region.USE_PREF_SIZE);
-        explore.setOnAction(e -> showSoon(d.name));
+        explore.setOnAction(e -> openHotelSearch(d));
 
         footer.getChildren().addAll(hotelsBadge, spacer, explore);
 
@@ -271,12 +271,9 @@ public class DestinationsController {
         cardsContainer.getChildren().setAll(new Label("Failed to load destinations: " + message));
     }
 
-    private void showSoon(String name) {
-        Alert a = new Alert(Alert.AlertType.INFORMATION);
-        a.setHeaderText(null);
-        a.setTitle("Coming soon");
-        a.setContentText("Hotel listings for " + name + " will be available soon.");
-        a.showAndWait();
+    private void openHotelSearch(DestinationCard destination) {
+        DataCache.put("hotel:selected", destination);
+        Navigator.goHotelSearch();
     }
 
     private String formatTags(String tags) {

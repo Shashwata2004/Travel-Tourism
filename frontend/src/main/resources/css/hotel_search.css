@@ -1,0 +1,106 @@
+/* Hotel search screen styling */
+.hotelRoot {
+    -fx-background-color: linear-gradient(to bottom right, #f4f6ff, #edf1ff);
+}
+
+.hotelContent {
+    -fx-padding: 18 22 40 22;
+    -fx-spacing: 18;
+}
+
+.backLink {
+    -fx-background-color: transparent;
+    -fx-text-fill: #4338ca;
+    -fx-font-weight: 600;
+    -fx-padding: 4 12 4 12;
+    -fx-background-radius: 20;
+}
+.backLink:hover { -fx-background-color: rgba(67,56,202,0.12); }
+
+.hotelHero {
+    -fx-background-radius: 36;
+    -fx-padding: 32 30 38 30;
+    -fx-alignment: center;
+    -fx-spacing: 16;
+    -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.16), 28, 0.4, 0, 14);
+}
+
+.heroBadge { -fx-background-color: rgba(79,70,229,0.15); -fx-padding: 6 18; -fx-background-radius: 999; }
+.heroBadgeText { -fx-text-fill: #4338ca; -fx-font-size: 13px; -fx-font-weight: 700; }
+.heroTitle { -fx-font-size: 40px; -fx-font-weight: 800; -fx-text-fill: #0f172a; }
+.heroSubtitle { -fx-text-fill: #475569; -fx-font-size: 15px; }
+
+.searchCapsule {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 40;
+    -fx-padding: 18 20;
+    -fx-spacing: 14;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.16), 28, 0.4, 0, 12);
+}
+
+.searchPill {
+    -fx-background-color: rgba(241,245,255,0.8);
+    -fx-background-radius: 26;
+    -fx-padding: 14 18;
+    -fx-spacing: 6;
+    -fx-min-width: 220;
+}
+.searchPill:selected, .searchPill:hover { -fx-background-color: rgba(255,255,255,0.95); }
+
+.pillLabel { -fx-text-fill: #6366f1; -fx-font-size: 12px; -fx-font-weight: 700; }
+.pillValue { -fx-text-fill: #0f172a; -fx-font-size: 18px; -fx-font-weight: 600; }
+
+.pillButton { -fx-alignment: center-left; -fx-background-color: transparent; -fx-border-color: transparent; }
+
+.searchCTA {
+    -fx-background-color: linear-gradient(to right, #facc15, #f59e0b);
+    -fx-text-fill: #0f172a;
+    -fx-font-weight: 700;
+    -fx-font-size: 16px;
+    -fx-padding: 14 28;
+    -fx-background-radius: 26;
+    -fx-effect: dropshadow(gaussian, rgba(245,158,11,0.35), 24, 0.4, 0, 8);
+}
+.searchCTA:hover { -fx-cursor: hand; }
+
+.pinIcon { -fx-fill: transparent; -fx-stroke: rgba(67,56,202,0.95); -fx-stroke-width: 2; }
+.pinCenter { -fx-fill: rgba(67,56,202,0.95); }
+
+.guestOverlay {
+    -fx-background-color: rgba(15,23,42,0.45);
+}
+.guestOverlay .guestCard {
+    -fx-background-color: white;
+    -fx-background-radius: 26;
+    -fx-padding: 20 26 26 26;
+    -fx-spacing: 16;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.18), 32, 0.45, 0, 18);
+}
+.guestStepper { -fx-spacing: 12; -fx-alignment: center; }
+.roundBtn {
+    -fx-background-color: rgba(99,102,241,0.12);
+    -fx-background-radius: 999;
+    -fx-text-fill: #4338ca;
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+    -fx-min-width: 36; -fx-min-height: 36;
+}
+.roundBtn:hover { -fx-background-color: rgba(99,102,241,0.2); }
+
+.helperNote {
+    -fx-background-color: rgba(99,102,241,0.08);
+    -fx-background-radius: 18;
+    -fx-padding: 8 12;
+    -fx-text-fill: #4338ca;
+}
+
+.doneBtn {
+    -fx-background-radius: 22;
+    -fx-background-color: linear-gradient(to right, #4f46e5, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-padding: 10 40;
+}
+.doneBtn:hover { -fx-cursor: hand; }
+
+.backdropHidden { -fx-opacity: 0; }

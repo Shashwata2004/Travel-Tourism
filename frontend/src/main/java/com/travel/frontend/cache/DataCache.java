@@ -36,6 +36,24 @@ public final class DataCache {
         CACHE.put(key, new Entry(value, System.currentTimeMillis()));
     }
 
+    /* Returns the current cached value (if it is still within the TTL) without
+       invoking any loaders. Useful for lightweight cross-screen hand-offs. */
+    @SuppressWarnings("unchecked")
+    public static <T> T peek(String key) {
+        Entry entry = CACHE.get(key);
+        if (entry == null) return null;
+        long age = System.currentTimeMillis() - entry.ts;
+        if (age > TTL_MS) {
+            CACHE.remove(key);
+            return null;
+        }
+        return (T) entry.val;
+    }
+
+    public static void remove(String key) {
+        CACHE.remove(key);
+    }
+
     /* Clears everything, usually during logout, to avoid showing stale personal
        information after someone leaves the app. */
     public static void clear() { CACHE.clear(); }

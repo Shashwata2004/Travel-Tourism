@@ -70,6 +70,7 @@ public final class Navigator {
     public static void goHome()  { load("home.fxml"); }
     public static void goPackages() { load("packages.fxml"); }
     public static void goDestinations() { load("destinations.fxml"); }
+    public static void goHotelSearch() { load("hotel_search.fxml"); }
     public static void goWelcome() { load("welcome.fxml"); }
     // Admin login view removed; reuse main login screen
     public static void goAdminLogin() { load("login.fxml"); }
