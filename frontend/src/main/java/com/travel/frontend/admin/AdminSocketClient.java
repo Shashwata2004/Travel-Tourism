@@ -6,6 +6,7 @@ package com.travel.frontend.admin;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -80,6 +81,68 @@ public class AdminSocketClient {
         if (!Boolean.TRUE.equals(res.get("ok"))) throw new IOException("DEST_LIST failed: " + res.get("msg"));
         List<DestinationVM> items = mapper.convertValue(res.get("items"), new TypeReference<List<DestinationVM>>() {});
         return items == null ? List.of() : items;
+    }
+
+    // ===== Hotels =====
+    public List<HotelVM> listHotels(String destinationId) throws IOException {
+        Map<String, Object> req = new HashMap<>();
+        req.put("type", "HOTEL_LIST");
+        req.put("token", effectiveToken());
+        req.put("destinationId", destinationId);
+        Map<String, Object> res = call(req);
+        if (!Boolean.TRUE.equals(res.get("ok"))) throw new IOException("HOTEL_LIST failed: " + res.get("msg"));
+        List<HotelVM> items = mapper.convertValue(res.get("items"), new TypeReference<List<HotelVM>>() {});
+        return items == null ? List.of() : items;
+    }
+
+    public String createHotel(HotelVM vm) throws IOException {
+        Map<String, Object> req = new HashMap<>();
+        req.put("type", "HOTEL_CREATE");
+        req.put("token", effectiveToken());
+        req.put("item", vm);
+        Map<String, Object> res = call(req);
+        if (!Boolean.TRUE.equals(res.get("ok"))) throw new IOException("HOTEL_CREATE failed: " + res.get("msg"));
+        return (String) res.get("id");
+    }
+
+    public void updateHotel(String id, HotelVM vm) throws IOException {
+        Map<String, Object> req = new HashMap<>();
+        req.put("type", "HOTEL_UPDATE");
+        req.put("token", effectiveToken());
+        req.put("id", id);
+        req.put("item", vm);
+        Map<String, Object> res = call(req);
+        if (!Boolean.TRUE.equals(res.get("ok"))) throw new IOException("HOTEL_UPDATE failed: " + res.get("msg"));
+    }
+
+    public void deleteHotel(String id) throws IOException {
+        Map<String, Object> req = new HashMap<>();
+        req.put("type", "HOTEL_DELETE");
+        req.put("token", effectiveToken());
+        req.put("id", id);
+        Map<String, Object> res = call(req);
+        if (!Boolean.TRUE.equals(res.get("ok"))) throw new IOException("HOTEL_DELETE failed: " + res.get("msg"));
+    }
+
+    public List<RoomVM> listRooms(String hotelId) throws IOException {
+        Map<String, Object> req = new HashMap<>();
+        req.put("type", "ROOM_LIST");
+        req.put("token", effectiveToken());
+        req.put("hotelId", hotelId);
+        Map<String, Object> res = call(req);
+        if (!Boolean.TRUE.equals(res.get("ok"))) throw new IOException("ROOM_LIST failed: " + res.get("msg"));
+        List<RoomVM> items = mapper.convertValue(res.get("items"), new TypeReference<List<RoomVM>>() {});
+        return items == null ? List.of() : items;
+    }
+
+    public void saveRooms(String hotelId, List<RoomVM> rooms) throws IOException {
+        Map<String, Object> req = new HashMap<>();
+        req.put("type", "ROOM_SAVE");
+        req.put("token", effectiveToken());
+        req.put("hotelId", hotelId);
+        req.put("items", rooms);
+        Map<String, Object> res = call(req);
+        if (!Boolean.TRUE.equals(res.get("ok"))) throw new IOException("ROOM_SAVE failed: " + res.get("msg"));
     }
 
     public String createDestination(DestinationVM vm) throws IOException {
@@ -157,10 +220,14 @@ public class AdminSocketClient {
        reply, and converts it back into a map. Covers connection timeouts and
        stream handling so each action method stays small. */
     private Map<String, Object> call(Map<String, Object> req) throws IOException {
+        return callWithRetry(req, 1);
+    }
+
+    private Map<String, Object> callWithRetry(Map<String, Object> req, int retries) throws IOException {
         try (Socket s = new Socket()) {
             try {
                 s.connect(new java.net.InetSocketAddress(host, port), 3000);
-                s.setSoTimeout(5000);
+                s.setSoTimeout(8000);
             } catch (IOException ce) {
                 throw new IOException("Connect failed to " + host + ":" + port + ": " + ce.getMessage(), ce);
             }
@@ -177,9 +244,13 @@ public class AdminSocketClient {
                     throw new IOException("Bad response from admin socket: " + line, parseEx);
                 }
             }
+        } catch (java.net.SocketTimeoutException ste) {
+            if (retries > 0) {
+                return callWithRetry(req, retries - 1);
+            }
+            throw ste;
         }
     }
-
     /* Lightweight view-model that mirrors what the admin socket sends back.
        Keeps only the fields needed on the dashboard list and edit form. */
     public static class PackageVM {
@@ -210,6 +281,7 @@ public class AdminSocketClient {
         public String subtitle;
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class DestinationVM {
         public String id;
         public String name;
@@ -217,10 +289,41 @@ public class AdminSocketClient {
         public String tags;
         public String bestSeason;
         public String imageUrl;
-        public Integer hotelsCount;
         public boolean active = true;
         public boolean packageAvailable; // server computed for display
         public String packageId;
         public String toString() { return name + " (" + region + ")"; }
+    }
+
+    public static class HotelVM {
+        public String id;
+        public String destinationId;
+        public String name;
+        public String rating;
+        public String realPrice;
+        public String currentPrice;
+        public String location;
+        public String nearby;
+        public String facilities;
+        public String description;
+        public Integer roomsCount;
+        public Integer floorsCount;
+        public String image1;
+        public String image2;
+        public String image3;
+        public String image4;
+        public String image5;
+        public String gallery;
+        public String toString() { return name == null ? "(untitled hotel)" : name; }
+    }
+
+    public static class RoomVM {
+        public String id;
+        public String name;
+        public String price;
+        public Integer maxGuests;
+        public Integer availableRooms;
+        public String description;
+        public String toString() { return name == null ? "(room)" : name; }
     }
 }

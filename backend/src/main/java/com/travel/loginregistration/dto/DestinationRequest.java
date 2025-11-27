@@ -6,7 +6,6 @@ public class DestinationRequest {
     private String tags;
     private String bestSeason;
     private String imageUrl;
-    private Integer hotelsCount;
     private Boolean active;
 
     public String getName() {
@@ -47,14 +46,6 @@ public class DestinationRequest {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public Integer getHotelsCount() {
-        return hotelsCount;
-    }
-
-    public void setHotelsCount(Integer hotelsCount) {
-        this.hotelsCount = hotelsCount;
     }
 
     public Boolean getActive() {

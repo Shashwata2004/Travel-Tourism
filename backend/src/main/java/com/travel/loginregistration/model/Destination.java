@@ -26,9 +26,6 @@ public class Destination {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "hotels_count")
-    private Integer hotelsCount = 0;
-
     @Column(nullable = false)
     private boolean active = true;
 
@@ -78,14 +75,6 @@ public class Destination {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public Integer getHotelsCount() {
-        return hotelsCount;
-    }
-
-    public void setHotelsCount(Integer hotelsCount) {
-        this.hotelsCount = hotelsCount;
     }
 
     public boolean isActive() {

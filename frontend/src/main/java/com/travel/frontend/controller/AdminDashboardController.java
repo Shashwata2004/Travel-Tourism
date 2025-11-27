@@ -59,7 +59,15 @@ public class AdminDashboardController {
         statusLabel.setText("Loading...");
         new Thread(() -> {
             try {
-                List<PackageVM> items = client.list();
+                List<PackageVM> items = com.travel.frontend.cache.FileCache.getOrLoad("admin:packages",
+                        new com.fasterxml.jackson.core.type.TypeReference<List<PackageVM>>(){},
+                        () -> {
+                            try {
+                                return client.list();
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        });
                 Platform.runLater(() -> {
                     listView.getItems().setAll(items);
                     statusLabel.setText("");

@@ -71,11 +71,13 @@ public final class Navigator {
     public static void goPackages() { load("packages.fxml"); }
     public static void goDestinations() { load("destinations.fxml"); }
     public static void goHotelSearch() { load("hotel_search.fxml"); }
+    public static void goHotelDetails() { load("hotel_details.fxml"); }
     public static void goWelcome() { load("welcome.fxml"); }
     // Admin login view removed; reuse main login screen
     public static void goAdminLogin() { load("login.fxml"); }
     public static void goAdminDashboard() { load("admin_dashboard.fxml"); }
     public static void goAdminDestinations() { load("admin_destinations.fxml"); }
+    public static void goAdminHotels() { load("admin_hotels.fxml"); }
 
     /* Sanity check before loading anything: reminds developers to call init(...)
        before touching navigation, otherwise JavaFX would throw null pointers. */

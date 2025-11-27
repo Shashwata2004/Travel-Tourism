@@ -39,4 +39,19 @@ public class DestinationController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}/hotels/count")
+    public ResponseEntity<Long> hotelCount(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.countHotels(id));
+    }
+
+    @GetMapping("/{id}/hotels")
+    public ResponseEntity<List<com.travel.loginregistration.dto.HotelSummary>> hotels(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.listHotels(id));
+    }
+
+    @GetMapping("/hotels/{hotelId}")
+    public ResponseEntity<com.travel.loginregistration.dto.HotelDetails> hotel(@PathVariable UUID hotelId) {
+        return ResponseEntity.ok(service.getHotelDetails(hotelId));
+    }
 }

@@ -3,6 +3,7 @@ package com.travel.frontend.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travel.frontend.cache.DataCache;
+import com.travel.frontend.cache.FileCache;
 import com.travel.frontend.net.ApiClient;
 import com.travel.frontend.ui.Navigator;
 import javafx.animation.*;
@@ -21,6 +22,7 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -82,16 +84,29 @@ public class DestinationsController {
     private void loadDestinations() {
         new Thread(() -> {
             try {
-                List<DestinationCard> cached = DataCache.getOrLoad("destinations", () -> {
-                    var res = api.rawGet("/destinations", true);
-                    if (res.statusCode() != 200) {
-                        throw new ApiClient.ApiException("Failed to load destinations");
-                    }
-                    return mapper.readValue(res.body(), new TypeReference<List<DestinationCard>>() {});
-                });
+                List<DestinationCard> cached = DataCache.peek("destinations:list");
+                if (cached == null) {
+                    final List<DestinationCard>[] holder = new List[1];
+                    cached = FileCache.getOrLoad("destinations:list",
+                            new TypeReference<List<DestinationCard>>() {},
+                            () -> {
+                                try {
+                                    var res = api.rawGet("/destinations", true);
+                                    if (res.statusCode() != 200) {
+                                        throw new ApiClient.ApiException("Failed to load destinations");
+                                    }
+                                    holder[0] = mapper.readValue(res.body(), new TypeReference<List<DestinationCard>>() {});
+                                    return holder[0];
+                                } catch (Exception ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            });
+                    DataCache.put("destinations:list", cached);
+                }
+                final List<DestinationCard> items = cached;
                 Platform.runLater(() -> {
                     allItems.clear();
-                    allItems.addAll(cached);
+                    allItems.addAll(items);
                     applyFilter();
                 });
             } catch (Exception e) {
@@ -204,8 +219,8 @@ public class DestinationsController {
 
         HBox seasonRow = new HBox(6);
         seasonRow.getStyleClass().add("seasonRow");
-        Label seasonIcon = new Label("\uD83D\uDCC5");
-        seasonIcon.getStyleClass().add("seasonIcon");
+        SVGPath seasonIcon = createSvgIcon("M5 4c-.552 0-1 .448-1 1v1H3v2h18V6h-1V5c0-.552-.448-1-1-1h-2V3h-2v2H9V3H7v2H5zm0 4v9c0 1.103.897 2 2 2h10c1.103 0 2-.897 2-2V8H5zm3 3h2v2H8v-2zm4 0h2v2h-2v-2z",
+                16, "#5f7d9d");
         Label seasonText = new Label(d.bestSeason == null || d.bestSeason.isBlank()
                 ? "Best season info coming soon"
                 : "Best season: " + d.bestSeason);
@@ -218,8 +233,8 @@ public class DestinationsController {
         HBox hotelsBadge = new HBox(6);
         hotelsBadge.setAlignment(Pos.CENTER_LEFT);
         hotelsBadge.getStyleClass().add("hotelsBadge");
-        Label hotelIcon = new Label("\uD83C\uDFE8");
-        hotelIcon.getStyleClass().add("hotelIcon");
+        SVGPath hotelIcon = createSvgIcon("M4 10.5V19h2v-2h12v2h2v-8.5c0-1.657-1.343-3-3-3h-2V5c0-.552-.448-1-1-1H8c-.552 0-1 .448-1 1v2.5H5c-.552 0-1 .448-1 1zm12-1.5c.552 0 1 .448 1 1V11h-2v-2h1zM7 7h6v1.5H7V7zm0 3.5h2v2H7v-2zm4 0h2v2h-2v-2zM7 15h10v-2h-2v1h-2v-1h-2v1H9v-1H7v2z",
+                16, "#5f7d9d");
         Label hotelText = new Label(Math.max(d.hotelsCount, 0) + " hotels");
         hotelText.getStyleClass().add("hotelText");
         hotelsBadge.getChildren().addAll(hotelIcon, hotelText);
@@ -242,6 +257,16 @@ public class DestinationsController {
 
         applyCardHover(wrapper, heroImage, explore);
         return wrapper;
+    }
+
+    private SVGPath createSvgIcon(String pathData, double size, String colorHex) {
+        SVGPath icon = new SVGPath();
+        icon.setContent(pathData);
+        icon.setFill(Color.web(colorHex));
+        double scale = size / 24.0;
+        icon.setScaleX(scale);
+        icon.setScaleY(scale);
+        return icon;
     }
 
     private Node createPackageChip(DestinationCard d) {

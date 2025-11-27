@@ -3,17 +3,26 @@
     -fx-background-color: linear-gradient(to bottom right, #f4f6ff, #edf1ff);
 }
 
+.hotelScroll {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 18 0;
+}
+.hotelScroll .viewport {
+    -fx-background-color: transparent;
+}
+
 .hotelContent {
-    -fx-padding: 18 22 40 22;
+    -fx-padding: 24 22 40 22;
     -fx-spacing: 18;
 }
 
 .backLink {
     -fx-background-color: transparent;
     -fx-text-fill: #4338ca;
-    -fx-font-weight: 600;
-    -fx-padding: 4 12 4 12;
-    -fx-background-radius: 20;
+    -fx-font-weight: 700;
+    -fx-font-size: 16px;
+    -fx-padding: 8 16 8 14;
+    -fx-background-radius: 22;
 }
 .backLink:hover { -fx-background-color: rgba(67,56,202,0.12); }
 
@@ -27,14 +36,169 @@
 
 .heroBadge { -fx-background-color: rgba(79,70,229,0.15); -fx-padding: 6 18; -fx-background-radius: 999; }
 .heroBadgeText { -fx-text-fill: #4338ca; -fx-font-size: 13px; -fx-font-weight: 700; }
-.heroTitle { -fx-font-size: 40px; -fx-font-weight: 800; -fx-text-fill: #0f172a; }
-.heroSubtitle { -fx-text-fill: #475569; -fx-font-size: 15px; }
+.heroTitle { -fx-font-size: 48px; -fx-font-weight: 800; -fx-text-fill: #0f172a; }
+.heroSubtitle { -fx-text-fill: #475569; -fx-font-size: 17px; }
+
+.propertiesRow {
+    -fx-padding: 10 4 0 4;
+    -fx-view-order: 5;
+}
+.propertiesCount {
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #111827;
+}
+.sortSelect {
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #f3f4f6);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: rgba(156,163,175,0.6);
+    -fx-padding: 6 10;
+    -fx-font-size: 14px;
+    -fx-text-fill: #4b5563;
+    -fx-pref-width: 200;
+    -fx-max-width: 220;
+}
+.sortSelect .arrow {
+    -fx-background-color: #6b7280;
+}
+.sortSelect:focused {
+    -fx-border-color: #6366f1;
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #eef2ff);
+}
+
+.hotelsList {
+    -fx-padding: 10 0 30 0;
+    -fx-view-order: 100;
+}
+.hotelCard {
+    -fx-background-color: linear-gradient(to bottom right, #ffffff, #f5f7ff);
+    -fx-background-radius: 18;
+    -fx-padding: 14;
+    -fx-effect: dropshadow(gaussian, rgba(17,24,39,0.18), 28, 0.35, 0, 14);
+    -fx-alignment: CENTER_LEFT;
+    -fx-min-height: 360;
+    -fx-view-order: 100;
+}
+.hotelCardImage {
+    -fx-background-radius: 14;
+    -fx-padding: 0;
+}
+.hotelCardBody {
+    -fx-spacing: 8;
+    -fx-padding: 10 0 0 0;
+}
+.hotelCardTitle {
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f172a;
+}
+.ratingBadge {
+    -fx-background-color: #e8f0ff;
+    -fx-text-fill: #1f3f6d;
+    -fx-padding: 6 12;
+    -fx-background-radius: 12;
+    -fx-border-color: #3b82f6;
+    -fx-border-radius: 12;
+    -fx-font-weight: 700;
+    -fx-font-size: 14px;
+    -fx-min-width: 90;
+    -fx-alignment: center;
+}
+.locationIcon {
+    -fx-fill: #4b5563;
+}
+.hotelLocation {
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #1f2937;
+}
+.roomsAlert {
+    -fx-text-fill: #d4183d;
+    -fx-font-weight: 700;
+    -fx-padding: 6 10;
+    -fx-border-color: #d4183d;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+}
+.facilitiesRow {
+    -fx-padding: 6 0;
+}
+.facilityPill {
+    -fx-text-fill: #1f2937;
+    -fx-padding: 8 14;
+    -fx-background-radius: 18;
+    -fx-font-weight: 600;
+    -fx-font-size: 14px;
+}
+.facilityIcon {
+    -fx-fill: #1d4ed8;
+}
+.facilityAir {
+    -fx-background-color: linear-gradient(to right, #e0f2ff, #ecfeff);
+    -fx-border-color: #93c5fd;
+    -fx-border-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.25), 8, 0.4, 0, 2);
+}
+.facilityKids {
+    -fx-background-color: linear-gradient(to right, #f3e8ff, #e0f2fe);
+    -fx-border-color: #c084fc;
+    -fx-border-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.25), 8, 0.4, 0, 2);
+}
+.facilityBath {
+    -fx-background-color: linear-gradient(to right, #ecfdf3, #dcfce7);
+    -fx-border-color: #34d399;
+    -fx-border-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(16,185,129,0.22), 8, 0.4, 0, 2);
+}
+.facilityCouple {
+    -fx-background-color: linear-gradient(to right, #fdf2f8, #fce7f3);
+    -fx-border-color: #f472b6;
+    -fx-border-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(244,114,182,0.25), 8, 0.4, 0, 2);
+}
+.facilityDefault {
+    -fx-background-color: linear-gradient(to right, #eef2ff, #e0e7ff);
+    -fx-border-color: #a5b4fc;
+    -fx-border-radius: 18;
+}
+.discountBadge {
+    -fx-background-color: linear-gradient(to right, #22c55e, #16a34a);
+    -fx-text-fill: white;
+    -fx-padding: 8 12;
+    -fx-background-radius: 12;
+    -fx-font-weight: 800;
+}
+.hotelPrice {
+    -fx-font-size: 28px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #c026d3;
+}
+.strikePrice {
+    -fx-text-fill: #6b7280;
+    -fx-strikethrough: true;
+}
+.hotelSelectBtn {
+    -fx-background-color: linear-gradient(to right, #4f46e5, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-font-size: 16px;
+    -fx-padding: 14 28;
+    -fx-background-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.35), 18, 0.4, 0, 6);
+}
+.hotelSelectBtn:hover {
+    -fx-translate-y: -3;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.35), 20, 0.45, 0, 10);
+}
 
 .searchCapsule {
     -fx-background-color: #ffffff;
     -fx-background-radius: 40;
     -fx-padding: 18 20;
-    -fx-spacing: 14;
+    -fx-spacing: 18;
     -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.16), 28, 0.4, 0, 12);
 }
 
@@ -57,11 +221,39 @@
     -fx-text-fill: #0f172a;
     -fx-font-weight: 700;
     -fx-font-size: 16px;
-    -fx-padding: 14 28;
-    -fx-background-radius: 26;
+    -fx-padding: 18 32;
+    -fx-background-radius: 28;
+    -fx-min-height: 72;
+    -fx-alignment: center;
     -fx-effect: dropshadow(gaussian, rgba(245,158,11,0.35), 24, 0.4, 0, 8);
 }
 .searchCTA:hover { -fx-cursor: hand; }
+
+/* DatePicker styling */
+.date-picker {
+    -fx-background-color: rgba(255,255,255,0.9);
+    -fx-background-radius: 12;
+    -fx-border-color: rgba(99,102,241,0.35);
+    -fx-border-radius: 12;
+    -fx-padding: 4 6 4 6;
+}
+.date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: #0f172a;
+    -fx-font-size: 16px;
+    -fx-padding: 6 8 6 8;
+}
+.date-picker .arrow-button {
+    -fx-background-color: rgba(99,102,241,0.12);
+    -fx-background-radius: 0 10 10 0;
+    -fx-padding: 0 10 0 10;
+}
+.date-picker .arrow-button:hover {
+    -fx-background-color: rgba(99,102,241,0.2);
+}
+.date-picker .arrow {
+    -fx-background-color: #4338ca;
+}
 
 .pinIcon { -fx-fill: transparent; -fx-stroke: rgba(67,56,202,0.95); -fx-stroke-width: 2; }
 .pinCenter { -fx-fill: rgba(67,56,202,0.95); }
@@ -103,4 +295,42 @@
 }
 .doneBtn:hover { -fx-cursor: hand; }
 
-.backdropHidden { -fx-opacity: 0; }
+.guestOverlayMini {
+    -fx-translate-y: 110;
+    -fx-translate-x: 0;
+}
+.guestCardMini {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-padding: 14 16 16 16;
+    -fx-spacing: 12;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.22), 20, 0.35, 0, 8);
+    -fx-min-width: 240;
+}
+.guestStepperMini { -fx-spacing: 12; -fx-alignment: center; }
+.roundBtnMini {
+    -fx-background-color: linear-gradient(to right, #e0e7ff, #c7d2fe);
+    -fx-background-radius: 999;
+    -fx-text-fill: #4338ca;
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+    -fx-min-width: 34; -fx-min-height: 34;
+}
+.roundBtnMini:hover { -fx-background-color: #e0e7ff; }
+.helperNoteMini {
+    -fx-background-color: rgba(99,102,241,0.12);
+    -fx-background-radius: 14;
+    -fx-padding: 8 10;
+    -fx-text-fill: #4338ca;
+    -fx-font-size: 12px;
+    -fx-alignment: center;
+}
+.doneBtnMini {
+    -fx-background-radius: 16;
+    -fx-background-color: linear-gradient(to right, #7c3aed, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-padding: 8 26;
+    -fx-min-width: 140;
+}
+.doneBtnMini:hover { -fx-cursor: hand; }

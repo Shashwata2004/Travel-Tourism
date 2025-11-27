@@ -4,6 +4,9 @@ import com.travel.frontend.admin.AdminSession;
 import com.travel.frontend.admin.AdminSocketClient;
 import com.travel.frontend.admin.AdminSocketClient.DestinationVM;
 import com.travel.frontend.ui.Navigator;
+import com.travel.frontend.controller.AdminHotelsState;
+import com.travel.frontend.cache.FileCache;
+import com.fasterxml.jackson.core.type.TypeReference;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -17,7 +20,6 @@ public class AdminDestinationsController {
     @FXML private TextField tagsField;
     @FXML private TextField seasonField;
     @FXML private TextField imageField;
-    @FXML private TextField hotelsField;
     @FXML private CheckBox activeBox;
     @FXML private Label pkgAvailableLabel;
     @FXML private Label statusLabel;
@@ -36,6 +38,26 @@ public class AdminDestinationsController {
 
     @FXML public void onBack() { Navigator.goLogin(); }
     @FXML public void goPackages() { Navigator.goAdminDashboard(); }
+    @FXML public void goHotels() {
+        DestinationVM sel = listView.getSelectionModel().getSelectedItem();
+        if (sel == null || sel.id == null || sel.id.isBlank()) {
+            statusLabel.setText("Select a destination first");
+            return;
+        }
+        try {
+            System.out.println("[AdminDestinations] goHotels selected id=" + sel.id + " name=" + sel.name);
+            java.util.UUID destId = java.util.UUID.fromString(sel.id.trim());
+            AdminHotelsState.set(destId, sel.name);
+            statusLabel.setText("");
+            Navigator.goAdminHotels();
+        } catch (Exception e) {
+            statusLabel.setText("Invalid destination id. Refreshing list...");
+            // Clear cached destinations and refresh to heal bad/stale ids
+            FileCache.remove("admin:destinations");
+            onRefresh();
+            showError("Could not open Hotels", "The selected destination id was invalid: " + e.getMessage());
+        }
+    }
 
     @FXML
     public void onRefresh() {
@@ -46,7 +68,15 @@ public class AdminDestinationsController {
         statusLabel.setText("Loading...");
         new Thread(() -> {
             try {
-                List<DestinationVM> items = client.listDestinations();
+                List<DestinationVM> items = FileCache.getOrLoad("admin:destinations",
+                        new TypeReference<List<DestinationVM>>(){},
+                        () -> {
+                            try {
+                                return client.listDestinations();
+                            } catch (Exception ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        });
                 Platform.runLater(() -> {
                     listView.getItems().setAll(items);
                     statusLabel.setText("");
@@ -56,6 +86,15 @@ public class AdminDestinationsController {
                 Platform.runLater(() -> statusLabel.setText("Load failed: " + detailedMessage(e)));
             }
         }).start();
+    }
+
+    private void showError(String title, String msg) {
+        Platform.runLater(() -> {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setHeaderText(title);
+            a.setContentText(msg);
+            a.showAndWait();
+        });
     }
 
     @FXML
@@ -119,7 +158,6 @@ public class AdminDestinationsController {
         tagsField.setText(n(vm.tags));
         seasonField.setText(n(vm.bestSeason));
         imageField.setText(n(vm.imageUrl));
-        hotelsField.setText(vm.hotelsCount == null ? "" : vm.hotelsCount.toString());
         activeBox.setSelected(vm.active);
         pkgAvailableLabel.setText(vm.packageAvailable ? "Yes" : "No");
     }
@@ -132,8 +170,6 @@ public class AdminDestinationsController {
         vm.tags = t(tagsField);
         vm.bestSeason = t(seasonField);
         vm.imageUrl = t(imageField);
-        String h = t(hotelsField);
-        try { vm.hotelsCount = h.isBlank() ? 0 : Integer.parseInt(h); } catch (NumberFormatException e) { vm.hotelsCount = 0; }
         vm.active = activeBox.isSelected();
         return vm;
     }
@@ -144,7 +180,6 @@ public class AdminDestinationsController {
         tagsField.clear();
         seasonField.clear();
         imageField.clear();
-        hotelsField.clear();
         activeBox.setSelected(true);
         pkgAvailableLabel.setText("");
     }
@@ -155,7 +190,6 @@ public class AdminDestinationsController {
         to.tags = from.tags;
         to.bestSeason = from.bestSeason;
         to.imageUrl = from.imageUrl;
-        to.hotelsCount = from.hotelsCount;
         to.active = from.active;
     }
 

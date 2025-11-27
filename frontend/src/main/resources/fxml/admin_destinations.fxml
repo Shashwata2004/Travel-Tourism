@@ -13,6 +13,7 @@
             <padding><Insets topRightBottomLeft="10"/></padding>
             <Button text="Back" onAction="#onBack"/>
             <Button text="Packages" onAction="#goPackages"/>
+            <Button text="Hotels" onAction="#goHotels"/>
             <Label text="Admin — Manage Destinations" id="cardTitle"/>
             <Pane HBox.hgrow="ALWAYS"/>
             <Button text="Refresh" onAction="#onRefresh"/>
@@ -52,14 +53,11 @@
                         <Label text="Image URL" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
                         <TextField fx:id="imageField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
 
-                        <Label text="Hotels Count" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-                        <TextField fx:id="hotelsField" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+                        <Label text="Package Available" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                        <Label fx:id="pkgAvailableLabel" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
 
-                        <Label text="Package Available" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
-                        <Label fx:id="pkgAvailableLabel" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
-
-                        <Label text="Active" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
-                        <CheckBox fx:id="activeBox" GridPane.rowIndex="7" GridPane.columnIndex="1" selected="true"/>
+                        <Label text="Active" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                        <CheckBox fx:id="activeBox" GridPane.rowIndex="6" GridPane.columnIndex="1" selected="true"/>
                     </GridPane>
                     <Label fx:id="statusLabel" id="statusLabel"/>
                 </VBox>

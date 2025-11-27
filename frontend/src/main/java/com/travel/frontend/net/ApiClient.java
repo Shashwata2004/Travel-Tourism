@@ -116,6 +116,45 @@ public final class ApiClient {
         return post(path, body, withAuth);
     }
 
+    // --- Hotels ---
+    public long getHotelCount(java.util.UUID destinationId) throws ApiException {
+        HttpResponse<String> res = get("/destinations/" + destinationId + "/hotels/count", false);
+        if (res.statusCode() == 200) {
+            try {
+                return Long.parseLong(res.body());
+            } catch (NumberFormatException e) {
+                throw new ApiException("Bad count response: " + res.body(), e);
+            }
+        }
+        throw error(res, "Load hotel count failed");
+    }
+
+    public java.util.List<com.travel.frontend.controller.HotelSearchController.HotelCard> getHotelsForDestination(java.util.UUID destinationId) throws ApiException {
+        HttpResponse<String> res = get("/destinations/" + destinationId + "/hotels", false);
+        if (res.statusCode() == 200) {
+            try {
+                return mapper.readValue(res.body(),
+                        mapper.getTypeFactory().constructCollectionType(java.util.List.class,
+                                com.travel.frontend.controller.HotelSearchController.HotelCard.class));
+            } catch (Exception e) {
+                throw new ApiException("Invalid hotel list response", e);
+            }
+        }
+        throw error(res, "Load hotels failed");
+    }
+
+    public com.travel.frontend.model.HotelDetails getHotelDetails(java.util.UUID hotelId) throws ApiException {
+        HttpResponse<String> res = get("/destinations/hotels/" + hotelId, false);
+        if (res.statusCode() == 200) {
+            try {
+                return mapper.readValue(res.body(), com.travel.frontend.model.HotelDetails.class);
+            } catch (Exception e) {
+                throw new ApiException("Invalid hotel details response", e);
+            }
+        }
+        throw error(res, "Load hotel details failed");
+    }
+
     // --- Low-level helpers ---
     /* Core POST builder using HttpClient; attaches JSON headers and the token
        when requested. */

@@ -5,10 +5,14 @@ import com.travel.loginregistration.model.AdminUser;
 import com.travel.loginregistration.model.TravelPackage;
 import com.travel.loginregistration.model.PackageItinerary;
 import com.travel.loginregistration.model.Destination;
+import com.travel.loginregistration.model.Hotel;
+import com.travel.loginregistration.model.HotelRoom;
 import com.travel.loginregistration.repository.AdminUserRepository;
 import com.travel.loginregistration.repository.TravelPackageRepository;
 import com.travel.loginregistration.repository.PackageItineraryRepository;
 import com.travel.loginregistration.repository.DestinationRepository;
+import com.travel.loginregistration.repository.HotelRepository;
+import com.travel.loginregistration.repository.HotelRoomRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +39,8 @@ public class AdminSocketServer {
     private final TravelPackageRepository pkgRepo;
     private final PackageItineraryRepository itineraryRepo;
     private final DestinationRepository destinationRepo;
+    private final HotelRepository hotelRepo;
+    private final HotelRoomRepository roomRepo;
     private final BCryptPasswordEncoder encoder;
     private final TransactionTemplate txTemplate;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -42,12 +48,15 @@ public class AdminSocketServer {
 
     public AdminSocketServer(AdminUserRepository adminRepo, TravelPackageRepository pkgRepo,
                              PackageItineraryRepository itineraryRepo, DestinationRepository destinationRepo,
+                             HotelRepository hotelRepo, HotelRoomRepository roomRepo,
                              BCryptPasswordEncoder encoder,
                              PlatformTransactionManager txManager) {
         this.adminRepo = adminRepo;
         this.pkgRepo = pkgRepo;
         this.itineraryRepo = itineraryRepo;
         this.destinationRepo = destinationRepo;
+        this.hotelRepo = hotelRepo;
+        this.roomRepo = roomRepo;
         this.encoder = encoder;
         this.txTemplate = new TransactionTemplate(txManager);
     }
@@ -117,6 +126,30 @@ public class AdminSocketServer {
                     if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
                     res = txTemplate.execute(status -> deleteDestination(req));
                 }
+                case "HOTEL_LIST" -> {
+                    if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
+                    res = listHotels(req);
+                }
+                case "HOTEL_CREATE" -> {
+                    if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
+                    res = txTemplate.execute(status -> createHotel(req));
+                }
+                case "HOTEL_UPDATE" -> {
+                    if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
+                    res = txTemplate.execute(status -> updateHotel(req));
+                }
+                case "HOTEL_DELETE" -> {
+                    if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
+                    res = txTemplate.execute(status -> deleteHotel(req));
+                }
+                case "ROOM_LIST" -> {
+                    if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
+                    res = listRooms(req);
+                }
+                case "ROOM_SAVE" -> {
+                    if (!authorized(req)) { res = err("UNAUTHORIZED"); break; }
+                    res = txTemplate.execute(status -> saveRooms(req));
+                }
                 default -> res = err("UNKNOWN_TYPE");
             }
             bw.write(mapper.writeValueAsString(res));
@@ -175,7 +208,7 @@ public class AdminSocketServer {
             m.put("tags", d.getTags());
             m.put("bestSeason", d.getBestSeason());
             m.put("imageUrl", d.getImageUrl());
-            m.put("hotelsCount", d.getHotelsCount());
+            m.put("hotelsCount", hotelRepo.countByDestinationId(d.getId()));
             m.put("active", d.isActive());
             Optional<UUID> pkgId = findMatchingPackageId(d.getName());
             m.put("packageAvailable", pkgId.isPresent());
@@ -260,6 +293,78 @@ public class AdminSocketServer {
         return ok();
     }
 
+    private Map<String, Object> listHotels(Map<String, Object> req) {
+        String destStr = (String) req.get("destinationId");
+        if (destStr == null) return err("MISSING_DESTINATION");
+        UUID destId = UUID.fromString(destStr);
+        List<Hotel> hotels = hotelRepo.findByDestinationIdOrderByNameAsc(destId);
+        Map<String, Object> ok = ok();
+        ok.put("items", hotels);
+        return ok;
+    }
+
+    private Map<String, Object> createHotel(Map<String, Object> req) {
+        Map<String, Object> item = (Map<String, Object>) req.get("item");
+        Hotel h = new Hotel();
+        applyHotel(h, item);
+        hotelRepo.save(h);
+        Map<String, Object> ok = ok();
+        ok.put("id", h.getId());
+        return ok;
+    }
+
+    private Map<String, Object> updateHotel(Map<String, Object> req) {
+        String idStr = (String) req.get("id");
+        if (idStr == null) return err("MISSING_ID");
+        UUID id = UUID.fromString(idStr);
+        Hotel h = hotelRepo.findById(id).orElse(null);
+        if (h == null) return err("NOT_FOUND");
+        Map<String, Object> item = (Map<String, Object>) req.get("item");
+        applyHotel(h, item);
+        hotelRepo.save(h);
+        return ok();
+    }
+
+    private Map<String, Object> deleteHotel(Map<String, Object> req) {
+        String idStr = (String) req.get("id");
+        if (idStr == null) return err("MISSING_ID");
+        UUID id = UUID.fromString(idStr);
+        if (hotelRepo.existsById(id)) hotelRepo.deleteById(id);
+        return ok();
+    }
+
+    private Map<String, Object> listRooms(Map<String, Object> req) {
+        String hotelStr = (String) req.get("hotelId");
+        if (hotelStr == null) return err("MISSING_HOTEL");
+        UUID hotelId = UUID.fromString(hotelStr);
+        List<HotelRoom> rooms = roomRepo.findByHotelIdOrderByNameAsc(hotelId);
+        Map<String, Object> ok = ok();
+        ok.put("items", rooms);
+        return ok;
+    }
+
+    // Saves all rooms for a hotel by replacing existing ones with provided list.
+    private Map<String, Object> saveRooms(Map<String, Object> req) {
+        String hotelStr = (String) req.get("hotelId");
+        if (hotelStr == null) return err("MISSING_HOTEL");
+        UUID hotelId = UUID.fromString(hotelStr);
+        Object rawList = req.get("items");
+        if (!(rawList instanceof List<?> list)) return err("NO_ITEMS");
+        roomRepo.deleteByHotelId(hotelId);
+        List<HotelRoom> toSave = new ArrayList<>();
+        for (Object o : list) {
+            if (!(o instanceof Map<?,?> any)) continue;
+            @SuppressWarnings("unchecked")
+            Map<String,Object> m = (Map<String,Object>) any;
+            HotelRoom r = new HotelRoom();
+            r.setHotelId(hotelId);
+            applyRoom(r, m);
+            toSave.add(r);
+        }
+        if (!toSave.isEmpty()) roomRepo.saveAll(toSave);
+        return ok();
+    }
+
     // Copies allowed fields from the arbitrary map into the entity.
     private void apply(TravelPackage p, Map<String, Object> item) {
         if (item == null) return;
@@ -293,8 +398,46 @@ public class AdminSocketServer {
         if (item.containsKey("tags")) d.setTags(str(item.get("tags")));
         if (item.containsKey("bestSeason")) d.setBestSeason(str(item.get("bestSeason")));
         if (item.containsKey("imageUrl")) d.setImageUrl(str(item.get("imageUrl")));
-        if (item.containsKey("hotelsCount")) d.setHotelsCount(intVal(item.get("hotelsCount")));
         if (item.containsKey("active")) d.setActive(bool(item.get("active")));
+    }
+
+    private void applyHotel(Hotel h, Map<String, Object> item) {
+        if (item == null) return;
+        if (item.containsKey("destinationId")) {
+            String dest = str(item.get("destinationId"));
+            if (dest != null && !dest.isBlank()) h.setDestinationId(UUID.fromString(dest));
+        }
+        if (item.containsKey("name")) h.setName(norm(str(item.get("name"))));
+        if (item.containsKey("rating")) h.setRating(toBigDecimal(item.get("rating")));
+        if (item.containsKey("realPrice")) h.setRealPrice(toBigDecimal(item.get("realPrice")));
+        if (item.containsKey("currentPrice")) h.setCurrentPrice(toBigDecimal(item.get("currentPrice")));
+        if (item.containsKey("location")) h.setLocation(str(item.get("location")));
+        if (item.containsKey("nearby")) h.setNearby(str(item.get("nearby")));
+        if (item.containsKey("facilities")) h.setFacilities(str(item.get("facilities")));
+        if (item.containsKey("description")) h.setDescription(str(item.get("description")));
+        if (item.containsKey("roomsCount")) h.setRoomsCount(intVal(item.get("roomsCount")));
+        if (item.containsKey("floorsCount")) h.setFloorsCount(intVal(item.get("floorsCount")));
+        if (item.containsKey("image1")) h.setImage1(str(item.get("image1")));
+        if (item.containsKey("image2")) h.setImage2(str(item.get("image2")));
+        if (item.containsKey("image3")) h.setImage3(str(item.get("image3")));
+        if (item.containsKey("image4")) h.setImage4(str(item.get("image4")));
+        if (item.containsKey("image5")) h.setImage5(str(item.get("image5")));
+        if (item.containsKey("gallery")) h.setGallery(str(item.get("gallery")));
+    }
+
+    private void applyRoom(HotelRoom r, Map<String, Object> item) {
+        if (item == null) return;
+        if (item.containsKey("id")) {
+            String idStr = str(item.get("id"));
+            if (idStr != null && !idStr.isBlank()) {
+                try { r.setId(UUID.fromString(idStr)); } catch (Exception ignore) {}
+            }
+        }
+        if (item.containsKey("name")) r.setName(str(item.get("name")));
+        if (item.containsKey("price")) r.setPrice(toBigDecimal(item.get("price")));
+        if (item.containsKey("maxGuests")) r.setMaxGuests(intVal(item.get("maxGuests")));
+        if (item.containsKey("availableRooms")) r.setAvailableRooms(intVal(item.get("availableRooms")));
+        if (item.containsKey("description")) r.setDescription(str(item.get("description")));
     }
 
     // Handles itineraries: clears old rows for this package and inserts the new list if provided.

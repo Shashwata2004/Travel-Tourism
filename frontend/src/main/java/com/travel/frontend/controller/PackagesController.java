@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travel.frontend.net.ApiClient;
 import com.travel.frontend.cache.DataCache;
+import com.travel.frontend.cache.FileCache;
 import com.travel.frontend.ui.Navigator;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -23,6 +24,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.SVGPath;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import javafx.animation.TranslateTransition;
 import javafx.animation.ScaleTransition;
@@ -58,11 +61,26 @@ public class PackagesController {
     private void loadPackages() {
         new Thread(() -> {
             try {
-                List<PackageCard> items = DataCache.getOrLoad("packages", () -> {
-                    var res = api.rawGet("/packages", true);
-                    if (res.statusCode() != 200) throw new ApiClient.ApiException("Failed to load packages");
-                    return mapper.readValue(res.body(), new TypeReference<List<PackageCard>>(){});
-                });
+                List<PackageCard> cached = DataCache.peek("packages:list");
+                if (cached == null) {
+                    final List<PackageCard>[] holder = new List[1];
+                    cached = FileCache.getOrLoad("packages:list",
+                            new TypeReference<List<PackageCard>>(){},
+                            () -> {
+                                try {
+                                    var res = api.rawGet("/packages", true);
+                                    if (res.statusCode() != 200) {
+                                        throw new ApiClient.ApiException("Failed to load packages");
+                                    }
+                                    holder[0] = mapper.readValue(res.body(), new TypeReference<List<PackageCard>>(){});
+                                    return holder[0];
+                                } catch (Exception ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            });
+                    DataCache.put("packages:list", cached);
+                }
+                final List<PackageCard> items = cached;
                 Platform.runLater(() -> render(items));
             } catch (Exception e) {
                 Platform.runLater(() -> {
@@ -126,17 +144,19 @@ public class PackagesController {
         meta.getStyleClass().add("metaRow");
         HBox duration = new HBox();
         duration.getStyleClass().addAll("metaItem", "cardMeta");
-        Label durationIcon = new Label("\uD83D\uDCC5");
+        SVGPath calendarIcon = createSvgIcon("M5 4c-.552 0-1 .448-1 1v1H3v2h18V6h-1V5c0-.552-.448-1-1-1h-2V3h-2v2H9V3H7v2H5zm0 4v9c0 1.103.897 2 2 2h10c1.103 0 2-.897 2-2V8H5zm3 3h2v2H8v-2zm4 0h2v2h-2v-2z",
+                16, "#5f7d9d");
         Label durationText = new Label("3 Days, 2 Nights");
         durationText.getStyleClass().add("cardMeta");
-        duration.getChildren().addAll(durationIcon, durationText);
+        duration.getChildren().addAll(calendarIcon, durationText);
 
         HBox group = new HBox();
         group.getStyleClass().addAll("metaItem", "cardMeta");
-        Label groupIcon = new Label("\uD83D\uDC65");
+        SVGPath peopleIcon = createSvgIcon("M8 3.5a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm8 1.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM8 11c-3.59 0-6.5 2.3-6.5 5v2.5h9V16c0-.59.15-1.17.44-1.69A6.87 6.87 0 0 0 8 11zm5.54 1.16c-.37.16-.71.35-1.02.57-.36.25-.6.47-.74.61-.2.2-.3.33-.34.39-.07.1-.14.22-.18.34-.15.39-.24.81-.24 1.23V18.5H20V17c0-1.82-1.63-3.18-2.8-3.8a5.44 5.44 0 0 0-3.66-.99z",
+                16, "#5f7d9d");
         Label groupText = new Label("2-6 People");
         groupText.getStyleClass().add("cardMeta");
-        group.getChildren().addAll(groupIcon, groupText);
+        group.getChildren().addAll(peopleIcon, groupText);
 
         meta.getChildren().addAll(duration, group);
 
@@ -199,6 +219,15 @@ public class PackagesController {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private SVGPath createSvgIcon(String pathData, double size, String colorHex) {
+        SVGPath icon = new SVGPath();
+        icon.setContent(pathData);
+        icon.setFill(Color.web(colorHex));
+        icon.setScaleX(size / 24.0);
+        icon.setScaleY(size / 24.0);
+        return icon;
     }
 
     @FXML private void goPersonal() { Navigator.goHome(); }

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.shape.Circle?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.travel.frontend.controller.HotelDetailsController"
+            fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            stylesheets="@/css/hotel_details.css">
+    <content>
+        <StackPane>
+            <Pane styleClass="orbLayer">
+                <children>
+                    <Circle fx:id="orbA" centerX="200" centerY="200" radius="200" styleClass="orbA"/>
+                    <Circle fx:id="orbB" centerX="900" centerY="180" radius="220" styleClass="orbB"/>
+                    <Circle fx:id="orbC" centerX="500" centerY="520" radius="260" styleClass="orbC"/>
+                </children>
+            </Pane>
+            <VBox spacing="20" styleClass="detailsRoot" alignment="TOP_CENTER">
+            <Button text="← Back" onAction="#goBack" styleClass="backBtn"/>
+
+            <VBox spacing="12" styleClass="galleryCard">
+                <StackPane>
+                    <ImageView fx:id="mainImage" preserveRatio="true" fitWidth="1200" fitHeight="720"/>
+                    <Label fx:id="imageCounter" styleClass="imageCounter" StackPane.alignment="BOTTOM_RIGHT">
+                        <StackPane.margin>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </StackPane.margin>
+                    </Label>
+                </StackPane>
+                <HBox fx:id="thumbnails" spacing="10" styleClass="thumbRow"/>
+            </VBox>
+
+            <VBox spacing="10" styleClass="infoCard headerCard" prefWidth="1140" maxWidth="1140" minWidth="1140">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <Label fx:id="nameLabel" styleClass="hotelName"/>
+                    <Label fx:id="ratingLabel" styleClass="ratingBadge"/>
+                    <Pane HBox.hgrow="ALWAYS"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="8">
+                    <SVGPath content="M12 2c-3.3137 0-6 2.6863-6 6 0 4.5 6 10 6 10s6-5.5 6-10c0-3.3137-2.6863-6-6-6zm0 8.2c-1.215 0-2.2-.985-2.2-2.2 0-1.215.985-2.2 2.2-2.2 1.215 0 2.2.985 2.2 2.2 0 1.215-.985 2.2-2.2 2.2z" styleClass="locationIcon"/>
+                    <Label fx:id="locationLabel" wrapText="true" styleClass="locationText"/>
+                </HBox>
+                <Separator/>
+            </VBox>
+
+            <VBox spacing="12" styleClass="infoCard" prefWidth="1140" maxWidth="1140" minWidth="1140">
+                <HBox alignment="CENTER_LEFT" spacing="8">
+                    <SVGPath content="M3 3l6 3-6 3 6 3-6 3 9 4 9-4-6-3 6-3-6-3 6-3-9-4z" styleClass="nearbyIcon"/>
+                    <Label text="What's Nearby" styleClass="sectionTitle"/>
+                </HBox>
+                <GridPane fx:id="nearbyGrid" hgap="12" vgap="12" styleClass="nearbyGrid"/>
+            </VBox>
+
+            <VBox spacing="12" styleClass="infoCard" prefWidth="1140" maxWidth="1140" minWidth="1140">
+                <Label text="Facilities" styleClass="sectionTitle"/>
+                <TilePane fx:id="facilitiesGrid" prefColumns="3" hgap="16" vgap="16" prefTileWidth="340" prefTileHeight="140"/>
+            </VBox>
+        </VBox>
+        </StackPane>
+    </content>
+</ScrollPane>

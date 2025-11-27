@@ -5,6 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.SVGPath?>
 
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
@@ -97,7 +98,10 @@
                                 <Label text="Premium Experience" styleClass="infoBadge"/>
                                 <Label fx:id="nameLabel" styleClass="infoName"/>
                                 <HBox spacing="6" alignment="CENTER_LEFT">
-                                    <Label text="📍" />
+                                    <SVGPath content="M12 2C8.686 2 6 4.686 6 8.001c0 4.72 6 13 6 13s6-8.28 6-13C18 4.686 15.314 2 12 2zm0 9.25a3.25 3.25 0 1 1 0-6.5 3.25 3.25 0 0 1 0 6.5z"
+                                             fill="#ff5f6d"
+                                             scaleX="0.9"
+                                             scaleY="0.9" />
                                     <Label fx:id="locationLabel" styleClass="infoLocation"/>
                                 </HBox>
                                 <VBox fx:id="pricePanel" spacing="4" styleClass="pricePanel">
@@ -113,10 +117,13 @@
                                         <Label fx:id="durationLabel" styleClass="infoValue"/>
                                     </HBox>
                                     <HBox spacing="8" alignment="CENTER_LEFT" styleClass="infoRow">
-                                        <Label text="👥" styleClass="infoIcon"/>
-                    <Label text="Group Size" styleClass="infoLabel"/>
-                    <Pane HBox.hgrow="ALWAYS"/>
-                    <Label fx:id="groupLabel" styleClass="infoValue"/>
+                                        <SVGPath content="M8 3.5a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm8 1.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM8 11c-3.59 0-6.5 2.3-6.5 5v2.5h9V16c0-.59.15-1.17.44-1.69A6.87 6.87 0 0 0 8 11zm5.54 1.16c-.37.16-.71.35-1.02.57-.36.25-.6.47-.74.61-.2.2-.3.33-.34.39-.07.1-.14.22-.18.34-.15.39-.24.81-.24 1.23V18.5H20V17c0-1.82-1.63-3.18-2.8-3.8a5.44 5.44 0 0 0-3.66-.99z"
+                                                 fill="#4a5568"
+                                                 scaleX="0.9"
+                                                 scaleY="0.9"/>
+                                        <Label text="Group Size" styleClass="infoLabel"/>
+                                        <Pane HBox.hgrow="ALWAYS"/>
+                                        <Label fx:id="groupLabel" styleClass="infoValue"/>
                                     </HBox>
                                 </VBox>
                                 <Button text="Book Now →" onAction="#onBookNow" styleClass="infoBook"/>

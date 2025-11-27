@@ -37,7 +37,12 @@
             <HBox spacing="14" alignment="CENTER">
                 <Button text="Personal Info" contentDisplay="TOP" onAction="#goPersonal" styleClass="heroAction">
                     <graphic>
-                        <Label text="👤" styleClass="heroIcon"/>
+                        <StackPane styleClass="heroIconWrap">
+                            <SVGPath content="M12 2.5a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 9c4.418 0 8 3.134 8 7v2H4v-2c0-3.866 3.582-7 8-7z"
+                                     fill="#ffffff"
+                                     scaleX="0.9"
+                                     scaleY="0.9"/>
+                        </StackPane>
                     </graphic>
                 </Button>
                 <Button text="Packages" contentDisplay="TOP" onAction="#goPackages" styleClass="heroAction">

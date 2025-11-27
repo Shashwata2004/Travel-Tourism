@@ -4,6 +4,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.SVGPath?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
@@ -21,146 +23,174 @@
             </children>
         </Pane>
 
-        <StackPane fx:id="rootStack">
-            <VBox spacing="14" fillWidth="true" styleClass="hotelContent">
-                <!-- Navbar -->
-                <fx:include source="navbar.fxml" fx:id="navbar"/>
+        <!-- Scrollable content -->
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="hotelScroll">
+            <content>
+                <StackPane fx:id="rootStack" maxWidth="Infinity">
+                    <VBox spacing="14" fillWidth="true" styleClass="hotelContent">
+                        <!-- Back button -->
+                        <Button text="←  Back to Destinations"
+                                alignment="CENTER_LEFT"
+                                onAction="#goBack"
+                                styleClass="backLink"
+                                maxWidth="220"/>
 
-                <!-- Back button -->
-                <Button text="←  Back to Destinations"
-                        alignment="CENTER_LEFT"
-                        onAction="#goBack"
-                        styleClass="backLink"
-                        maxWidth="180"/>
+                        <!-- Hero card -->
+                        <StackPane styleClass="hotelHero">
+                            <VBox alignment="CENTER" spacing="14" fillWidth="false">
+                                <!-- Badge -->
+                                <Label styleClass="heroBadge">
+                                    <graphic>
+                                        <HBox alignment="CENTER" spacing="8">
+                                            <StackPane>
+                                                <SVGPath styleClass="pinIcon"
+                                                         content="M12 2c-3.3137 0-6 2.6863-6 6 0 4.5 6 10 6 10s6-5.5 6-10c0-3.3137-2.6863-6-6-6zm0 8.2c-1.215 0-2.2-.985-2.2-2.2 0-1.215.985-2.2 2.2-2.2 1.215 0 2.2.985 2.2 2.2 0 1.215-.985 2.2-2.2 2.2z"/>
+                                                <Circle radius="2" styleClass="pinCenter"/>
+                                            </StackPane>
+                                            <Label fx:id="heroBadgeText"
+                                                   text="Explore Bangladesh"
+                                                   styleClass="heroBadgeText"/>
+                                        </HBox>
+                                    </graphic>
+                                </Label>
 
-                <!-- Hero card -->
-                <StackPane styleClass="hotelHero">
-                    <VBox alignment="CENTER" spacing="14">
-                        <!-- Badge -->
-                        <Label styleClass="heroBadge">
-                            <graphic>
-                                <HBox alignment="CENTER" spacing="8">
-                                    <StackPane>
-                                        <SVGPath styleClass="pinIcon"
-                                                 content="M12 2c-3.3137 0-6 2.6863-6 6 0 4.5 6 10 6 10s6-5.5 6-10c0-3.3137-2.6863-6-6-6zm0 8.2c-1.215 0-2.2-.985-2.2-2.2 0-1.215.985-2.2 2.2-2.2 1.215 0 2.2.985 2.2 2.2 0 1.215-.985 2.2-2.2 2.2z"/>
-                                        <Circle radius="2" styleClass="pinCenter"/>
+                                <!-- Title & subtitle -->
+                                <Label fx:id="heroTitle"
+                                       text="Find Stays You’ll Love"
+                                       styleClass="heroTitle"/>
+
+                                <Label fx:id="heroSubtitle"
+                                       text="From boutique resorts to hillside retreats, pick the perfect stay with just a few taps."
+                                       wrapText="true"
+                                       maxWidth="680"
+                                       alignment="CENTER"
+                                       textAlignment="CENTER"
+                                       styleClass="heroSubtitle"/>
+
+                                <!-- Search capsule -->
+                                <HBox alignment="CENTER_LEFT"
+                                      spacing="18"
+                                      styleClass="searchCapsule">
+
+                                    <!-- CHECK IN -->
+                                    <VBox spacing="6"
+                                          alignment="CENTER_LEFT"
+                                          styleClass="searchPill">
+                                        <Label text="CHECK IN" styleClass="pillLabel"/>
+                                        <HBox alignment="CENTER_LEFT" spacing="6">
+                                            <Label text="📅" styleClass="pillIcon"/>
+                                            <DatePicker fx:id="checkInPicker"
+                                                        promptText="Select date"
+                                                        editable="false"
+                                                        styleClass="pillValue"/>
+                                        </HBox>
+                                    </VBox>
+
+                                    <!-- CHECK OUT -->
+                                    <VBox spacing="6"
+                                          alignment="CENTER_LEFT"
+                                          styleClass="searchPill">
+                                        <Label text="CHECK OUT" styleClass="pillLabel"/>
+                                        <HBox alignment="CENTER_LEFT" spacing="6">
+                                            <Label text="📅" styleClass="pillIcon"/>
+                                            <DatePicker fx:id="checkOutPicker"
+                                                        promptText="Select date"
+                                                        editable="false"
+                                                        styleClass="pillValue"/>
+                                        </HBox>
+                                    </VBox>
+
+                                    <!-- TOTAL GUESTS -->
+                                    <StackPane alignment="TOP_LEFT" pickOnBounds="false">
+                                        <VBox spacing="6"
+                                              alignment="CENTER_LEFT"
+                                              styleClass="searchPill"
+                                              onMouseClicked="#toggleGuests">
+                                            <Label text="TOTAL GUESTS" styleClass="pillLabel"/>
+                                            <HBox alignment="CENTER_LEFT" spacing="6">
+                                                <SVGPath content="M8 3.5a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm8 1.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM8 11c-.59 0-1.17.08-1.71.23A6.87 6.87 0 0 0 1.5 16v2.5h9V16c0-.59.15-1.17.44-1.69A6.87 6.87 0 0 0 8 11zm5.54 1.16c-.37.16-.71.35-1.02.57-.36.25-.6.47-.74.61-.2.2-.3.33-.34.39-.07.1-.14.22-.18.34-.15.39-.24.81-.24 1.23V18.5H20V17c0-1.82-1.63-3.18-2.8-3.8a5.44 5.44 0 0 0-3.66-.99z"
+                                                         fill="#0f172a"
+                                                         scaleX="0.9"
+                                                         scaleY="0.9" />
+                                                <Label fx:id="guestValue"
+                                                       text="2 Guests"
+                                                       styleClass="pillValue"/>
+                                            </HBox>
+                                        </VBox>
+
+                                        <!-- Inline guest overlay -->
+                                        <StackPane fx:id="guestOverlay"
+                                                   alignment="TOP_LEFT"
+                                                   visible="false"
+                                                   managed="false"
+                                                   pickOnBounds="false"
+                                                   styleClass="guestOverlayMini">
+                                            <VBox fx:id="guestCard"
+                                                  alignment="CENTER"
+                                                  spacing="14"
+                                                  styleClass="guestCardMini"
+                                                  onMouseClicked="#consumeGuestCard">
+                                                <HBox alignment="CENTER_LEFT" spacing="10">
+                                                    <SVGPath content="M8 3.5a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm8 1.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM8 11c-.59 0-1.17.08-1.71.23A6.87 6.87 0 0 0 1.5 16v2.5h9V16c0-.59.15-1.17.44-1.69A6.87 6.87 0 0 0 8 11zm5.54 1.16c-.37.16-.71.35-1.02.57-.36.25-.6.47-.74.61-.2.2-.3.33-.34.39-.07.1-.14.22-.18.34-.15.39-.24.81-.24 1.23V18.5H20V17c0-1.82-1.63-3.18-2.8-3.8a5.44 5.44 0 0 0-3.66-.99z"
+                                                             fill="#4338ca"
+                                                             scaleX="0.9"
+                                                             scaleY="0.9"/>
+                                                    <Label text="Total Person" styleClass="pillLabel"/>
+                                                </HBox>
+                                                <HBox alignment="CENTER" spacing="18" styleClass="guestStepperMini">
+                                                    <Button text="−"
+                                                            onAction="#decrementGuests"
+                                                            styleClass="roundBtnMini"/>
+                                                    <Label fx:id="overlayGuestValue"
+                                                           text="2"
+                                                           styleClass="pillValue"/>
+                                                    <Button text="+"
+                                                            onAction="#incrementGuests"
+                                                            styleClass="roundBtnMini"/>
+                                                </HBox>
+                                                <Separator />
+                                                <Label text="Above 10 years are all considered as adults"
+                                                       wrapText="true"
+                                                       textAlignment="CENTER"
+                                                       styleClass="helperNoteMini"/>
+                                                <Button text="Done"
+                                                        onAction="#closeGuests"
+                                                        styleClass="doneBtnMini"/>
+                                            </VBox>
+                                        </StackPane>
                                     </StackPane>
-                                    <Label fx:id="heroBadgeText"
-                                           text="Explore Bangladesh"
-                                           styleClass="heroBadgeText"/>
+
+                                    <!-- Search button -->
+                                    <Button text="Search"
+                                            onAction="#handleSearch"
+                                            styleClass="searchCTA"
+                                            prefHeight="72"/>
                                 </HBox>
-                            </graphic>
-                        </Label>
 
-                        <!-- Title & subtitle -->
-                        <Label fx:id="heroTitle"
-                               text="Find Stays You’ll Love"
-                               styleClass="heroTitle"/>
-
-                        <Label fx:id="heroSubtitle"
-                               text="From boutique resorts to hillside retreats, pick the perfect stay with just a few taps."
-                               wrapText="true"
-                               maxWidth="680"
-                               alignment="CENTER"
-                               textAlignment="CENTER"
-                               styleClass="heroSubtitle"/>
-
-                        <!-- Search capsule -->
-                        <HBox alignment="CENTER_LEFT"
-                              spacing="14"
-                              styleClass="searchCapsule">
-
-                            <!-- CHECK IN -->
-                            <VBox spacing="6"
-                                  alignment="CENTER_LEFT"
-                                  styleClass="searchPill">
-                                <Label text="CHECK IN" styleClass="pillLabel"/>
-                                <HBox alignment="CENTER_LEFT" spacing="6">
-                                    <Label text="📅" styleClass="pillIcon"/>
-                                    <DatePicker fx:id="checkInPicker"
-                                                promptText="Select date"
-                                                editable="false"
-                                                styleClass="pillValue"/>
+                                <!-- Results summary + sort (below search) -->
+                                <HBox alignment="CENTER_LEFT" spacing="24" styleClass="propertiesRow">
+                                    <Label fx:id="propertiesCountLabel" text="Loading properties..." styleClass="propertiesCount"/>
+                                    <Pane HBox.hgrow="ALWAYS"/>
+                                    <ComboBox fx:id="sortBox"
+                                              promptText="Popularity"
+                                              styleClass="sortSelect">
+                                        <items>
+                                            <FXCollections fx:factory="observableArrayList">
+                                                <String fx:value="Popularity"/>
+                                                <String fx:value="Price: Low to High"/>
+                                                <String fx:value="Price: High to Low"/>
+                                            </FXCollections>
+                                        </items>
+                                    </ComboBox>
                                 </HBox>
+
+                                <!-- Hotels list -->
+                                <VBox fx:id="hotelsList" spacing="18" styleClass="hotelsList" maxWidth="Infinity"/>
                             </VBox>
-
-                            <!-- CHECK OUT -->
-                            <VBox spacing="6"
-                                  alignment="CENTER_LEFT"
-                                  styleClass="searchPill">
-                                <Label text="CHECK OUT" styleClass="pillLabel"/>
-                                <HBox alignment="CENTER_LEFT" spacing="6">
-                                    <Label text="📅" styleClass="pillIcon"/>
-                                    <DatePicker fx:id="checkOutPicker"
-                                                promptText="Select date"
-                                                editable="false"
-                                                styleClass="pillValue"/>
-                                </HBox>
-                            </VBox>
-
-                            <!-- TOTAL GUESTS -->
-                            <VBox spacing="6"
-                                  alignment="CENTER_LEFT"
-                                  styleClass="searchPill"
-                                  onMouseClicked="#toggleGuests">
-                                <Label text="TOTAL GUESTS" styleClass="pillLabel"/>
-                                <HBox alignment="CENTER_LEFT" spacing="6">
-                                    <Label text="👥" styleClass="pillIcon"/>
-                                    <Label fx:id="guestValue"
-                                           text="2 Guests"
-                                           styleClass="pillValue"/>
-                                </HBox>
-                            </VBox>
-
-                            <!-- Spacer -->
-                            <Region HBox.hgrow="ALWAYS"/>
-
-                            <!-- Search button -->
-                            <Button text="Search"
-                                    onAction="#handleSearch"
-                                    styleClass="searchCTA"/>
-                        </HBox>
+                        </StackPane>
                     </VBox>
                 </StackPane>
-            </VBox>
-
-            <!-- Guest overlay -->
-            <StackPane fx:id="guestOverlay"
-                       visible="false"
-                       managed="false"
-                       styleClass="guestOverlay"
-                       onMouseClicked="#closeGuests">
-                <StackPane alignment="CENTER">
-                    <VBox fx:id="guestCard"
-                          alignment="CENTER"
-                          spacing="14"
-                          styleClass="guestCard"
-                          onMouseClicked="#consumeGuestCard">
-                        <Label text="TOTAL PERSON" styleClass="pillLabel"/>
-
-                        <HBox alignment="CENTER"
-                              spacing="18"
-                              styleClass="guestStepper">
-                            <Button text="-"
-                                    onAction="#decrementGuests"
-                                    styleClass="roundBtn"/>
-                            <Label fx:id="overlayGuestValue"
-                                   text="2"
-                                   styleClass="pillValue"/>
-                            <Button text="+"
-                                    onAction="#incrementGuests"
-                                    styleClass="roundBtn"/>
-                        </HBox>
-
-                        <Label text="Above 10 years are all considered as adults"
-                               styleClass="helperNote"/>
-
-                        <Button text="Done"
-                                onAction="#closeGuests"
-                                styleClass="doneBtn"/>
-                    </VBox>
-                </StackPane>
-            </StackPane>
-        </StackPane>
+            </content>
+        </ScrollPane>
     </children>
 </StackPane>
