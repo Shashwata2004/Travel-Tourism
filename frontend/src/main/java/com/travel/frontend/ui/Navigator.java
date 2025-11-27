@@ -78,6 +78,7 @@ public final class Navigator {
     public static void goAdminDashboard() { load("admin_dashboard.fxml"); }
     public static void goAdminDestinations() { load("admin_destinations.fxml"); }
     public static void goAdminHotels() { load("admin_hotels.fxml"); }
+    public static void goAdminRooms() { load("admin_rooms.fxml"); }
 
     /* Sanity check before loading anything: reminds developers to call init(...)
        before touching navigation, otherwise JavaFX would throw null pointers. */

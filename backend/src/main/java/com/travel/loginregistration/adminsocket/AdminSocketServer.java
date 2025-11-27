@@ -434,9 +434,19 @@ public class AdminSocketServer {
             }
         }
         if (item.containsKey("name")) r.setName(str(item.get("name")));
-        if (item.containsKey("price")) r.setPrice(toBigDecimal(item.get("price")));
+        if (item.containsKey("price")) r.setPrice(toBigDecimal(item.get("price"))); // legacy support
+        if (item.containsKey("currentPrice")) r.setCurrentPrice(toBigDecimal(item.get("currentPrice")));
+        if (item.containsKey("realPrice")) r.setRealPrice(toBigDecimal(item.get("realPrice")));
         if (item.containsKey("maxGuests")) r.setMaxGuests(intVal(item.get("maxGuests")));
-        if (item.containsKey("availableRooms")) r.setAvailableRooms(intVal(item.get("availableRooms")));
+        if (item.containsKey("availableRooms")) r.setAvailableRooms(intVal(item.get("availableRooms"))); // legacy
+        if (item.containsKey("totalRooms")) r.setTotalRooms(intVal(item.get("totalRooms")));
+        if (r.getTotalRooms() == null) r.setTotalRooms(r.getAvailableRooms()); // backfill
+        if (item.containsKey("bedType")) r.setBedType(str(item.get("bedType")));
+        if (item.containsKey("facilities")) r.setFacilities(str(item.get("facilities")));
+        if (item.containsKey("image1")) r.setImage1(str(item.get("image1")));
+        if (item.containsKey("image2")) r.setImage2(str(item.get("image2")));
+        if (item.containsKey("image3")) r.setImage3(str(item.get("image3")));
+        if (item.containsKey("image4")) r.setImage4(str(item.get("image4")));
         if (item.containsKey("description")) r.setDescription(str(item.get("description")));
     }
 

@@ -85,27 +85,8 @@
                             <Label text="Description" styleClass="sectionTitle"/>
                             <TextArea fx:id="descriptionArea" prefRowCount="4" prefHeight="120"/>
 
-                            <Separator/>
-                            <Label text="Rooms" styleClass="sectionTitle"/>
-                            <TableView fx:id="roomsTable" prefHeight="200">
-                                <columns>
-                                    <TableColumn fx:id="roomNameCol" text="Name" prefWidth="140"/>
-                                    <TableColumn fx:id="roomPriceCol" text="Price" prefWidth="90"/>
-                                    <TableColumn fx:id="roomGuestsCol" text="Guests" prefWidth="70"/>
-                                    <TableColumn fx:id="roomAvailCol" text="Avail" prefWidth="70"/>
-                                </columns>
-                            </TableView>
-                            <HBox spacing="8">
-                                <TextField fx:id="roomNameField" promptText="Room name"/>
-                                <TextField fx:id="roomPriceField" promptText="Price"/>
-                                <TextField fx:id="roomGuestsField" promptText="Guests"/>
-                                <TextField fx:id="roomAvailField" promptText="Available"/>
-                                <Button text="Add" onAction="#onAddRoom"/>
-                                <Button text="Remove" onAction="#onRemoveRoom"/>
-                                <Button text="Save Rooms" onAction="#onSaveRooms" id="primaryBtn"/>
-                            </HBox>
-
                             <Label fx:id="statusLabel" id="statusLabel"/>
+                            <Button text="Manage Rooms" onAction="#onManageRooms" id="primaryBtn"/>
                         </VBox>
                     </content>
                 </ScrollPane>

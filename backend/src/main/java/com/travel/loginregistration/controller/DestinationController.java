@@ -46,12 +46,24 @@ public class DestinationController {
     }
 
     @GetMapping("/{id}/hotels")
-    public ResponseEntity<List<com.travel.loginregistration.dto.HotelSummary>> hotels(@PathVariable UUID id) {
-        return ResponseEntity.ok(service.listHotels(id));
+    public ResponseEntity<List<com.travel.loginregistration.dto.HotelSummary>> hotels(
+            @PathVariable UUID id,
+            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) java.time.LocalDate checkIn,
+            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) java.time.LocalDate checkOut) {
+        if (checkIn != null && checkOut != null && !checkIn.isBefore(checkOut)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(service.listHotels(id, checkIn, checkOut));
     }
 
     @GetMapping("/hotels/{hotelId}")
-    public ResponseEntity<com.travel.loginregistration.dto.HotelDetails> hotel(@PathVariable UUID hotelId) {
-        return ResponseEntity.ok(service.getHotelDetails(hotelId));
+    public ResponseEntity<com.travel.loginregistration.dto.HotelDetails> hotel(
+            @PathVariable UUID hotelId,
+            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) java.time.LocalDate checkIn,
+            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) java.time.LocalDate checkOut) {
+        if (checkIn != null && checkOut != null && !checkIn.isBefore(checkOut)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(service.getHotelDetails(hotelId, checkIn, checkOut));
     }
 }

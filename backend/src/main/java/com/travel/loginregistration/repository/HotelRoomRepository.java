@@ -14,4 +14,7 @@ public interface HotelRoomRepository extends JpaRepository<HotelRoom, UUID> {
 
     @Query("select coalesce(sum(r.availableRooms),0) from HotelRoom r where r.hotelId = :hotelId")
     Integer sumAvailableByHotel(@Param("hotelId") UUID hotelId);
+
+    @Query("select coalesce(sum(r.totalRooms),0) from HotelRoom r where r.hotelId = :hotelId")
+    Integer sumCapacityByHotel(@Param("hotelId") UUID hotelId);
 }

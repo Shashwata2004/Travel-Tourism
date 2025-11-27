@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.travel.frontend.controller.AdminRoomsController" prefWidth="900" prefHeight="620">
+    <top>
+        <HBox spacing="12" alignment="CENTER_LEFT">
+            <padding><Insets topRightBottomLeft="12"/></padding>
+            <Button text="← Back" onAction="#onBack"/>
+            <Label fx:id="hotelLabel" styleClass="sectionTitle"/>
+            <Label fx:id="statusLabel" id="statusLabel"/>
+        </HBox>
+    </top>
+    <center>
+        <SplitPane dividerPositions="0.55">
+            <items>
+                <VBox spacing="10">
+                    <padding><Insets topRightBottomLeft="12"/></padding>
+                    <Label text="Rooms" styleClass="sectionTitle"/>
+                    <TableView fx:id="roomTable" prefHeight="400">
+                        <columns>
+                            <TableColumn fx:id="nameCol" text="Name" prefWidth="150"/>
+                            <TableColumn fx:id="bedCol" text="Bed" prefWidth="100"/>
+                            <TableColumn fx:id="totalCol" text="Total" prefWidth="70"/>
+                            <TableColumn fx:id="capacityCol" text="Guests" prefWidth="70"/>
+                            <TableColumn fx:id="priceCol" text="Price" prefWidth="90"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="8">
+                        <Button text="New" onAction="#onNew"/>
+                        <Button text="Delete" onAction="#onDelete"/>
+                        <Button text="Save" onAction="#onSave" id="primaryBtn"/>
+                    </HBox>
+                </VBox>
+                <VBox spacing="10">
+                    <padding><Insets topRightBottomLeft="12"/></padding>
+                    <Label text="Room Details" styleClass="sectionTitle"/>
+                    <GridPane hgap="8" vgap="8">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="NEVER" prefWidth="140"/>
+                            <ColumnConstraints hgrow="ALWAYS" />
+                        </columnConstraints>
+                        <Label text="Name" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="nameField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                        <Label text="Bed Type" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="bedTypeField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                        <Label text="Total Rooms" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <TextField fx:id="totalField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                        <Label text="Max Guests" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                        <TextField fx:id="maxGuestsField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                        <Label text="Facilities (comma separated)" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                        <TextField fx:id="facilitiesField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                        <Label text="Real Price" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                        <TextField fx:id="realPriceField" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+                        <Label text="Current Price" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                        <TextField fx:id="currentPriceField" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+                        <Label text="Image 1 URL" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+                        <TextField fx:id="image1Field" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+
+                        <Label text="Image 2 URL" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+                        <TextField fx:id="image2Field" GridPane.rowIndex="8" GridPane.columnIndex="1"/>
+
+                        <Label text="Image 3 URL" GridPane.rowIndex="9" GridPane.columnIndex="0"/>
+                        <TextField fx:id="image3Field" GridPane.rowIndex="9" GridPane.columnIndex="1"/>
+
+                        <Label text="Image 4 URL" GridPane.rowIndex="10" GridPane.columnIndex="0"/>
+                        <TextField fx:id="image4Field" GridPane.rowIndex="10" GridPane.columnIndex="1"/>
+                    </GridPane>
+
+                    <Label text="Description" styleClass="sectionTitle"/>
+                    <TextArea fx:id="descriptionArea" prefRowCount="4" prefHeight="100"/>
+                </VBox>
+            </items>
+        </SplitPane>
+    </center>
+</BorderPane>

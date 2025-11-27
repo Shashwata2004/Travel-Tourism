@@ -23,7 +23,11 @@
                 </children>
             </Pane>
             <VBox spacing="20" styleClass="detailsRoot" alignment="TOP_CENTER">
-            <Button text="← Back" onAction="#goBack" styleClass="backBtn"/>
+            <HBox alignment="CENTER_LEFT" spacing="8" prefWidth="1140" maxWidth="1140" minWidth="1140">
+                <Button text="← Back" onAction="#goBack" styleClass="backBtn"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Button text="Reload" onAction="#reload" styleClass="reloadBtn"/>
+            </HBox>
 
             <VBox spacing="12" styleClass="galleryCard">
                 <StackPane>
@@ -61,6 +65,24 @@
             <VBox spacing="12" styleClass="infoCard" prefWidth="1140" maxWidth="1140" minWidth="1140">
                 <Label text="Facilities" styleClass="sectionTitle"/>
                 <TilePane fx:id="facilitiesGrid" prefColumns="3" hgap="16" vgap="16" prefTileWidth="340" prefTileHeight="140"/>
+            </VBox>
+
+            <VBox spacing="10" styleClass="infoCard" prefWidth="1140" maxWidth="1140" minWidth="1140">
+                <Label text="Hotel Description" styleClass="sectionTitle"/>
+                <HBox spacing="24">
+                    <Label fx:id="roomsMetaLabel" styleClass="metaInfo"/>
+                    <Label fx:id="floorsMetaLabel" styleClass="metaInfo"/>
+                </HBox>
+                <Label fx:id="descriptionText" wrapText="true" styleClass="descriptionText"/>
+            </VBox>
+
+            <VBox spacing="12" styleClass="infoCard" prefWidth="1140" maxWidth="1140" minWidth="1140">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Rooms" styleClass="sectionTitle"/>
+                    <Pane HBox.hgrow="ALWAYS"/>
+                    <Button text="Reload" onAction="#reload" styleClass="reloadBtn"/>
+                </HBox>
+                <VBox fx:id="roomsContainer" spacing="14"/>
             </VBox>
         </VBox>
         </StackPane>

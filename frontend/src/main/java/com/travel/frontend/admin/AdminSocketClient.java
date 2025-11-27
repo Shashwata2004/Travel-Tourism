@@ -317,13 +317,24 @@ public class AdminSocketClient {
         public String toString() { return name == null ? "(untitled hotel)" : name; }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RoomVM {
         public String id;
+        public String hotelId;
         public String name;
-        public String price;
+        public String price; // legacy
+        public String realPrice;
+        public String currentPrice;
         public Integer maxGuests;
-        public Integer availableRooms;
+        public Integer availableRooms; // legacy
+        public Integer totalRooms;
+        public String bedType;
+        public String facilities;
         public String description;
+        public String image1;
+        public String image2;
+        public String image3;
+        public String image4;
         public String toString() { return name == null ? "(room)" : name; }
     }
 }

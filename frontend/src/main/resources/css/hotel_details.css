@@ -132,6 +132,125 @@
     -fx-font-weight: 600;
     -fx-text-fill: #1f2937;
 }
+.metaInfo {
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #111827;
+}
+.descriptionText {
+    -fx-font-size: 16px;
+    -fx-text-fill: #1f2937;
+    -fx-line-spacing: 4px;
+}
+.roomCard {
+    -fx-background-color: white;
+    -fx-background-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.12), 20, 0.35, 0, 6);
+    -fx-padding: 12;
+}
+.roomGallery {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 14;
+    -fx-padding: 8;
+}
+.roomThumb {
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0.3, 0, 2);
+    -fx-background-radius: 10;
+}
+.roomTitle {
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f172a;
+}
+.bedMeta, .capMeta {
+    -fx-background-color: rgba(59,130,246,0.08);
+    -fx-text-fill: #1d4ed8;
+    -fx-padding: 14 16;
+    -fx-background-radius: 999;
+    -fx-font-weight: 800;
+    -fx-font-size: 15px;
+    -fx-alignment: center-left;
+}
+.bedMetaText, .capMetaText { -fx-text-fill: #1d4ed8; }
+.metaIcon { -fx-fill: #1d4ed8; -fx-scale-x: 1.1; -fx-scale-y: 1.1; }
+.remainingCapsule {
+    -fx-background-color: rgba(34,197,94,0.18);
+    -fx-text-fill: #166534;
+    -fx-padding: 12 16;
+    -fx-background-radius: 999;
+    -fx-font-weight: 900;
+    -fx-font-size: 16px;
+}
+.roomFacilities {
+    -fx-padding: 4 0 4 0;
+}
+.facilityChip {
+    -fx-background-color: linear-gradient(to right, #ecfeff, #dcfce7);
+    -fx-background-radius: 12;
+    -fx-padding: 14 18;
+    -fx-alignment: center-left;
+    -fx-effect: dropshadow(gaussian, rgba(16,185,129,0.15), 12, 0.35, 0, 3);
+    -fx-cursor: hand;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+    -fx-transition: all 140ms ease-in-out;
+}
+.facilityChip:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+.facilityTick { -fx-fill: #16a34a; -fx-scale-x: 1.2; -fx-scale-y: 1.2; }
+.facilityLabel { -fx-text-fill: #0f172a; -fx-font-weight: 800; -fx-font-size: 15px; }
+.roomPriceCard {
+    -fx-background-color: linear-gradient(to right, #ffedd5, #ffe4e6);
+    -fx-background-radius: 16;
+    -fx-padding: 14 16;
+    -fx-effect: dropshadow(gaussian, rgba(234,88,12,0.2), 14, 0.4, 0, 3);
+}
+.discountBadge {
+    -fx-background-color: linear-gradient(to right, #f97316, #ec4899);
+    -fx-text-fill: white;
+    -fx-padding: 8 14;
+    -fx-background-radius: 999;
+    -fx-font-weight: 900;
+    -fx-font-size: 14px;
+}
+.realPrice { -fx-text-fill: #6b7280; -fx-font-size: 14px; }
+.currentPrice {
+    -fx-text-fill: linear-gradient(to right, #ef4444, #ec4899);
+    -fx-font-size: 22px;
+    -fx-font-weight: 800;
+}
+.addRoomBtn {
+    -fx-background-color: linear-gradient(to right, #ec4899, #fb7185);
+    -fx-text-fill: white;
+    -fx-padding: 12 16;
+    -fx-background-radius: 12;
+    -fx-font-weight: 800;
+    -fx-font-size: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(236,72,153,0.25), 12, 0.35, 0, 3);
+    -fx-cursor: hand;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+    -fx-transition: all 140ms ease-in-out;
+}
+.addRoomBtn:hover {
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-background-color: linear-gradient(to right, #f472b6, #fb7185);
+}
+.reloadBtn {
+    -fx-background-color: #f1f5f9;
+    -fx-text-fill: #0f172a;
+    -fx-padding: 8 12;
+    -fx-background-radius: 10;
+    -fx-font-weight: 700;
+    -fx-cursor: hand;
+}
+.reloadBtn:hover {
+    -fx-background-color: #e2e8f0;
+}
 .nearbyPill:hover, .facilityTile:hover {
     -fx-scale-x: 1.02;
     -fx-scale-y: 1.02;

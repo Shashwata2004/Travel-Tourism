@@ -13,6 +13,7 @@
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/AdminHotelsController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/admin/AdminSession.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/net/ApiClient.java
+/home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/AdminRoomsController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/HomeController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/model/HotelDetails.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/LoginController.java
@@ -23,5 +24,6 @@
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/MainApp.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/HotelDetailsController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/PackageDetailsController.java
+/home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/AdminRoomsState.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/WelcomeController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/AdminDestinationsController.java

@@ -15,12 +15,25 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Separator;
 import javafx.util.Duration;
 import javafx.scene.shape.SVGPath;
+import javafx.scene.control.Button;
+import javafx.scene.layout.Priority;
+import javafx.geometry.Insets;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.ScaleTransition;
+import javafx.scene.text.Text;
+import com.travel.frontend.cache.FileCache;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +46,12 @@ public class HotelDetailsController {
     @FXML private Label nameLabel;
     @FXML private Label locationLabel;
     @FXML private Label ratingLabel;
+    @FXML private Label roomsMetaLabel;
+    @FXML private Label floorsMetaLabel;
+    @FXML private Label descriptionText;
     @FXML private GridPane nearbyGrid;
     @FXML private TilePane facilitiesGrid;
+    @FXML private VBox roomsContainer;
     @FXML private Button backButton;
     @FXML private Pane orbLayer;
     @FXML private javafx.scene.shape.Circle orbA;
@@ -46,6 +63,8 @@ public class HotelDetailsController {
     private int currentIndex = 0;
     private Timeline slideshow;
     private Timeline orbAnim;
+    private static final String CACHE_VERSION = "v2";
+    private UUID currentHotelId;
 
     @FXML
     private void initialize() {
@@ -93,26 +112,45 @@ public class HotelDetailsController {
             try { id = UUID.fromString(s); } catch (Exception ignore) {}
         }
         if (id == null) return;
+        currentHotelId = id;
         final UUID finalId = id;
-        HotelDetails cached = DataCache.peek("hotel:details:" + finalId);
-        if (cached != null) {
-            apply(cached);
-        }
         new Thread(() -> {
             try {
-                HotelDetails details = FileCache.getOrLoad("hotel_details_" + finalId, new TypeReference<HotelDetails>(){}, () -> {
+                HotelDetails details = DataCache.getOrLoad("hotel:details:" + finalId, () ->
+                        FileCache.getOrLoad("hotel_details_" + CACHE_VERSION + "_" + finalId, new TypeReference<HotelDetails>(){}, () -> {
+                            try {
+                                return api.getHotelDetails(finalId);
+                            } catch (ApiClient.ApiException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })
+                );
+                // If rooms are missing, force a fresh fetch and refresh caches
+                if (details == null || details.rooms == null || details.rooms.isEmpty()) {
                     try {
-                        return api.getHotelDetails(finalId);
-                    } catch (ApiClient.ApiException e) {
-                        throw new RuntimeException(e);
+                        HotelDetails fresh = api.getHotelDetails(finalId);
+                        DataCache.put("hotel:details:" + finalId, fresh);
+                        FileCache.put("hotel_details_" + CACHE_VERSION + "_" + finalId, fresh);
+                        details = fresh;
+                    } catch (ApiClient.ApiException ignore) {
+                        // stick with cached if backend not reachable
                     }
-                });
-                DataCache.put("hotel:details:" + finalId, details);
-                javafx.application.Platform.runLater(() -> apply(details));
+                }
+                final HotelDetails toApply = details;
+                javafx.application.Platform.runLater(() -> apply(toApply));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    @FXML
+    private void reload() {
+        if (currentHotelId == null) return;
+        // Clear caches for this hotel then fetch fresh
+        DataCache.remove("hotel:details:" + currentHotelId);
+        FileCache.remove("hotel_details_" + CACHE_VERSION + "_" + currentHotelId);
+        loadData(); // reuse flow
     }
 
     private void apply(HotelDetails d) {
@@ -125,6 +163,8 @@ public class HotelDetailsController {
         showImage(0);
         buildNearby(cleanNearby(d.nearby));
         buildFacilities(d.facilities);
+        buildDescription(d);
+        buildRooms(d.rooms);
         startSlideshow();
     }
 
@@ -141,7 +181,7 @@ public class HotelDetailsController {
         thumbnails.getChildren().clear();
         for (int i = 0; i < images.size(); i++) {
             int idx = i;
-            ImageView iv = new ImageView(new Image(images.get(i), 120, 80, true, true, true));
+            ImageView iv = new ImageView(loadImage(images.get(i), 120, 80));
             iv.getStyleClass().add("thumb");
             iv.setOnMouseClicked(e -> showImage(idx));
             thumbnails.getChildren().add(iv);
@@ -151,9 +191,210 @@ public class HotelDetailsController {
     private void showImage(int idx) {
         if (images.isEmpty()) return;
         currentIndex = ((idx % images.size()) + images.size()) % images.size();
-        mainImage.setImage(new Image(images.get(currentIndex), 1200, 800, true, true, true));
+        mainImage.setImage(loadImage(images.get(currentIndex), 1200, 800));
         imageCounter.setText((currentIndex + 1) + " / " + images.size());
         highlightThumb();
+    }
+
+    private Image loadImage(String url, double w, double h) {
+        if (url == null || url.isBlank()) {
+            return new Image("https://dummyimage.com/1200x800/edf2f7/9ca3af&text=Image+not+available", w, h, true, true, true);
+        }
+        try {
+            return DataCache.getOrLoad("img:" + w + "x" + h + ":" + url, () -> new Image(url, w, h, true, true, true));
+        } catch (Exception e) {
+            return new Image("https://dummyimage.com/1200x800/edf2f7/9ca3af&text=Image+not+available", w, h, true, true, true);
+        }
+    }
+
+    private void buildRooms(List<HotelDetails.RoomInfo> rooms) {
+        if (roomsContainer == null) return;
+        roomsContainer.getChildren().clear();
+        if (rooms == null || rooms.isEmpty()) {
+            Label none = new Label("No rooms available.");
+            none.getStyleClass().add("locationText");
+            roomsContainer.getChildren().add(none);
+            return;
+        }
+        for (HotelDetails.RoomInfo room : rooms) {
+            roomsContainer.getChildren().add(createRoomCard(room));
+        }
+    }
+
+    private Pane createRoomCard(HotelDetails.RoomInfo room) {
+        BorderPane card = new BorderPane();
+        card.getStyleClass().add("roomCard");
+        card.setPadding(new Insets(12));
+        card.setMinHeight(380);
+
+        // Gallery (left)
+        VBox gallery = new VBox(8);
+        gallery.getStyleClass().add("roomGallery");
+        ImageView main = new ImageView(loadImage(firstImage(room), 520, 320));
+        main.setFitWidth(520);
+        main.setFitHeight(320);
+        main.setPreserveRatio(true);
+        HBox thumbs = new HBox(6);
+        List<String> imgs = roomImages(room);
+        for (int i = 0; i < imgs.size(); i++) {
+            String url = imgs.get(i);
+            ImageView iv = new ImageView(loadImage(url, 96, 64));
+            iv.getStyleClass().add("roomThumb");
+            int idx = i;
+            iv.setOnMouseClicked(e -> main.setImage(loadImage(imgs.get(idx), 520, 320)));
+            thumbs.getChildren().add(iv);
+        }
+        gallery.getChildren().addAll(main, thumbs);
+
+        // Right side (details + price)
+        VBox right = new VBox(10);
+        right.setPadding(new Insets(6, 4, 6, 12));
+
+        HBox titleRow = new HBox(10);
+        Label title = new Label(room.name == null ? "Room" : room.name);
+        title.getStyleClass().add("roomTitle");
+        titleRow.getChildren().add(title);
+
+        VBox metaRow = new VBox(8);
+        metaRow.getChildren().add(metaChip(safe(room.bedType), "bedMeta", "M4 10V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3h2.5a1.5 1.5 0 0 1 1.5 1.5V17H20v2h-2v-2H6v2H4v-2H3v-3.5A1.5 1.5 0 0 1 4.5 10H7v-1h10v1h-5z"));
+        metaRow.getChildren().add(metaChip("Maximum Room Capacity: " + safeInt(room.maxGuests), "capMeta", "M12 12a3 3 0 1 0-3-3 3 3 0 0 0 3 3Zm-7 7v-1a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v1Z"));
+
+        Label remaining = new Label(remainingText(room));
+        remaining.getStyleClass().add("remainingCapsule");
+        VBox.setMargin(remaining, new Insets(12, 0, 12, 0));
+
+        FlowPane facilities = new FlowPane(8, 8);
+        facilities.getChildren().addAll(facilityChips(room.facilities));
+        facilities.getStyleClass().add("roomFacilities");
+
+        VBox priceCard = new VBox(6);
+        priceCard.getStyleClass().add("roomPriceCard");
+        if (room.realPrice != null && room.currentPrice != null) {
+            double rp = room.realPrice.doubleValue();
+            double cp = room.currentPrice.doubleValue();
+            int off = (rp > 0) ? (int) Math.round((1 - (cp / rp)) * 100) : 0;
+            Label offBadge = new Label(off + "% off");
+            offBadge.getStyleClass().add("discountBadge");
+            priceCard.getChildren().add(offBadge);
+            // bounce animation to draw attention
+            TranslateTransition bounce = new TranslateTransition(Duration.millis(900), offBadge);
+            bounce.setFromY(0);
+            bounce.setToY(-6);
+            bounce.setAutoReverse(true);
+            bounce.setCycleCount(TranslateTransition.INDEFINITE);
+            bounce.setInterpolator(Interpolator.EASE_BOTH);
+            bounce.play();
+        }
+        if (room.realPrice != null) {
+            Text real = new Text("BDT " + room.realPrice);
+            real.setStrikethrough(true);
+            real.getStyleClass().add("realPrice");
+            priceCard.getChildren().add(real);
+        }
+        Label current = new Label("BDT " + (room.currentPrice != null ? room.currentPrice : "-"));
+        current.getStyleClass().add("currentPrice");
+        priceCard.getChildren().add(current);
+
+        Button addBtn = new Button("Add Room");
+        addBtn.getStyleClass().add("addRoomBtn");
+        addBtn.setMaxWidth(Double.MAX_VALUE);
+        priceCard.getChildren().add(addBtn);
+
+        right.getChildren().addAll(titleRow, metaRow, remaining, facilities, priceCard);
+        VBox.setVgrow(facilities, Priority.ALWAYS);
+
+        card.setLeft(gallery);
+        card.setCenter(right);
+        applyCardAnimations(card);
+        return card;
+    }
+
+    private String remainingText(HotelDetails.RoomInfo room) {
+        Integer rem = room.remainingRooms != null ? room.remainingRooms : room.totalRooms;
+        if (rem == null) return "Rooms remaining: N/A";
+        return rem + (rem == 1 ? " room remaining" : " rooms remaining");
+    }
+
+    private String safe(String s) { return (s == null || s.isBlank()) ? "N/A" : s; }
+    private String safeInt(Integer i) { return i == null ? "N/A" : i.toString(); }
+
+    private List<String> roomImages(HotelDetails.RoomInfo r) {
+        List<String> list = new ArrayList<>();
+        if (r.image1 != null && !r.image1.isBlank()) list.add(r.image1);
+        if (r.image2 != null && !r.image2.isBlank()) list.add(r.image2);
+        if (r.image3 != null && !r.image3.isBlank()) list.add(r.image3);
+        if (r.image4 != null && !r.image4.isBlank()) list.add(r.image4);
+        return list.isEmpty() ? List.of("https://dummyimage.com/1200x800/edf2f7/9ca3af&text=Room+image") : list;
+    }
+
+    private String firstImage(HotelDetails.RoomInfo r) {
+        List<String> imgs = roomImages(r);
+        return imgs.get(0);
+    }
+
+    private Node metaChip(String text, String styleClass, String svgPath) {
+        HBox box = new HBox(8);
+        box.getStyleClass().add(styleClass);
+        SVGPath icon = new SVGPath();
+        icon.setContent(svgPath);
+        icon.getStyleClass().add("metaIcon");
+        Label l = new Label(text);
+        l.getStyleClass().add(styleClass + "Text");
+        box.getChildren().addAll(icon, l);
+        return box;
+    }
+
+    private List<Node> facilityChips(String facilitiesStr) {
+        List<Node> chips = new ArrayList<>();
+        if (facilitiesStr == null || facilitiesStr.isBlank()) {
+            chips.add(makeChip("Facility info not available"));
+            return chips;
+        }
+        String[] parts = facilitiesStr.split(",");
+        for (String p : parts) {
+            String v = p.trim();
+            if (!v.isEmpty()) chips.add(makeChip(v));
+        }
+        if (chips.isEmpty()) chips.add(makeChip("Facility info not available"));
+        return chips;
+    }
+
+    private Node makeChip(String text) {
+        HBox chip = new HBox(8);
+        chip.getStyleClass().add("facilityChip");
+        SVGPath tick = new SVGPath();
+        tick.setContent("M5 13l4 4L19 7");
+        tick.getStyleClass().add("facilityTick");
+        Label label = new Label(text);
+        label.getStyleClass().add("facilityLabel");
+        chip.getChildren().addAll(tick, label);
+        return chip;
+    }
+
+    private void applyCardAnimations(Pane card) {
+        card.setOpacity(0);
+        card.setTranslateY(16);
+        FadeTransition fade = new FadeTransition(Duration.millis(420), card);
+        fade.setFromValue(0);
+        fade.setToValue(1);
+        TranslateTransition rise = new TranslateTransition(Duration.millis(420), card);
+        rise.setFromY(16);
+        rise.setToY(0);
+        rise.setInterpolator(Interpolator.EASE_OUT);
+        new ParallelTransition(fade, rise).play();
+
+        card.setOnMouseEntered(e -> {
+            ScaleTransition st = new ScaleTransition(Duration.millis(160), card);
+            st.setToX(1.02);
+            st.setToY(1.02);
+            st.play();
+        });
+        card.setOnMouseExited(e -> {
+            ScaleTransition st = new ScaleTransition(Duration.millis(160), card);
+            st.setToX(1.0);
+            st.setToY(1.0);
+            st.play();
+        });
     }
 
     private void highlightThumb() {
@@ -187,6 +428,23 @@ public class HotelDetailsController {
             nearbyGrid.add(pill, col, row);
             col++;
             if (col >= 2) { col = 0; row++; }
+        }
+    }
+
+    private void buildDescription(HotelDetails d) {
+        if (roomsMetaLabel != null) {
+            String roomsText = d.roomsCount == null ? "Rooms: N/A" : "Rooms: " + d.roomsCount;
+            roomsMetaLabel.setText(roomsText);
+        }
+        if (floorsMetaLabel != null) {
+            String floorsText = d.floorsCount == null ? "Floors: N/A" : "Floors: " + d.floorsCount;
+            floorsMetaLabel.setText(floorsText);
+        }
+        if (descriptionText != null) {
+            String body = (d.description == null || d.description.isBlank())
+                    ? "No description available."
+                    : d.description.trim();
+            descriptionText.setText(body);
         }
     }
 

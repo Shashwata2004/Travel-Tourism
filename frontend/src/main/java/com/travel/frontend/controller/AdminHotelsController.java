@@ -2,14 +2,10 @@ package com.travel.frontend.controller;
 
 import com.travel.frontend.admin.AdminSocketClient;
 import com.travel.frontend.admin.AdminSocketClient.HotelVM;
-import com.travel.frontend.admin.AdminSocketClient.RoomVM;
 import com.travel.frontend.cache.DataCache;
 import com.travel.frontend.cache.FileCache;
 import com.fasterxml.jackson.core.type.TypeReference;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -43,19 +39,8 @@ public class AdminHotelsController {
     @FXML private Label statusLabel;
     @FXML private Label destinationLabel;
 
-    @FXML private TableView<RoomVM> roomsTable;
-    @FXML private TableColumn<RoomVM, String> roomNameCol;
-    @FXML private TableColumn<RoomVM, String> roomPriceCol;
-    @FXML private TableColumn<RoomVM, String> roomGuestsCol;
-    @FXML private TableColumn<RoomVM, String> roomAvailCol;
-    @FXML private TextField roomNameField;
-    @FXML private TextField roomPriceField;
-    @FXML private TextField roomGuestsField;
-    @FXML private TextField roomAvailField;
-
     private final AdminSocketClient client = new AdminSocketClient();
     private HotelVM current;
-    private final ObservableList<RoomVM> roomItems = FXCollections.observableArrayList();
 
     @FXML
     private void initialize() {
@@ -65,19 +50,7 @@ public class AdminHotelsController {
         hotelList.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
             current = n;
             if (n != null) fillForm(n);
-            loadRoomsForSelection();
         });
-        if (roomsTable != null) {
-            roomsTable.setItems(roomItems);
-            roomNameCol.setCellValueFactory(data -> new SimpleStringProperty(
-                    data.getValue().name == null ? "" : data.getValue().name));
-            roomPriceCol.setCellValueFactory(data -> new SimpleStringProperty(
-                    data.getValue().price == null ? "" : data.getValue().price));
-            roomGuestsCol.setCellValueFactory(data -> new SimpleStringProperty(
-                    data.getValue().maxGuests == null ? "" : data.getValue().maxGuests.toString()));
-            roomAvailCol.setCellValueFactory(data -> new SimpleStringProperty(
-                    data.getValue().availableRooms == null ? "" : data.getValue().availableRooms.toString()));
-        }
         onRefresh();
     }
 
@@ -117,7 +90,6 @@ public class AdminHotelsController {
     private void onNew() {
         current = null;
         clearForm();
-        roomItems.clear();
     }
 
     @FXML
@@ -166,7 +138,6 @@ public class AdminHotelsController {
                 Platform.runLater(() -> {
                     hotelList.getItems().remove(sel);
                     clearForm();
-                    roomItems.clear();
                     statusLabel.setText("Deleted");
                     UUID destId = AdminHotelsState.getDestinationId();
                     if (destId != null) {
@@ -183,70 +154,12 @@ public class AdminHotelsController {
         }).start();
     }
 
-    // Room handlers
     @FXML
-    private void onAddRoom() {
-        RoomVM r = new RoomVM();
-        r.name = roomNameField.getText();
-        r.price = roomPriceField.getText();
-        r.maxGuests = parseInt(roomGuestsField.getText());
-        r.availableRooms = parseInt(roomAvailField.getText());
-        r.description = "";
-        roomItems.add(r);
-        clearRoomForm();
-    }
-
-    @FXML
-    private void onRemoveRoom() {
-        RoomVM sel = roomsTable.getSelectionModel().getSelectedItem();
-        if (sel != null) {
-            roomItems.remove(sel);
-        }
-    }
-
-    @FXML
-    private void onSaveRooms() {
+    private void onManageRooms() {
         HotelVM sel = hotelList.getSelectionModel().getSelectedItem();
         if (sel == null || sel.id == null) { statusLabel.setText("Select a hotel first"); return; }
-        statusLabel.setText("Saving rooms...");
-        List<RoomVM> payload = List.copyOf(roomItems);
-        new Thread(() -> {
-            try {
-                client.saveRooms(sel.id, payload);
-                Platform.runLater(() -> statusLabel.setText("Rooms saved"));
-                DataCache.put("admin:rooms:" + sel.id, payload);
-                FileCache.put("admin:rooms:" + sel.id, payload);
-            } catch (Exception e) {
-                Platform.runLater(() -> statusLabel.setText("Rooms save failed: " + e.getMessage()));
-            }
-        }).start();
-    }
-
-    private void loadRoomsForSelection() {
-        HotelVM sel = hotelList.getSelectionModel().getSelectedItem();
-        if (sel == null || sel.id == null) { roomItems.clear(); return; }
-        new Thread(() -> {
-            try {
-                List<RoomVM> rooms = FileCache.getOrLoad("admin:rooms:" + sel.id,
-                        new TypeReference<List<RoomVM>>(){},
-                        () -> {
-                            try {
-                                return client.listRooms(sel.id);
-                            } catch (Exception ex) {
-                                throw new RuntimeException(ex);
-                            }
-                        });
-                DataCache.put("admin:rooms:" + sel.id, rooms);
-                Platform.runLater(() -> {
-                    roomItems.setAll(rooms);
-                });
-            } catch (Exception e) {
-                Platform.runLater(() -> {
-                    statusLabel.setText("Room load failed: " + e.getMessage());
-                    showError("Room load failed", e.getMessage());
-                });
-            }
-        }).start();
+        AdminRoomsState.set(UUID.fromString(sel.id), sel.name);
+        Navigator.goAdminRooms();
     }
 
     private void fillForm(HotelVM vm) {
@@ -307,13 +220,6 @@ public class AdminHotelsController {
         image5Field.clear();
         galleryField.clear();
         statusLabel.setText("");
-    }
-
-    private void clearRoomForm() {
-        roomNameField.clear();
-        roomPriceField.clear();
-        roomGuestsField.clear();
-        roomAvailField.clear();
     }
 
     private void copy(HotelVM from, HotelVM to) {
