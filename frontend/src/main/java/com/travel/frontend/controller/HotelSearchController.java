@@ -609,4 +609,25 @@ public class HotelSearchController {
     private void goBack() {
         Navigator.goDestinations();
     }
+
+    @FXML
+    private void reloadHotels() {
+        DestinationCard card = DataCache.peek("hotel:selected");
+        UUID destId = currentDestinationId != null ? currentDestinationId : (card != null ? card.id : null);
+        if (destId == null) return;
+
+        // Clear caches so we fetch fresh data
+        DataCache.remove("hotels:list:" + destId);
+        FileCache.remove("hotels_" + destId);
+
+        if (propertiesCountLabel != null) {
+            propertiesCountLabel.setText("Refreshing...");
+        }
+
+        if (searchMode && searchCheckIn != null && searchCheckOut != null) {
+            fetchFilteredHotels(destId, searchCheckIn, searchCheckOut);
+        } else {
+            loadHotelsWithCache(destId);
+        }
+    }
 }

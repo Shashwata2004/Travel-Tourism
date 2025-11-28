@@ -28,13 +28,6 @@
             <content>
                 <StackPane fx:id="rootStack" maxWidth="Infinity">
                     <VBox spacing="14" fillWidth="true" styleClass="hotelContent">
-                        <!-- Back button -->
-                        <Button text="←  Back to Destinations"
-                                alignment="CENTER_LEFT"
-                                onAction="#goBack"
-                                styleClass="backLink"
-                                maxWidth="220"/>
-
                         <!-- Hero card -->
                         <StackPane styleClass="hotelHero">
                             <VBox alignment="CENTER" spacing="14" fillWidth="false">
@@ -193,5 +186,48 @@
                 </StackPane>
             </content>
         </ScrollPane>
+
+        <!-- Fixed action buttons -->
+        <VBox alignment="TOP_LEFT"
+              spacing="12"
+              StackPane.alignment="TOP_LEFT"
+              pickOnBounds="false">
+            <StackPane.margin>
+                <Insets top="18" right="0" bottom="0" left="18"/>
+            </StackPane.margin>
+
+            <Button onAction="#goBack"
+                    styleClass="pageReloadBtn"
+                    maxWidth="160">
+                <graphic>
+                    <HBox alignment="CENTER" spacing="6">
+                        <SVGPath styleClass="reloadIcon"
+                                 content="M10 6l-3 3 3 3M6 9h10a3 3 0 0 1 0 6h-2"/>
+                        <Label text="Back" styleClass="reloadLabel"/>
+                    </HBox>
+                </graphic>
+            </Button>
+        </VBox>
+
+        <VBox alignment="TOP_RIGHT"
+              spacing="12"
+              StackPane.alignment="TOP_RIGHT"
+              pickOnBounds="false">
+            <StackPane.margin>
+                <Insets top="18" right="18" bottom="0" left="0"/>
+            </StackPane.margin>
+
+            <Button onAction="#reloadHotels"
+                    styleClass="pageReloadBtn"
+                    maxWidth="160">
+                <graphic>
+                    <HBox alignment="CENTER" spacing="6">
+                        <SVGPath styleClass="reloadIcon"
+                                 content="M12 5v4l3-3m-6 0 3 3V5a7 7 0 1 1-7 7h2a5 5 0 1 0 5-5z"/>
+                        <Label text="Reload" styleClass="reloadLabel"/>
+                    </HBox>
+                </graphic>
+            </Button>
+        </VBox>
     </children>
 </StackPane>

@@ -205,6 +205,13 @@ public class HotelDetailsController {
         if (show) {
             summaryBox.toFront();
         }
+        // Leave breathing room on the right so the overlay doesn't cover room cards
+        if (rootScroll != null) {
+            double boxWidth = summaryBox == null ? 0
+                    : (summaryBox.getWidth() > 0 ? summaryBox.getWidth() : summaryBox.getPrefWidth());
+            double rightGap = show ? boxWidth + 24 : 0;
+            StackPane.setMargin(rootScroll, new Insets(0, rightGap, 0, 0));
+        }
     }
 
     private void addRoomSelection(HotelDetails.RoomInfo room) {
