@@ -40,6 +40,7 @@ public class HomeController {
 
     private final ApiClient api = ApiClient.get();
     private Profile profile;
+    private static final String CACHE_VERSION = "v2";
 
     /* Runs once the FXML is ready: loads cached profile (or calls the API) on
        a background Thread and fills the form via Platform.runLater. */
@@ -50,7 +51,7 @@ public class HomeController {
         animateBlobs();
         new Thread(() -> {
             try {
-                Profile p = com.travel.frontend.cache.DataCache.getOrLoad("myProfile", api::getMyProfile);
+                Profile p = com.travel.frontend.cache.DataCache.getOrLoad("myProfile:" + CACHE_VERSION, api::getMyProfile);
                 this.profile = p;
                 Platform.runLater(() -> fillForm(p));
             } catch (Exception e) {
@@ -105,7 +106,7 @@ public class HomeController {
             try {
                 Profile newP = api.updateMyProfile(upd);
                 this.profile = newP;
-                DataCache.put("myProfile", newP);
+                DataCache.put("myProfile:" + CACHE_VERSION, newP);
                 Platform.runLater(() -> {
                     fillForm(newP);
                     statusLabel.setText("✅ Updated");
@@ -163,4 +164,3 @@ public class HomeController {
         }
     }
 }
-

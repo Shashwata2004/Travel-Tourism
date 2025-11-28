@@ -55,6 +55,7 @@ public class DestinationsController {
     private Timeline searchBorderPulse;
     private TranslateTransition searchLift;
     private DropShadow searchEffect;
+    private static final String CACHE_VERSION = "v2";
 
     @FXML
     private void initialize() {
@@ -63,6 +64,21 @@ public class DestinationsController {
         }
         setupSearch();
         animateOrbs();
+        loadDestinations();
+    }
+
+    @FXML
+    private void reloadDestinations() {
+        String key = "destinations:list:" + CACHE_VERSION;
+        DataCache.remove(key);
+        FileCache.remove(key);
+        // also purge any legacy key to avoid stale reuse
+        DataCache.remove("destinations:list");
+        FileCache.remove("destinations:list");
+        if (emptyState != null) {
+            emptyState.setVisible(false);
+            emptyState.setManaged(false);
+        }
         loadDestinations();
     }
 
@@ -84,10 +100,11 @@ public class DestinationsController {
     private void loadDestinations() {
         new Thread(() -> {
             try {
-                List<DestinationCard> cached = DataCache.peek("destinations:list");
+                String key = "destinations:list:" + CACHE_VERSION;
+                List<DestinationCard> cached = DataCache.peek(key);
                 if (cached == null) {
                     final List<DestinationCard>[] holder = new List[1];
-                    cached = FileCache.getOrLoad("destinations:list",
+                    cached = FileCache.getOrLoad(key,
                             new TypeReference<List<DestinationCard>>() {},
                             () -> {
                                 try {
@@ -101,7 +118,7 @@ public class DestinationsController {
                                     throw new RuntimeException(ex);
                                 }
                             });
-                    DataCache.put("destinations:list", cached);
+                    DataCache.put(key, cached);
                 }
                 final List<DestinationCard> items = cached;
                 Platform.runLater(() -> {

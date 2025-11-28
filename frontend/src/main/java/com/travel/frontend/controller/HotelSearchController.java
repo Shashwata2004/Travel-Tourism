@@ -66,6 +66,7 @@ public class HotelSearchController {
     private boolean searchMode = false;
     private LocalDate searchCheckIn;
     private LocalDate searchCheckOut;
+    private static final String CACHE_VERSION = "v2";
 
     @FXML
     private void initialize() {
@@ -203,7 +204,7 @@ public class HotelSearchController {
         DestinationCard card = DataCache.peek("hotel:selected");
         if (card == null || card.id == null || propertiesCountLabel == null) return;
         currentDestinationId = card.id;
-        String cacheKey = "hotels:list:" + card.id;
+        String cacheKey = "hotels:list:" + CACHE_VERSION + ":" + card.id;
         List<HotelCard> cached = DataCache.peek(cacheKey);
         if (cached != null) {
             hotelCache.clear();
@@ -218,8 +219,9 @@ public class HotelSearchController {
         if (searchMode) return;
         new Thread(() -> {
             try {
+                String key = "hotels_" + CACHE_VERSION + "_" + destinationId;
                 List<HotelCard> hotels = FileCache.getOrLoad(
-                        "hotels_" + destinationId,
+                        key,
                         new TypeReference<List<HotelCard>>(){},
                         () -> {
                             try {
@@ -230,7 +232,7 @@ public class HotelSearchController {
                         });
                 hotelCache.clear();
                 hotelCache.addAll(hotels);
-                DataCache.put("hotels:list:" + destinationId, new ArrayList<>(hotels));
+                DataCache.put("hotels:list:" + CACHE_VERSION + ":" + destinationId, new ArrayList<>(hotels));
                 javafx.application.Platform.runLater(() -> {
                     if (propertiesCountLabel != null) {
                         propertiesCountLabel.setText(hotels.size() + " properties found");
@@ -617,6 +619,9 @@ public class HotelSearchController {
         if (destId == null) return;
 
         // Clear caches so we fetch fresh data
+        DataCache.remove("hotels:list:" + CACHE_VERSION + ":" + destId);
+        FileCache.remove("hotels_" + CACHE_VERSION + "_" + destId);
+        // purge legacy keys too
         DataCache.remove("hotels:list:" + destId);
         FileCache.remove("hotels_" + destId);
 

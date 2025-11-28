@@ -47,6 +47,7 @@ import java.net.URL;
 import java.util.UUID;
 
 public class PackageDetailsController {
+    private static final String CACHE_VERSION = "v2";
     @FXML private Label nameLabel;
     @FXML private Label locationLabel;
     @FXML private Label priceLabel;
@@ -108,7 +109,7 @@ public class PackageDetailsController {
 
         new Thread(() -> {
             try {
-                PackageDetailsVM vm = DataCache.getOrLoad("pkg:" + packageId, () -> {
+                PackageDetailsVM vm = DataCache.getOrLoad("pkg:" + CACHE_VERSION + ":" + packageId, () -> {
                     var res = api.rawGet("/packages/" + packageId, true);
                     if (res.statusCode() != 200) throw new ApiClient.ApiException("Failed to load package");
                     return mapper.readValue(res.body(), PackageDetailsVM.class);

@@ -319,7 +319,7 @@ public class HotelDetailsController {
         final UUID finalId = id;
         new Thread(() -> {
             try {
-                HotelDetails details = DataCache.getOrLoad("hotel:details:" + finalId, () ->
+                HotelDetails details = DataCache.getOrLoad("hotel:details:" + CACHE_VERSION + ":" + finalId, () ->
                         FileCache.getOrLoad("hotel_details_" + CACHE_VERSION + "_" + finalId, new TypeReference<HotelDetails>(){}, () -> {
                             try {
                                 return api.getHotelDetails(finalId);
@@ -331,7 +331,7 @@ public class HotelDetailsController {
                 if (details == null || details.rooms == null || details.rooms.isEmpty()) {
                     try {
                         HotelDetails fresh = api.getHotelDetails(finalId);
-                        DataCache.put("hotel:details:" + finalId, fresh);
+                        DataCache.put("hotel:details:" + CACHE_VERSION + ":" + finalId, fresh);
                         FileCache.put("hotel_details_" + CACHE_VERSION + "_" + finalId, fresh);
                         details = fresh;
                     } catch (ApiClient.ApiException ignore) {

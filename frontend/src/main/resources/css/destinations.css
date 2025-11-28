@@ -18,6 +18,34 @@
 .destScroll > .viewport {
     -fx-background-color: transparent;
 }
+.destinationsRoot .rootScroll .scroll-bar {
+    -fx-opacity: 0;
+    -fx-min-width: 0;  -fx-pref-width: 0;  -fx-max-width: 0;
+    -fx-min-height: 0; -fx-pref-height: 0; -fx-max-height: 0;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+}
+.destinationsRoot .rootScroll .scroll-bar:vertical {
+    -fx-min-width: 0; -fx-pref-width: 0; -fx-max-width: 0;
+}
+.destinationsRoot .rootScroll .scroll-bar:horizontal {
+    -fx-min-height: 0; -fx-pref-height: 0; -fx-max-height: 0;
+}
+.destinationsRoot .rootScroll .scroll-bar .increment-button,
+.destinationsRoot .rootScroll .scroll-bar .decrement-button {
+    -fx-opacity: 0;
+    -fx-background-color: transparent;
+    -fx-min-width: 0;  -fx-pref-width: 0;  -fx-max-width: 0;
+    -fx-min-height: 0; -fx-pref-height: 0; -fx-max-height: 0;
+    -fx-padding: 0;
+}
+.destinationsRoot .rootScroll .scroll-bar .track,
+.destinationsRoot .rootScroll .scroll-bar .thumb {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-min-width: 0;  -fx-pref-width: 0;  -fx-max-width: 0;
+    -fx-min-height: 0; -fx-pref-height: 0; -fx-max-height: 0;
+}
 
 .heroSection {
     -fx-background-radius: 38;
@@ -52,6 +80,32 @@
     -fx-font-size: 15px;
     -fx-alignment: center;
 }
+.button.pageReloadBtn {
+    -fx-background-color: linear-gradient(to right, #5b34e8, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-padding: 10 18;
+    -fx-background-radius: 16;
+    -fx-background-insets: 0;
+    -fx-border-radius: 16;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.35), 22, 0.5, 0, 10);
+    -fx-cursor: hand;
+    -fx-letter-spacing: 0.3px;
+    -fx-font-size: 14px;
+}
+.button.pageReloadBtn:hover {
+    -fx-translate-y: -2;
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.55), 24, 0.55, 0, 12);
+}
+.button.pageReloadBtn:pressed {
+    -fx-translate-y: 0;
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.25), 12, 0.35, 0, 4);
+    -fx-background-color: linear-gradient(to right, #4338ca, #1d4ed8);
+}
+.reloadIcon { -fx-fill: white; -fx-scale-x: 0.9; -fx-scale-y: 0.9; }
+.reloadLabel { -fx-text-fill: white; -fx-font-weight: 800; -fx-font-size: 14px; }
 
 .searchWrap {
     -fx-background-color: white;

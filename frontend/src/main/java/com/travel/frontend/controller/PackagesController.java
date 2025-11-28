@@ -46,6 +46,7 @@ public class PackagesController {
 
     private final ApiClient api = ApiClient.get();
     private final ObjectMapper mapper = new ObjectMapper();
+    private static final String CACHE_VERSION = "v2";
 
     /* JavaFX lifecycle hook that kicks off the first load so visitors instantly
        see featured trips once the screen renders. */
@@ -61,10 +62,11 @@ public class PackagesController {
     private void loadPackages() {
         new Thread(() -> {
             try {
-                List<PackageCard> cached = DataCache.peek("packages:list");
+                String key = "packages:list:" + CACHE_VERSION;
+                List<PackageCard> cached = DataCache.peek(key);
                 if (cached == null) {
                     final List<PackageCard>[] holder = new List[1];
-                    cached = FileCache.getOrLoad("packages:list",
+                    cached = FileCache.getOrLoad("packages:list:" + CACHE_VERSION,
                             new TypeReference<List<PackageCard>>(){},
                             () -> {
                                 try {
@@ -78,7 +80,7 @@ public class PackagesController {
                                     throw new RuntimeException(ex);
                                 }
                             });
-                    DataCache.put("packages:list", cached);
+                    DataCache.put(key, cached);
                 }
                 final List<PackageCard> items = cached;
                 Platform.runLater(() -> render(items));
@@ -235,6 +237,14 @@ public class PackagesController {
     @FXML private void goHistory() { /* placeholder */ }
     @FXML private void goAbout() { /* placeholder */ }
     @FXML private void onLogout() { com.travel.frontend.cache.DataCache.clear(); Navigator.goLogin(); }
+
+    @FXML
+    private void reloadPackages() {
+        String key = "packages:list:" + CACHE_VERSION;
+        DataCache.remove(key);
+        FileCache.remove("packages:list:" + CACHE_VERSION);
+        loadPackages();
+    }
 
     private void applyCardHover(Pane card, ImageView view) {
         card.setOnMouseEntered(e -> {
