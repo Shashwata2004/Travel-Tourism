@@ -162,6 +162,7 @@
 
                                     <!-- Search button -->
                                     <Button text="Search"
+                                            fx:id="searchButton"
                                             onAction="#handleSearch"
                                             styleClass="searchCTA"
                                             prefHeight="72"/>

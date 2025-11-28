@@ -57,6 +57,8 @@ public class HomeController {
                 Platform.runLater(() -> statusLabel.setText(e.getMessage()));
             }
         }).start();
+
+        
     }
 
     /* Copies profile data into the form controls. Handles radio button mapping

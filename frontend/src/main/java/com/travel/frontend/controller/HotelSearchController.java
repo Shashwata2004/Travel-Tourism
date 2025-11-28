@@ -24,6 +24,10 @@ import javafx.util.Duration;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Interpolator;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -51,6 +55,7 @@ public class HotelSearchController {
     @FXML private VBox hotelsList;
     @FXML private javafx.scene.control.ComboBox<String> sortBox;
     @FXML private StackPane rootStack;
+    @FXML private javafx.scene.control.Button searchButton;
 
     private static final int MIN_GUESTS = 1;
     private static final int MAX_GUESTS = 12;
@@ -58,6 +63,9 @@ public class HotelSearchController {
     private final ApiClient api = ApiClient.get();
     private final List<HotelCard> hotelCache = new ArrayList<>();
     private UUID currentDestinationId;
+    private boolean searchMode = false;
+    private LocalDate searchCheckIn;
+    private LocalDate searchCheckOut;
 
     @FXML
     private void initialize() {
@@ -90,6 +98,7 @@ public class HotelSearchController {
             sortBox.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> applySortAndRender());
         }
         loadHotelCount();
+        setupSearchButtonAnimation();
     }
 
     private void configureHeroTexts() {
@@ -206,6 +215,7 @@ public class HotelSearchController {
     }
 
     private void loadHotelsWithCache(UUID destinationId) {
+        if (searchMode) return;
         new Thread(() -> {
             try {
                 List<HotelCard> hotels = FileCache.getOrLoad(
@@ -235,18 +245,60 @@ public class HotelSearchController {
         }).start();
     }
 
+    private void fetchFilteredHotels(UUID destinationId, LocalDate in, LocalDate out) {
+        new Thread(() -> {
+            try {
+                List<HotelCard> hotels = api.getHotelsForDestination(destinationId, in, out);
+                scoreForSearch(hotels); // precompute scores once
+                hotelCache.clear();
+                hotelCache.addAll(hotels);
+                javafx.application.Platform.runLater(() -> {
+                    if (propertiesCountLabel != null) {
+                        propertiesCountLabel.setText(hotels.size() + " properties found");
+                    }
+                    applySortAndRender();
+                });
+            } catch (Exception e) {
+                javafx.application.Platform.runLater(() -> hotelsList.getChildren().setAll(new Label("Search failed: " + e.getMessage())));
+            }
+        }).start();
+    }
+
     private void applySortAndRender() {
         if (hotelsList == null) return;
         String option = sortBox != null ? sortBox.getSelectionModel().getSelectedItem() : "Popularity";
         List<HotelCard> sorted = new ArrayList<>(hotelCache);
-        Comparator<HotelCard> byRating = Comparator.comparingDouble(h -> h.rating == null ? 0 : h.rating.doubleValue());
-        Comparator<HotelCard> byPrice = Comparator.comparingDouble(h -> effectivePrice(h));
-        switch (option == null ? "Popularity" : option) {
-            case "Price: Low to High" -> sorted.sort(byPrice);
-            case "Price: High to Low" -> sorted.sort(byPrice.reversed());
-            default -> sorted.sort(byRating.reversed());
+        if (searchMode) {
+            scoreForSearch(sorted);
+            sorted.sort(Comparator.comparingDouble((HotelCard h) -> h.score).reversed());
+        } else {
+            Comparator<HotelCard> byRating = Comparator.comparingDouble(h -> h.rating == null ? 0 : h.rating.doubleValue());
+            Comparator<HotelCard> byPrice = Comparator.comparingDouble(this::effectivePrice);
+            switch (option == null ? "Popularity" : option) {
+                case "Price: Low to High" -> sorted.sort(byPrice);
+                case "Price: High to Low" -> sorted.sort(byPrice.reversed());
+                default -> sorted.sort(byRating.reversed());
+            }
         }
         renderHotels(sorted);
+    }
+
+    private void scoreForSearch(List<HotelCard> hotels) {
+        double minPrice = hotels.stream().mapToDouble(this::effectivePrice).filter(v -> v > 0 && v < Double.MAX_VALUE).min().orElse(0);
+        double maxPrice = hotels.stream().mapToDouble(this::effectivePrice).filter(v -> v > 0 && v < Double.MAX_VALUE).max().orElse(minPrice + 1);
+        double priceRange = Math.max(1, maxPrice - minPrice);
+        int assumedCap = 2;
+        int requiredRooms = Math.max(1, (int) Math.ceil((double) guestCount / assumedCap));
+
+        for (HotelCard h : hotels) {
+            double remain = h.availableRooms == null ? 0 : h.availableRooms;
+            double availFit = Math.max(0, Math.min(1, remain / requiredRooms));
+            double ratingScore = (h.rating == null ? 0 : h.rating.doubleValue()) / 5.0;
+            double priceVal = effectivePrice(h);
+            double priceScore = priceVal == Double.MAX_VALUE ? 0 : 1 - Math.max(0, Math.min(1, (priceVal - minPrice) / priceRange));
+            double popBoost = remain > 5 ? 0.6 : 0.5;
+            h.score = 0.35 * availFit + 0.30 * ratingScore + 0.25 * priceScore + 0.10 * popBoost;
+        }
     }
 
     private void renderHotels(List<HotelCard> hotels) {
@@ -475,6 +527,7 @@ public class HotelSearchController {
         public java.math.BigDecimal realPrice;
         public java.math.BigDecimal currentPrice;
         public Integer availableRooms;
+        public double score;
     }
 
     @FXML
@@ -496,15 +549,60 @@ public class HotelSearchController {
         updateGuestLabels();
     }
 
+    private void setupSearchButtonAnimation() {
+        if (searchButton == null) return;
+        DropShadow glow = new DropShadow();
+        glow.setColor(Color.web("#f59e0b"));
+        glow.setRadius(18);
+        glow.setSpread(0.2);
+
+        searchButton.setOnMouseEntered(e -> {
+            ScaleTransition st = new ScaleTransition(Duration.millis(160), searchButton);
+            st.setToX(1.05); st.setToY(1.05);
+            st.setInterpolator(Interpolator.EASE_BOTH);
+            st.playFromStart();
+            searchButton.setEffect(glow);
+        });
+        searchButton.setOnMouseExited(e -> {
+            ScaleTransition st = new ScaleTransition(Duration.millis(160), searchButton);
+            st.setToX(1.0); st.setToY(1.0);
+            st.setInterpolator(Interpolator.EASE_BOTH);
+            st.playFromStart();
+            searchButton.setEffect(null);
+        });
+        searchButton.setOnMousePressed(e -> {
+            ScaleTransition st = new ScaleTransition(Duration.millis(120), searchButton);
+            st.setToX(0.97); st.setToY(0.97);
+            st.setInterpolator(Interpolator.EASE_BOTH);
+            st.playFromStart();
+        });
+        searchButton.setOnMouseReleased(e -> {
+            ScaleTransition st = new ScaleTransition(Duration.millis(140), searchButton);
+            st.setToX(1.03); st.setToY(1.03);
+            st.setInterpolator(Interpolator.EASE_BOTH);
+            st.playFromStart();
+        });
+    }
+
     @FXML
     private void handleSearch() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(null);
-        String checkIn = checkInPicker.getValue() == null ? "select a check-in date" : checkInPicker.getValue().toString();
-        String checkOut = checkOutPicker.getValue() == null ? "select a check-out date" : checkOutPicker.getValue().toString();
-        alert.setContentText("We're finalizing hotel listings.\nSelection: " + checkIn + " ➜ " + checkOut + " for " + guestCount + (guestCount == 1 ? " guest." : " guests."));
-        alert.setTitle("Hotels coming soon");
-        alert.showAndWait();
+        DestinationCard card = DataCache.peek("hotel:selected");
+        if (card == null || card.id == null) return;
+        LocalDate in = checkInPicker.getValue();
+        LocalDate out = checkOutPicker.getValue();
+        if (in == null || out == null || !in.isBefore(out)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Select valid check-in and check-out dates.");
+            alert.showAndWait();
+            return;
+        }
+        this.searchMode = true;
+        this.searchCheckIn = in;
+        this.searchCheckOut = out;
+        DataCache.put("hotel:guestCount", guestCount);
+        if (propertiesCountLabel != null) {
+            propertiesCountLabel.setText("Searching...");
+        }
+        fetchFilteredHotels(card.id, in, out);
     }
 
     @FXML
