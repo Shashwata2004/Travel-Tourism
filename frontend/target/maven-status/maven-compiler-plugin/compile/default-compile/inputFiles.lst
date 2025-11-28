@@ -6,10 +6,8 @@
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/AdminDashboardController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/DestinationsController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/cache/FileCache.java
-/home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/util/TokenStore.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/NavbarController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/admin/AdminSocketClient.java
-/home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/util/Alerts.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/AdminHotelsController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/admin/AdminSession.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/net/ApiClient.java

@@ -143,6 +143,24 @@ public final class ApiClient {
         throw error(res, "Load hotels failed");
     }
 
+    public java.util.List<com.travel.frontend.controller.HotelSearchController.HotelCard> getHotelsForDestination(java.util.UUID destinationId, java.time.LocalDate checkIn, java.time.LocalDate checkOut) throws ApiException {
+        String path = "/destinations/" + destinationId + "/hotels";
+        if (checkIn != null && checkOut != null) {
+            path += "?checkIn=" + checkIn + "&checkOut=" + checkOut;
+        }
+        HttpResponse<String> res = get(path, false);
+        if (res.statusCode() == 200) {
+            try {
+                return mapper.readValue(res.body(),
+                        mapper.getTypeFactory().constructCollectionType(java.util.List.class,
+                                com.travel.frontend.controller.HotelSearchController.HotelCard.class));
+            } catch (Exception e) {
+                throw new ApiException("Invalid hotel list response", e);
+            }
+        }
+        throw error(res, "Load hotels failed");
+    }
+
     public com.travel.frontend.model.HotelDetails getHotelDetails(java.util.UUID hotelId) throws ApiException {
         HttpResponse<String> res = get("/destinations/hotels/" + hotelId, false);
         if (res.statusCode() == 200) {
