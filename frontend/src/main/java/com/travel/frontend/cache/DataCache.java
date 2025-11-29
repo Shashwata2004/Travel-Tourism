@@ -9,7 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class DataCache {
     private static final Map<String, Entry> CACHE = new ConcurrentHashMap<>();
-    private static final long TTL_MS = Long.getLong("cache.ttl.ms", 60_000L);
+    // Extend default TTL so selections/dates survive longer in-session (24h by default)
+    private static final long TTL_MS = Long.getLong("cache.ttl.ms", 86_400_000L);
 
     private DataCache() {}
 

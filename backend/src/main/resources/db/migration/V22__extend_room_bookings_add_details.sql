@@ -1,0 +1,6 @@
+ALTER TABLE hotel_room_bookings
+    ADD COLUMN IF NOT EXISTS total_guests INT,
+    ADD COLUMN IF NOT EXISTS total_price DECIMAL(18,2),
+    ADD COLUMN IF NOT EXISTS user_id UUID,
+    ADD COLUMN IF NOT EXISTS hotel_name TEXT,
+    ADD COLUMN IF NOT EXISTS room_name TEXT;

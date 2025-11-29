@@ -22,9 +22,8 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.*;
 
 public class HotelDetailsController {
     @FXML private ImageView mainImage;
@@ -64,13 +63,16 @@ public class HotelDetailsController {
     private Timeline orbAnim;
     private static final String CACHE_VERSION = "v2";
     private UUID currentHotelId;
+    private LocalDate selectedCheckIn;
+    private LocalDate selectedCheckOut;
+    private int selectedGuests = 2;
     private final List<SelectedRoom> selectedRooms = new ArrayList<>();
     private int currentTotalCapacity = 0;
     private boolean summaryShownOnce = false;
 
     @FXML
     private void initialize() {
-        if (backButton != null) backButton.setOnAction(e -> Navigator.goHotelSearch());
+        if (backButton != null) backButton.setOnAction(e -> goBack());
 
         if (orbLayer != null && orbLayer.getParent() instanceof Region reg) {
             orbLayer.prefWidthProperty().bind(reg.widthProperty());
@@ -95,7 +97,41 @@ public class HotelDetailsController {
 
     @FXML
     private void goBack() {
+        prewarmHotelsOnReturn();
+        DataCache.put("hotel:guestCount", selectedGuests);
         Navigator.goHotelSearch();
+    }
+
+    private void prewarmHotelsOnReturn() {
+        Object destObj = DataCache.peek("hotel:destId");
+        UUID destId = null;
+        if (destObj instanceof UUID u) destId = u;
+        else if (destObj instanceof String s) {
+            try { destId = UUID.fromString(s); } catch (Exception ignored) {}
+        }
+        if (destId == null) {
+            Object card = DataCache.peek("hotel:selected");
+            try {
+                java.lang.reflect.Field idField = (card != null) ? card.getClass().getDeclaredField("id") : null;
+                if (idField != null) {
+                    idField.setAccessible(true);
+                    Object v = idField.get(card);
+                    if (v instanceof UUID u) destId = u;
+                    else if (v instanceof String s) destId = UUID.fromString(s);
+                }
+            } catch (Exception ignored) { }
+        }
+        if (destId == null) return;
+
+        final UUID fetchId = destId;
+        new Thread(() -> {
+            try {
+                var hotels = api.getHotelsForDestination(fetchId);
+                DataCache.put("hotels:list:" + CACHE_VERSION + ":" + fetchId, new ArrayList<>(hotels));
+            } catch (Exception ignored) {
+                // silently skip; fallback to normal fetch
+            }
+        }).start();
     }
 
     private void animateOrbs() {
@@ -294,10 +330,24 @@ public class HotelDetailsController {
             a.showAndWait();
             return;
         }
-        Alert a = new Alert(Alert.AlertType.INFORMATION,
-                "Booking flow will be implemented next. Total: " + (summaryTotal == null ? "" : summaryTotal.getText()));
-        a.setHeaderText("Proceed to booking");
-        a.showAndWait();
+        if (selectedRooms.isEmpty()) {
+            Alert a = new Alert(Alert.AlertType.INFORMATION, "Select at least one room to continue.");
+            a.showAndWait();
+            return;
+        }
+        LocalDate checkIn = this.selectedCheckIn;
+        LocalDate checkOut = this.selectedCheckOut;
+        if (checkIn == null || checkOut == null || !checkIn.isBefore(checkOut)) {
+            Alert a = new Alert(Alert.AlertType.WARNING, "Please choose valid check-in and check-out dates from the hotel search screen.");
+            a.showAndWait();
+            Navigator.goHotelSearch();
+            return;
+        }
+        DataCache.put("hotel:checkIn", checkIn);
+        DataCache.put("hotel:checkOut", checkOut);
+        BigDecimal totalPrice = computeTotalPrice();
+        List<HotelBookingDialogController.RoomSelection> selections = aggregateSelections();
+        HotelBookingDialogController.open(currentHotelId, checkIn, checkOut, requiredGuests, totalPrice, selections, this::afterBookingSuccess);
     }
 
     private int resolveGuestCount() {
@@ -316,28 +366,30 @@ public class HotelDetailsController {
         }
         if (id == null) return;
         currentHotelId = id;
+        LocalDate checkIn = DataCache.peek("hotel:checkIn");
+        LocalDate checkOut = DataCache.peek("hotel:checkOut");
+        if (checkIn == null) {
+            checkIn = LocalDate.now().plusDays(1);
+        }
+        if (checkOut == null || !checkIn.isBefore(checkOut)) {
+            checkOut = checkIn.plusDays(1);
+        }
+        Integer cachedGuests = DataCache.peek("hotel:guestCount");
+        if (cachedGuests != null && cachedGuests > 0) {
+            selectedGuests = cachedGuests;
+        }
+        // persist locally and refresh cache to avoid TTL expiry
+        this.selectedCheckIn = checkIn;
+        this.selectedCheckOut = checkOut;
+        DataCache.put("hotel:checkIn", checkIn);
+        DataCache.put("hotel:checkOut", checkOut);
+        DataCache.put("hotel:guestCount", selectedGuests);
         final UUID finalId = id;
+        final LocalDate finalCheckIn = checkIn;
+        final LocalDate finalCheckOut = checkOut;
         new Thread(() -> {
             try {
-                HotelDetails details = DataCache.getOrLoad("hotel:details:" + CACHE_VERSION + ":" + finalId, () ->
-                        FileCache.getOrLoad("hotel_details_" + CACHE_VERSION + "_" + finalId, new TypeReference<HotelDetails>(){}, () -> {
-                            try {
-                                return api.getHotelDetails(finalId);
-                            } catch (ApiClient.ApiException e) {
-                                throw new RuntimeException(e);
-                            }
-                        })
-                );
-                if (details == null || details.rooms == null || details.rooms.isEmpty()) {
-                    try {
-                        HotelDetails fresh = api.getHotelDetails(finalId);
-                        DataCache.put("hotel:details:" + CACHE_VERSION + ":" + finalId, fresh);
-                        FileCache.put("hotel_details_" + CACHE_VERSION + "_" + finalId, fresh);
-                        details = fresh;
-                    } catch (ApiClient.ApiException ignore) {
-                        // keep cached if backend unreachable
-                    }
-                }
+                HotelDetails details = api.getHotelDetails(finalId, finalCheckIn, finalCheckOut);
                 final HotelDetails toApply = details;
                 javafx.application.Platform.runLater(() -> apply(toApply));
             } catch (Exception e) {
@@ -349,8 +401,6 @@ public class HotelDetailsController {
     @FXML
     private void reload() {
         if (currentHotelId == null) return;
-        DataCache.remove("hotel:details:" + currentHotelId);
-        FileCache.remove("hotel_details_" + CACHE_VERSION + "_" + currentHotelId);
         loadData();
     }
 
@@ -358,6 +408,10 @@ public class HotelDetailsController {
         nameLabel.setText(d.name == null ? "" : d.name);
         locationLabel.setText(d.location == null ? "" : d.location);
         ratingLabel.setText(d.rating == null ? "N/A" : String.format("%.1f/5.0", d.rating.doubleValue()));
+
+        if (DataCache.peek("hotel:guestCount") == null) {
+            DataCache.put("hotel:guestCount", resolveGuestCount());
+        }
 
         images.clear();
         if (d.images != null) images.addAll(d.images);
@@ -746,6 +800,7 @@ public class HotelDetailsController {
         final String name;
         final BigDecimal price;
         final int maxGuests;
+        final UUID roomId;
         HBox node;
 
         SelectedRoom(HotelDetails.RoomInfo room) {
@@ -753,6 +808,41 @@ public class HotelDetailsController {
             this.price = room.currentPrice != null ? room.currentPrice
                     : (room.realPrice != null ? room.realPrice : BigDecimal.ZERO);
             this.maxGuests = room.maxGuests == null ? 0 : room.maxGuests;
+            this.roomId = room.id;
         }
+    }
+
+    private BigDecimal computeTotalPrice() {
+        BigDecimal total = BigDecimal.ZERO;
+        for (SelectedRoom r : selectedRooms) {
+            total = total.add(r.price);
+        }
+        return total;
+    }
+
+    private List<HotelBookingDialogController.RoomSelection> aggregateSelections() {
+        Map<UUID, HotelBookingDialogController.RoomSelection> map = new HashMap<>();
+        for (SelectedRoom r : selectedRooms) {
+            if (r.roomId == null) continue;
+            HotelBookingDialogController.RoomSelection existing = map.get(r.roomId);
+            if (existing == null) {
+                map.put(r.roomId, new HotelBookingDialogController.RoomSelection(r.roomId, r.name, 1, r.price));
+            } else {
+                map.put(r.roomId, new HotelBookingDialogController.RoomSelection(
+                        r.roomId, r.name, existing.count() + 1,
+                        existing.totalPrice().add(r.price)
+                ));
+            }
+        }
+        return new ArrayList<>(map.values());
+    }
+
+    private void afterBookingSuccess() {
+        // drop cached details so remaining rooms refresh
+        if (currentHotelId != null) {
+            DataCache.remove("hotel:details:" + CACHE_VERSION + ":" + currentHotelId);
+            FileCache.remove("hotel_details_" + CACHE_VERSION + "_" + currentHotelId);
+        }
+        loadData();
     }
 }

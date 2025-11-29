@@ -162,7 +162,17 @@ public final class ApiClient {
     }
 
     public com.travel.frontend.model.HotelDetails getHotelDetails(java.util.UUID hotelId) throws ApiException {
-        HttpResponse<String> res = get("/destinations/hotels/" + hotelId, false);
+        return getHotelDetails(hotelId, null, null);
+    }
+
+    public com.travel.frontend.model.HotelDetails getHotelDetails(java.util.UUID hotelId,
+                                                                  java.time.LocalDate checkIn,
+                                                                  java.time.LocalDate checkOut) throws ApiException {
+        String path = "/destinations/hotels/" + hotelId;
+        if (checkIn != null && checkOut != null && checkIn.isBefore(checkOut)) {
+            path += "?checkIn=" + checkIn + "&checkOut=" + checkOut;
+        }
+        HttpResponse<String> res = get(path, false);
         if (res.statusCode() == 200) {
             try {
                 return mapper.readValue(res.body(), com.travel.frontend.model.HotelDetails.class);

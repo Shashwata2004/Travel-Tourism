@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.travel.frontend.controller.HotelBookingDialogController"
+           stylesheets="@../css/hotel_booking_dialog.css">
+    <children>
+        <BorderPane prefWidth="520" prefHeight="720" styleClass="bookingCard">
+            <top>
+                <VBox spacing="16" styleClass="hero">
+                    <padding>
+                        <Insets top="18" right="18" bottom="18" left="18"/>
+                    </padding>
+                    <HBox alignment="CENTER_RIGHT">
+                        <Pane HBox.hgrow="ALWAYS"/>
+                        <Button text="✕" onAction="#onClose" styleClass="closeBtn"/>
+                    </HBox>
+                    <Label text="Confirm your booking" styleClass="heroTitle"/>
+
+                    <VBox spacing="12">
+                        <HBox alignment="CENTER_LEFT" spacing="12">
+                            <StackPane styleClass="heroIcon">
+                                <SVGPath styleClass="heroPath" content="M6 2h12a2 2 0 0 1 2 2v14l-4-3-4 3-4-3-4 3V4a2 2 0 0 1 2-2z"/>
+                            </StackPane>
+                            <Label text="Check-in" styleClass="heroLabel"/>
+                            <Pane HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="checkInLabel" styleClass="heroValue"/>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="12">
+                            <StackPane styleClass="heroIcon">
+                                <SVGPath styleClass="heroPath" content="M6 2h12a2 2 0 0 1 2 2v14l-4-3-4 3-4-3-4 3V4a2 2 0 0 1 2-2z"/>
+                            </StackPane>
+                            <Label text="Check-out" styleClass="heroLabel"/>
+                            <Pane HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="checkOutLabel" styleClass="heroValue"/>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="12">
+                            <StackPane styleClass="heroIcon">
+                                <SVGPath styleClass="heroPath" content="M3 6h18v2H3V6zm2 4h14v10H5V10zm7 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>
+                            </StackPane>
+                            <Label text="Guests" styleClass="heroLabel"/>
+                            <Pane HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="guestsLabel" styleClass="heroValue"/>
+                        </HBox>
+                        <Separator/>
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Total Price:" styleClass="heroLabel"/>
+                            <Pane HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="totalPriceLabel" styleClass="heroPrice"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </top>
+
+            <center>
+                <VBox spacing="14">
+                    <padding>
+                        <Insets top="18" right="18" bottom="18" left="18"/>
+                    </padding>
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <SVGPath content="M4 6h16v2H4V6zm0 4h16v2H4v-2zm0 4h16v2H4v-2z" styleClass="sectionIcon"/>
+                        <Label text="Enter Payment Details" styleClass="sectionTitle"/>
+                    </HBox>
+
+                    <VBox spacing="8">
+                        <Label text="Name on Card" styleClass="fieldLabel"/>
+                        <TextField fx:id="nameField" promptText="John Doe" styleClass="textField"/>
+                    </VBox>
+                    <VBox spacing="8">
+                        <Label text="Card Number" styleClass="fieldLabel"/>
+                        <TextField fx:id="cardField" promptText="1234 5678 9012 3456" styleClass="textField"/>
+                    </VBox>
+                    <HBox spacing="12">
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="Expiry Date" styleClass="fieldLabel"/>
+                            <TextField fx:id="expiryField" promptText="MM / YY" styleClass="textField"/>
+                        </VBox>
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="CVV" styleClass="fieldLabel"/>
+                            <TextField fx:id="cvvField" promptText="123" styleClass="textField"/>
+                        </VBox>
+                    </HBox>
+
+                    <Button fx:id="payButton" text="Pay" onAction="#onPay" styleClass="payBtn" maxWidth="Infinity"/>
+                    <Label fx:id="statusLabel" styleClass="statusLabel"/>
+                    <HBox alignment="CENTER" spacing="6">
+                        <SVGPath content="M5 13l4 4L19 7" styleClass="secureIcon"/>
+                        <Label text="Payment is secure and encrypted" styleClass="secureNote"/>
+                    </HBox>
+                </VBox>
+            </center>
+        </BorderPane>
+    </children>
+</StackPane>

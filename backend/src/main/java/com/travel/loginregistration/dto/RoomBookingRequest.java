@@ -1,6 +1,7 @@
 package com.travel.loginregistration.dto;
 
 import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class RoomBookingRequest {
@@ -8,4 +9,9 @@ public class RoomBookingRequest {
     public LocalDate checkIn;
     public LocalDate checkOut;
     public int rooms;
+    public int totalGuests;
+    public BigDecimal totalPrice;
+    public UUID userId;
+    public String hotelName;
+    public String roomName;
 }

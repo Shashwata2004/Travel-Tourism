@@ -24,6 +24,7 @@ public class HotelBookingController {
                                   @RequestBody RoomBookingRequest req) {
         try {
             req.roomId = roomId;
+            // Optional hotelId could be logged later; we keep signature untouched.
             RoomBookingResponse res = service.book(req);
             return ResponseEntity.ok(res);
         } catch (IllegalArgumentException e) {

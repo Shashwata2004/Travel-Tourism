@@ -73,6 +73,10 @@ public class HotelSearchController {
         if (navbarController != null) {
             navbarController.setActive(NavbarController.ActivePage.DESTINATIONS);
         }
+        Object cachedGuests = DataCache.peek("hotel:guestCount");
+        if (cachedGuests instanceof Number n) {
+            guestCount = Math.max(MIN_GUESTS, n.intValue());
+        }
         if (hotelsList != null) {
             hotelsList.setAlignment(Pos.TOP_CENTER);
             hotelsList.setFillWidth(true);
@@ -127,10 +131,17 @@ public class HotelSearchController {
 
         LocalDate minCheckIn = LocalDate.now().plusDays(1);
         checkInPicker.setDayCellFactory(picker -> disableOutsideRange(picker, minCheckIn, null));
-        checkInPicker.setValue(minCheckIn);
+        LocalDate cachedIn = DataCache.peek("hotel:checkIn");
+        LocalDate cachedOut = DataCache.peek("hotel:checkOut");
+        LocalDate effectiveIn = (cachedIn != null) ? cachedIn : minCheckIn;
+        checkInPicker.setValue(effectiveIn);
 
         refreshCheckOutFactory();
-        checkOutPicker.setValue(minCheckIn.plusDays(1));
+        LocalDate defaultOut = effectiveIn.plusDays(1);
+        LocalDate effectiveOut = (cachedOut != null && cachedOut.isAfter(effectiveIn)) ? cachedOut : defaultOut;
+        checkOutPicker.setValue(effectiveOut);
+        DataCache.put("hotel:checkIn", effectiveIn);
+        DataCache.put("hotel:checkOut", effectiveOut);
 
         checkInPicker.valueProperty().addListener((obs, old, val) -> {
             LocalDate selected = val == null ? LocalDate.now().plusDays(1) : val;
@@ -176,6 +187,7 @@ public class HotelSearchController {
         if (overlayGuestValue != null) {
             overlayGuestValue.setText(String.valueOf(guestCount));
         }
+        DataCache.put("hotel:guestCount", guestCount);
     }
 
     @FXML
@@ -204,6 +216,16 @@ public class HotelSearchController {
         DestinationCard card = DataCache.peek("hotel:selected");
         if (card == null || card.id == null || propertiesCountLabel == null) return;
         currentDestinationId = card.id;
+        // restore search mode if the last view was a search
+        Boolean lastSearch = DataCache.peek("hotel:lastSearch");
+        if (Boolean.TRUE.equals(lastSearch)) {
+            searchMode = true;
+            searchCheckIn = DataCache.peek("hotel:checkIn");
+            searchCheckOut = DataCache.peek("hotel:checkOut");
+        } else {
+            searchMode = false;
+        }
+
         String cacheKey = "hotels:list:" + CACHE_VERSION + ":" + card.id;
         List<HotelCard> cached = DataCache.peek(cacheKey);
         if (cached != null) {
@@ -211,6 +233,7 @@ public class HotelSearchController {
             hotelCache.addAll(cached);
             propertiesCountLabel.setText(hotelCache.size() + " properties found");
             applySortAndRender();
+            return; // show cached list instantly; only refresh on explicit reload/search
         }
         loadHotelsWithCache(card.id);
     }
@@ -255,6 +278,8 @@ public class HotelSearchController {
                 hotelCache.clear();
                 hotelCache.addAll(hotels);
                 javafx.application.Platform.runLater(() -> {
+                    DataCache.put("hotels:list:" + CACHE_VERSION + ":" + destinationId, new ArrayList<>(hotels));
+                    DataCache.put("hotel:lastSearch", true);
                     if (propertiesCountLabel != null) {
                         propertiesCountLabel.setText(hotels.size() + " properties found");
                     }
@@ -413,6 +438,19 @@ public class HotelSearchController {
         applyCardHover(wrapper, img);
         Runnable goDetails = () -> {
             if (h.id != null) {
+                // Persist the latest picker/guest values even if Search was not clicked
+                LocalDate in = checkInPicker != null ? checkInPicker.getValue() : null;
+                LocalDate out = checkOutPicker != null ? checkOutPicker.getValue() : null;
+                if (in == null) in = LocalDate.now().plusDays(1);
+                if (out == null || !in.isBefore(out)) out = in.plusDays(1);
+                DataCache.put("hotel:checkIn", in);
+                DataCache.put("hotel:checkOut", out);
+                DataCache.put("hotel:guestCount", guestCount);
+                DataCache.put("hotel:destId", currentDestinationId);
+                // Drop stale caches so details reload fresh availability
+                FileCache.remove("hotel_details_" + CACHE_VERSION + "_" + h.id);
+                DataCache.remove("hotel:details:" + CACHE_VERSION + ":" + h.id);
+
                 try {
                     java.util.UUID uid = java.util.UUID.fromString(h.id);
                     DataCache.put("hotel:selectedId", uid);
@@ -539,15 +577,13 @@ public class HotelSearchController {
 
     @FXML
     private void incrementGuests() {
-        if (guestCount >= MAX_GUESTS) return;
-        guestCount++;
+        guestCount = Math.min(MAX_GUESTS, guestCount + 1);
         updateGuestLabels();
     }
 
     @FXML
     private void decrementGuests() {
-        if (guestCount <= MIN_GUESTS) return;
-        guestCount--;
+        guestCount = Math.max(MIN_GUESTS, guestCount - 1);
         updateGuestLabels();
     }
 
@@ -601,6 +637,8 @@ public class HotelSearchController {
         this.searchCheckIn = in;
         this.searchCheckOut = out;
         DataCache.put("hotel:guestCount", guestCount);
+        DataCache.put("hotel:checkIn", in);
+        DataCache.put("hotel:checkOut", out);
         if (propertiesCountLabel != null) {
             propertiesCountLabel.setText("Searching...");
         }
@@ -624,6 +662,7 @@ public class HotelSearchController {
         // purge legacy keys too
         DataCache.remove("hotels:list:" + destId);
         FileCache.remove("hotels_" + destId);
+        DataCache.remove("hotel:lastSearch");
 
         if (propertiesCountLabel != null) {
             propertiesCountLabel.setText("Refreshing...");

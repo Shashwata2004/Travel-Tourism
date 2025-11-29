@@ -314,6 +314,15 @@ public class DestinationsController {
     }
 
     private void openHotelSearch(DestinationCard destination) {
+        // Clear any cached hotel list for this destination so availability reloads fresh
+        if (destination != null && destination.id != null) {
+            String vKey = "hotels:list:" + CACHE_VERSION + ":" + destination.id;
+            DataCache.remove(vKey);
+            FileCache.remove("hotels_" + CACHE_VERSION + "_" + destination.id);
+            // Legacy keys (fallback)
+            DataCache.remove("hotels:list:" + destination.id);
+            FileCache.remove("hotels_" + destination.id);
+        }
         DataCache.put("hotel:selected", destination);
         Navigator.goHotelSearch();
     }
