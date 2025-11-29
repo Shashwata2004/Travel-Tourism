@@ -55,6 +55,9 @@ public class HotelBookingService {
         b.setUserId(req.userId);
         b.setRoomName(room.getName());
         hotelRepository.findById(room.getHotelId()).ifPresent(h -> b.setHotelName(h.getName()));
+        b.setCustomerName(req.customerName);
+        b.setIdType(req.idType);
+        b.setIdNumber(req.idNumber);
         bookingRepository.save(b);
 
         RoomBookingResponse res = new RoomBookingResponse();
@@ -69,6 +72,9 @@ public class HotelBookingService {
         res.userId = b.getUserId();
         res.roomName = b.getRoomName();
         res.hotelName = b.getHotelName();
+        res.customerName = b.getCustomerName();
+        res.idType = b.getIdType();
+        res.idNumber = b.getIdNumber();
         return res;
     }
 

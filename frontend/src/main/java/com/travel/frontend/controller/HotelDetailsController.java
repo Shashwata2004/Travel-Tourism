@@ -335,6 +335,11 @@ public class HotelDetailsController {
             a.showAndWait();
             return;
         }
+        if (!profileEligibleForBooking()) {
+            Alert a = new Alert(Alert.AlertType.WARNING, "Complete your profile (ID type, ID number, and gender) before booking.");
+            a.showAndWait();
+            return;
+        }
         LocalDate checkIn = this.selectedCheckIn;
         LocalDate checkOut = this.selectedCheckOut;
         if (checkIn == null || checkOut == null || !checkIn.isBefore(checkOut)) {
@@ -487,9 +492,9 @@ public class HotelDetailsController {
 
         VBox gallery = new VBox(8);
         gallery.getStyleClass().add("roomGallery");
-        ImageView main = new ImageView(loadImage(firstImage(room), 520, 320));
-        main.setFitWidth(520);
-        main.setFitHeight(320);
+        ImageView main = new ImageView(loadImage(firstImage(room), 500, 300));
+        main.setFitWidth(500);
+        main.setFitHeight(300);
         main.setPreserveRatio(true);
         HBox thumbs = new HBox(6);
         List<String> imgs = roomImages(room);
@@ -498,7 +503,7 @@ public class HotelDetailsController {
             ImageView iv = new ImageView(loadImage(url, 96, 64));
             iv.getStyleClass().add("roomThumb");
             int idx = i;
-            iv.setOnMouseClicked(e -> main.setImage(loadImage(imgs.get(idx), 520, 320)));
+            iv.setOnMouseClicked(e -> main.setImage(loadImage(imgs.get(idx), 500, 300)));
             thumbs.getChildren().add(iv);
         }
         gallery.getChildren().addAll(main, thumbs);
@@ -522,9 +527,15 @@ public class HotelDetailsController {
         remaining.getStyleClass().add("remainingCapsule");
         VBox.setMargin(remaining, new Insets(12, 0, 12, 0));
 
-        FlowPane facilities = new FlowPane(8, 8);
-        facilities.getChildren().addAll(facilityChips(room.facilities));
-        facilities.getStyleClass().add("roomFacilities");
+        HBox facilitiesRow = new HBox(8);
+        facilitiesRow.getChildren().addAll(facilityChips(room.facilities));
+        facilitiesRow.getStyleClass().add("roomFacilities");
+        ScrollPane facilitiesScroll = new ScrollPane(facilitiesRow);
+        facilitiesScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        facilitiesScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        facilitiesScroll.setFitToHeight(true);
+        facilitiesScroll.getStyleClass().add("roomFacilitiesScroll");
+        facilitiesScroll.setPrefHeight(54);
 
         VBox priceCard = new VBox(6);
         priceCard.getStyleClass().add("roomPriceCard");
@@ -559,8 +570,7 @@ public class HotelDetailsController {
         addBtn.setOnAction(e -> addRoomSelection(room));
         priceCard.getChildren().add(addBtn);
 
-        right.getChildren().addAll(titleRow, metaRow, remaining, facilities, priceCard);
-        VBox.setVgrow(facilities, Priority.ALWAYS);
+        right.getChildren().addAll(titleRow, metaRow, remaining, facilitiesScroll, priceCard);
 
         card.setLeft(gallery);
         card.setCenter(right);
@@ -844,5 +854,21 @@ public class HotelDetailsController {
             FileCache.remove("hotel_details_" + CACHE_VERSION + "_" + currentHotelId);
         }
         loadData();
+    }
+
+    private boolean profileEligibleForBooking() {
+        try {
+            com.travel.frontend.model.Profile p = DataCache.peek("myProfile:v2");
+            if (p == null) {
+                p = ApiClient.get().getMyProfile();
+                DataCache.put("myProfile:v2", p);
+            }
+            boolean hasIdType = p != null && p.idType != null && !p.idType.isBlank();
+            boolean hasIdNum = p != null && p.idNumber != null && !p.idNumber.isBlank();
+            boolean hasGender = p != null && p.gender != null && !p.gender.isBlank();
+            return hasIdType && hasIdNum && hasGender;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

@@ -47,6 +47,7 @@ public class HotelBookingDialogController {
     private BigDecimal totalPrice = BigDecimal.ZERO;
     private List<RoomSelection> selections = new ArrayList<>();
     private Runnable onSuccess;
+    private com.travel.frontend.model.Profile profile;
 
     public record RoomSelection(UUID roomId, String name, int count, BigDecimal totalPrice) {}
 
@@ -222,6 +223,18 @@ public class HotelBookingDialogController {
     }
 
     private void submitBookings() {
+        com.travel.frontend.model.Profile prof = profile;
+        if (prof == null) {
+            try {
+                prof = com.travel.frontend.cache.DataCache.peek("myProfile:v2");
+                if (prof == null) {
+                    prof = api.getMyProfile();
+                    com.travel.frontend.cache.DataCache.put("myProfile:v2", prof);
+                }
+                profile = prof;
+            } catch (Exception ignore) { }
+        }
+        final com.travel.frontend.model.Profile finalProf = prof;
         new Thread(() -> {
             try {
                 for (RoomSelection sel : selections) {
@@ -231,6 +244,14 @@ public class HotelBookingDialogController {
                     body.put("rooms", sel.count());
                     body.put("totalGuests", guests);
                     body.put("totalPrice", sel.totalPrice());
+                    if (finalProf != null) {
+                        body.put("customerName", finalProf.fullName);
+                        body.put("idType", finalProf.idType);
+                        body.put("idNumber", finalProf.idNumber);
+                        if (finalProf.userId != null && !finalProf.userId.isBlank()) {
+                            body.put("userId", finalProf.userId);
+                        }
+                    }
                     String json = mapper.writeValueAsString(body);
                     var res = api.rawPostJson("/hotels/" + hotelId + "/rooms/" + sel.roomId() + "/book", json, true);
                     if (res.statusCode() != 200) {

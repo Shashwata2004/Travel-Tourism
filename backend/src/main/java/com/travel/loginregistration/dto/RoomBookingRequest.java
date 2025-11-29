@@ -14,4 +14,7 @@ public class RoomBookingRequest {
     public UUID userId;
     public String hotelName;
     public String roomName;
+    public String customerName;
+    public String idType;
+    public String idNumber;
 }

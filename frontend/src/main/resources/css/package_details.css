@@ -100,8 +100,7 @@
 .blobB { -fx-fill: rgba(14,165,233,0.26); -fx-effect: dropshadow(gaussian, rgba(14,165,233,0.35), 120, 0.8, 0, 0); }
 .blobC { -fx-fill: rgba(37,99,235,0.32); -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.35), 140, 0.8, 0, 0); }
 .gridOverlay {
-    -fx-background-color: transparent;
-    -fx-background-image: linear-gradient(rgba(79,70,229,0.05) 1px, transparent 1px),
+    -fx-background-color: linear-gradient(rgba(79,70,229,0.05) 1px, transparent 1px),
                           linear-gradient(90deg, rgba(79,70,229,0.05) 1px, transparent 1px);
     -fx-background-size: 100px 100px, 100px 100px;
     -fx-opacity: 0.08;

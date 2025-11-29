@@ -43,6 +43,15 @@ public class HotelRoomBooking {
     @Column(name = "room_name")
     private String roomName;
 
+    @Column(name = "customer_name")
+    private String customerName;
+
+    @Column(name = "id_type")
+    private String idType;
+
+    @Column(name = "id_number")
+    private String idNumber;
+
     public UUID getId() { return id; }
     public void setId(UUID id) { this.id = id; }
     public UUID getRoomId() { return roomId; }
@@ -65,4 +74,10 @@ public class HotelRoomBooking {
     public void setHotelName(String hotelName) { this.hotelName = hotelName; }
     public String getRoomName() { return roomName; }
     public void setRoomName(String roomName) { this.roomName = roomName; }
+    public String getCustomerName() { return customerName; }
+    public void setCustomerName(String customerName) { this.customerName = customerName; }
+    public String getIdType() { return idType; }
+    public void setIdType(String idType) { this.idType = idType; }
+    public String getIdNumber() { return idNumber; }
+    public void setIdNumber(String idNumber) { this.idNumber = idNumber; }
 }

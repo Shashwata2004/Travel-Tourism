@@ -38,7 +38,7 @@
 
                         <VBox spacing="12" styleClass="galleryCard">
                             <StackPane>
-                                <ImageView fx:id="mainImage" preserveRatio="true" fitWidth="1200" fitHeight="720"/>
+                                <ImageView fx:id="mainImage" preserveRatio="true" fitWidth="1040" fitHeight="620"/>
                                 <Label fx:id="imageCounter" styleClass="imageCounter" StackPane.alignment="BOTTOM_RIGHT">
                                     <StackPane.margin>
                                         <Insets top="10" right="10" bottom="10" left="10"/>
@@ -48,7 +48,7 @@
                             <HBox fx:id="thumbnails" spacing="10" styleClass="thumbRow"/>
                         </VBox>
 
-                        <VBox spacing="10" styleClass="infoCard headerCard" prefWidth="1140" maxWidth="1140" minWidth="1140">
+                        <VBox spacing="10" styleClass="infoCard headerCard" prefWidth="1040" maxWidth="1040" minWidth="1040">
                             <HBox alignment="CENTER_LEFT" spacing="12">
                                 <Label fx:id="nameLabel" styleClass="hotelName"/>
                                 <Label fx:id="ratingLabel" styleClass="ratingBadge"/>
@@ -71,7 +71,7 @@
 
                         <VBox spacing="12" styleClass="infoCard" prefWidth="1140" maxWidth="1140" minWidth="1140">
                             <Label text="Facilities" styleClass="sectionTitle"/>
-                            <TilePane fx:id="facilitiesGrid" prefColumns="3" hgap="16" vgap="16" prefTileWidth="340" prefTileHeight="140"/>
+                            <TilePane fx:id="facilitiesGrid" prefColumns="3" hgap="12" vgap="12" prefTileWidth="300" prefTileHeight="140"/>
                         </VBox>
 
                         <VBox spacing="10" styleClass="infoCard" prefWidth="1140" maxWidth="1140" minWidth="1140">

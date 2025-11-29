@@ -25,12 +25,12 @@ public class HomeController {
     @FXML private TextField idNumberField;
     @FXML private TextField locationField;
 
-    @FXML private RadioButton idNid;
-    @FXML private RadioButton idBirth;
-    @FXML private RadioButton idPassport;
+    @FXML private ToggleButton idNid;
+    @FXML private ToggleButton idBirth;
+    @FXML private ToggleButton idPassport;
 
-    @FXML private RadioButton genderMale;
-    @FXML private RadioButton genderFemale;
+    @FXML private ToggleButton genderMale;
+    @FXML private ToggleButton genderFemale;
 
     @FXML private Label statusLabel;
     @FXML private Pane blobLayer;
@@ -78,6 +78,10 @@ public class HomeController {
                 case "PASSPORT": idPassport.setSelected(true); break;
                 default: break;
             }
+        } else {
+            idNid.setSelected(false);
+            idBirth.setSelected(false);
+            idPassport.setSelected(false);
         }
         if (p.gender != null) {
             switch (p.gender) {
@@ -85,6 +89,9 @@ public class HomeController {
                 case "FEMALE": genderFemale.setSelected(true); break;
                 default: break;
             }
+        } else {
+            genderMale.setSelected(false);
+            genderFemale.setSelected(false);
         }
         statusLabel.setText("");
     }
