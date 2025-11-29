@@ -66,6 +66,9 @@ public class LoginController {
                     boolean ok = adminClient.auth(email, pass);
                     Platform.runLater(() -> {
                         if (ok) {
+                            com.travel.frontend.cache.FileCache.remove("admin:packages");
+                            com.travel.frontend.cache.FileCache.remove("admin:destinations");
+                            // clear hotel/room caches (keys based on ids will refresh as accessed)
                             statusLabel.setText("Admin logged in");
                             Navigator.goAdminDashboard();
                         } else {

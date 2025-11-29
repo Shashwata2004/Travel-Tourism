@@ -15,6 +15,7 @@ import java.util.function.Supplier;
 public final class FileCache {
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final File ROOT = new File(System.getProperty("user.home"), ".travel-admin-cache");
+    private static final long TTL_MS = Long.getLong("filecache.ttl.ms", 3 * 60 * 60 * 1000L); // 3 hours
 
     private FileCache() {}
 
@@ -23,11 +24,17 @@ public final class FileCache {
         File f = fileFor(key);
         T cached = null;
         if (f.exists()) {
-            try {
-                cached = MAPPER.readValue(f, type);
-                return cached;
-            } catch (IOException ignore) {
-                // fall through
+            long age = System.currentTimeMillis() - f.lastModified();
+            if (age <= TTL_MS) {
+                try {
+                    cached = MAPPER.readValue(f, type);
+                    return cached;
+                } catch (IOException ignore) {
+                    // fall through
+                }
+            } else {
+                // expired
+                try { Files.deleteIfExists(f.toPath()); } catch (IOException ignore) {}
             }
         }
         try {

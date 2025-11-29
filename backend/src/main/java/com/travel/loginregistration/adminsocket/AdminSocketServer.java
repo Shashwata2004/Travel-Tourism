@@ -192,8 +192,12 @@ public class AdminSocketServer {
             boolean match = hasMatchingDestination(p.getLocation());
             p.setPackageAvailable(match);
         }
+        List<Map<String, Object>> decorated = new ArrayList<>();
+        for (TravelPackage p : items) {
+            decorated.add(toPackagePayload(p));
+        }
         Map<String, Object> ok = ok();
-        ok.put("items", items);
+        ok.put("items", decorated);
         return ok;
     }
 
@@ -501,6 +505,39 @@ public class AdminSocketServer {
         if (name == null || name.isEmpty()) return Optional.empty();
         return pkgRepo.findFirstByLocationIgnoreCaseAndActiveTrueOrderByNameAsc(name)
                 .map(TravelPackage::getId);
+    }
+
+    // Builds a map representing a TravelPackage including its itinerary for admin UI.
+    private Map<String, Object> toPackagePayload(TravelPackage p) {
+        Map<String, Object> m = new HashMap<>();
+        m.put("id", p.getId());
+        m.put("name", p.getName());
+        m.put("location", p.getLocation());
+        m.put("basePrice", p.getBasePrice());
+        m.put("destImageUrl", p.getDestImageUrl());
+        m.put("hotelImageUrl", p.getHotelImageUrl());
+        m.put("image1", p.getImage1());
+        m.put("image2", p.getImage2());
+        m.put("image3", p.getImage3());
+        m.put("image4", p.getImage4());
+        m.put("image5", p.getImage5());
+        m.put("overview", p.getOverview());
+        m.put("locationPoints", p.getLocationPoints());
+        m.put("timing", p.getTiming());
+        m.put("groupSize", p.getGroupSize());
+        m.put("active", p.isActive());
+        m.put("packageAvailable", p.isPackageAvailable());
+        List<Map<String, Object>> its = new ArrayList<>();
+        List<PackageItinerary> steps = itineraryRepo.findByTravelPackageIdOrderByDayNumberAsc(p.getId());
+        for (PackageItinerary it : steps) {
+            Map<String, Object> im = new HashMap<>();
+            im.put("dayNumber", it.getDayNumber());
+            im.put("title", it.getTitle());
+            im.put("subtitle", it.getSubtitle());
+            its.add(im);
+        }
+        m.put("itinerary", its);
+        return m;
     }
 
     // Builds a success response map with ok=true.
