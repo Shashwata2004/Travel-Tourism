@@ -354,18 +354,50 @@ public class AdminSocketServer {
         UUID hotelId = UUID.fromString(hotelStr);
         Object rawList = req.get("items");
         if (!(rawList instanceof List<?> list)) return err("NO_ITEMS");
-        roomRepo.deleteByHotelId(hotelId);
+        // Preserve existing room IDs; update matched rows, add new ones, remove missing.
+        List<HotelRoom> existing = roomRepo.findByHotelIdOrderByNameAsc(hotelId);
+        Map<UUID, HotelRoom> existingById = new HashMap<>();
+        for (HotelRoom r : existing) {
+            if (r.getId() != null) existingById.put(r.getId(), r);
+        }
+        Set<UUID> seen = new HashSet<>();
         List<HotelRoom> toSave = new ArrayList<>();
         for (Object o : list) {
             if (!(o instanceof Map<?,?> any)) continue;
             @SuppressWarnings("unchecked")
             Map<String,Object> m = (Map<String,Object>) any;
-            HotelRoom r = new HotelRoom();
-            r.setHotelId(hotelId);
-            applyRoom(r, m);
-            toSave.add(r);
+            HotelRoom target = null;
+            String idStr = m.get("id") != null ? String.valueOf(m.get("id")) : null;
+            if (idStr != null && !idStr.isBlank()) {
+                try {
+                    UUID rid = UUID.fromString(idStr);
+                    target = existingById.get(rid);
+                    if (target != null) seen.add(rid);
+                } catch (Exception ignore) {}
+            }
+            if (target == null) {
+                target = new HotelRoom();
+                target.setHotelId(hotelId);
+            }
+            applyRoom(target, m);
+            toSave.add(target);
         }
         if (!toSave.isEmpty()) roomRepo.saveAll(toSave);
+        // delete rooms that were removed in payload
+        List<HotelRoom> toDelete = new ArrayList<>();
+        for (HotelRoom r : existing) {
+            if (r.getId() != null && !seen.contains(r.getId())) {
+                // only delete if not present in payload
+                boolean stillPresent = list.stream().anyMatch(it -> {
+                    if (!(it instanceof Map<?,?> mm)) return false;
+                    Object idObj = mm.get("id");
+                    if (idObj == null) return false;
+                    try { return UUID.fromString(String.valueOf(idObj)).equals(r.getId()); } catch (Exception e) { return false; }
+                });
+                if (!stillPresent) toDelete.add(r);
+            }
+        }
+        if (!toDelete.isEmpty()) roomRepo.deleteAll(toDelete);
         return ok();
     }
 

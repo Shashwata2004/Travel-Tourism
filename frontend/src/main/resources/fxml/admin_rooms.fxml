@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.travel.frontend.controller.AdminRoomsController" prefWidth="900" prefHeight="620">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.travel.frontend.controller.AdminRoomsController" prefWidth="900" prefHeight="620" stylesheets="@/css/admin.css">
     <top>
         <HBox spacing="12" alignment="CENTER_LEFT">
             <padding><Insets topRightBottomLeft="12"/></padding>
@@ -31,6 +31,8 @@
                         <Button text="New" onAction="#onNew"/>
                         <Button text="Delete" onAction="#onDelete"/>
                         <Button text="Save" onAction="#onSave" id="primaryBtn"/>
+                        <Pane HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="viewBookingsButton" text="View Bookings" onAction="#onViewBookings"/>
                     </HBox>
                 </VBox>
                 <VBox spacing="10">

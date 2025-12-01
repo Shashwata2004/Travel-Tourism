@@ -7,7 +7,7 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.travel.frontend.controller.AdminHotelsController"
-            stylesheets="@/css/login.css">
+            stylesheets="@/css/admin.css">
     <top>
         <HBox spacing="10" alignment="CENTER_LEFT" id="navbar">
             <padding><Insets topRightBottomLeft="10"/></padding>

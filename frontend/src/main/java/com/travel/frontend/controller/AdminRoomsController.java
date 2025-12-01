@@ -24,6 +24,7 @@ public class AdminRoomsController {
     @FXML private TableColumn<RoomVM, String> totalCol;
     @FXML private TableColumn<RoomVM, String> capacityCol;
     @FXML private TableColumn<RoomVM, String> priceCol;
+    @FXML private Button viewBookingsButton;
     @FXML private TextField nameField;
     @FXML private TextField bedTypeField;
     @FXML private TextField totalField;
@@ -129,6 +130,21 @@ public class AdminRoomsController {
                 Platform.runLater(() -> statusLabel.setText("Delete failed: " + e.getMessage()));
             }
         }).start();
+    }
+
+    @FXML
+    private void onViewBookings() {
+        if (current == null || current.id == null) {
+            statusLabel.setText("Select a saved room to view bookings.");
+            return;
+        }
+        try {
+            java.util.UUID rid = java.util.UUID.fromString(current.id);
+            AdminRoomsState.setRoom(rid, current.name);
+            com.travel.frontend.ui.Navigator.goAdminRoomBookings();
+        } catch (IllegalArgumentException ex) {
+            statusLabel.setText("Invalid room id.");
+        }
     }
 
     private void loadRooms(UUID hotelId) {

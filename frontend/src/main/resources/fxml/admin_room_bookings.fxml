@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.travel.frontend.controller.AdminRoomBookingsController"
+            prefWidth="780" prefHeight="520"
+            stylesheets="@/css/admin.css">
+    <top>
+        <VBox spacing="8">
+            <padding><Insets topRightBottomLeft="12"/></padding>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button text="← Back" onAction="#onBack"/>
+                <VBox spacing="4">
+                    <Label fx:id="headerLabel" styleClass="sectionTitle"/>
+                    <Label fx:id="subHeaderLabel" styleClass="sectionSubtitle"/>
+                </VBox>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Label fx:id="statusLabel"/>
+                <Button text="Reload" onAction="#onReload"/>
+            </HBox>
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <Label text="Next available date:"/>
+                <Label fx:id="nextAvailableLabel"/>
+            </HBox>
+        </VBox>
+    </top>
+    <center>
+        <TableView fx:id="bookingTable">
+            <columns>
+                <TableColumn fx:id="checkInCol" text="Check-in" prefWidth="90"/>
+                <TableColumn fx:id="checkOutCol" text="Check-out" prefWidth="90"/>
+                <TableColumn fx:id="roomsCol" text="Rooms" prefWidth="70"/>
+                <TableColumn fx:id="guestsCol" text="Guests" prefWidth="70"/>
+                <TableColumn fx:id="customerCol" text="Customer" prefWidth="140"/>
+                <TableColumn fx:id="idTypeCol" text="ID Type" prefWidth="100"/>
+                <TableColumn fx:id="idNumberCol" text="ID Number" prefWidth="120"/>
+                <TableColumn fx:id="priceCol" text="Total Price" prefWidth="100"/>
+                <TableColumn fx:id="createdCol" text="Booked At" prefWidth="140"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public interface HotelRoomBookingRepository extends JpaRepository<HotelRoomBooking, UUID> {
@@ -16,4 +17,6 @@ public interface HotelRoomBookingRepository extends JpaRepository<HotelRoomBooki
     Integer sumBookedBetween(@Param("roomId") UUID roomId,
                               @Param("checkIn") LocalDate checkIn,
                               @Param("checkOut") LocalDate checkOut);
+
+    List<HotelRoomBooking> findByRoomIdOrderByCheckInAsc(UUID roomId);
 }

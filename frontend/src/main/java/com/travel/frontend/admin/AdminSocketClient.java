@@ -226,8 +226,8 @@ public class AdminSocketClient {
     private Map<String, Object> callWithRetry(Map<String, Object> req, int retries) throws IOException {
         try (Socket s = new Socket()) {
             try {
-                s.connect(new java.net.InetSocketAddress(host, port), 3000);
-                s.setSoTimeout(8000);
+                s.connect(new java.net.InetSocketAddress(host, port), 5000);
+                s.setSoTimeout(15000);
             } catch (IOException ce) {
                 throw new IOException("Connect failed to " + host + ":" + port + ": " + ce.getMessage(), ce);
             }
