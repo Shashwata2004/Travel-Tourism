@@ -101,7 +101,7 @@
 .blobC { -fx-fill: rgba(37,99,235,0.32); -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.35), 140, 0.8, 0, 0); }
 .gridOverlay {
     -fx-background-color: linear-gradient(rgba(79,70,229,0.05) 1px, transparent 1px),
-                          linear-gradient(90deg, rgba(79,70,229,0.05) 1px, transparent 1px);
+                          linear-gradient(to right, rgba(79,70,229,0.05) 1px, transparent 1px);
     -fx-background-size: 100px 100px, 100px 100px;
     -fx-opacity: 0.08;
 }
@@ -153,6 +153,24 @@
     -fx-padding: 10 12 10 12;
     -fx-border-color: rgba(255,255,255,0.10);
     -fx-border-radius: 12;
+}
+.deadlineRow {
+    -fx-padding: 16 18 16 18;
+    -fx-background-color:
+        linear-gradient(to bottom right, rgba(255,255,255,0.18), rgba(255,255,255,0.10)),
+        rgba(255,255,255,0.06);
+    -fx-background-insets: 0, 1;
+    -fx-border-color: rgba(255,255,255,0.35);
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-effect:
+        dropshadow(gaussian, rgba(255,255,255,0.16), 22, 0.45, 0, 5),
+        dropshadow(gaussian, rgba(0,0,0,0.35), 24, 0.3, 0, 8);
+}
+.deadlineValue {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: 900;
+    -fx-font-size: 18px;
 }
 .infoIcon {
     -fx-text-fill: #cbd5f5;

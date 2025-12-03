@@ -54,6 +54,9 @@ public class BookingService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         TravelPackage pack = packageRepo.findById(req.packageId)
                 .orElseThrow(() -> new IllegalArgumentException("Package not found"));
+        if (pack.getBookingDeadline() != null && java.time.LocalDate.now().isAfter(pack.getBookingDeadline())) {
+            throw new IllegalArgumentException("Booking deadline passed for this package");
+        }
 
         UserProfile profile = profileRepo.findByUserId(user.getId()).orElse(null);
         // Enforce eligibility: ID Type and ID Number must be present
@@ -75,6 +78,8 @@ public class BookingService {
         b.setPriceTotal(total);
         b.setCustomerName(customerName);
         b.setIdNumber(idNumber);
+        b.setIdType(profile.getIdType());
+        b.setUserEmail(user.getEmail());
         b.setCreatedAt(Instant.now());
         bookingRepo.save(b);                // booking saved to database
 

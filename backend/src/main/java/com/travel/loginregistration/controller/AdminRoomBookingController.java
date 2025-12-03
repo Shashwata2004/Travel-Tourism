@@ -5,6 +5,7 @@ import com.travel.loginregistration.model.HotelRoomBooking;
 import com.travel.loginregistration.repository.HotelRoomBookingRepository;
 import com.travel.loginregistration.repository.HotelRoomRepository;
 import com.travel.loginregistration.repository.HotelRepository;
+import com.travel.loginregistration.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,13 +25,16 @@ public class AdminRoomBookingController {
     private final HotelRoomBookingRepository bookingRepository;
     private final HotelRoomRepository roomRepository;
     private final HotelRepository hotelRepository;
+    private final UserRepository userRepository;
 
     public AdminRoomBookingController(HotelRoomBookingRepository bookingRepository,
                                       HotelRoomRepository roomRepository,
-                                      HotelRepository hotelRepository) {
+                                      HotelRepository hotelRepository,
+                                      UserRepository userRepository) {
         this.bookingRepository = bookingRepository;
         this.roomRepository = roomRepository;
         this.hotelRepository = hotelRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/{roomId}/bookings")
@@ -68,6 +72,11 @@ public class AdminRoomBookingController {
         v.customerName = b.getCustomerName();
         v.idType = b.getIdType();
         v.idNumber = b.getIdNumber();
+        String email = b.getUserEmail();
+        if ((email == null || email.isBlank()) && b.getUserId() != null) {
+            email = userRepository.findById(b.getUserId()).map(u -> u.getEmail()).orElse(null);
+        }
+        v.userEmail = email;
         v.createdAt = b.getCreatedAt();
         return v;
     }

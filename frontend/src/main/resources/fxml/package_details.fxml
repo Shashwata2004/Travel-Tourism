@@ -109,7 +109,7 @@
                                     <Label fx:id="priceLabel" styleClass="priceBig" wrapText="true"/>
                                     <Label text="per person" styleClass="priceHint"/>
                                 </VBox>
-                                <VBox spacing="10">
+                                <VBox spacing="12">
                                     <HBox spacing="8" alignment="CENTER_LEFT" styleClass="infoRow">
                                         <Label text="⏲" styleClass="infoIcon"/>
                                         <Label text="Duration" styleClass="infoLabel"/>
@@ -125,8 +125,17 @@
                                         <Pane HBox.hgrow="ALWAYS"/>
                                         <Label fx:id="groupLabel" styleClass="infoValue"/>
                                     </HBox>
+                                    <HBox spacing="12" alignment="CENTER_LEFT" styleClass="infoRow deadlineRow" maxWidth="Infinity">
+                                        <SVGPath content="M5 4c-.552 0-1 .448-1 1v1H3v2h18V6h-1V5c0-.552-.448-1-1-1h-2V3h-2v2H9V3H7v2H5zm0 4v9c0 1.103.897 2 2 2h10c1.103 0 2-.897 2-2V8H5zm3 3h2v2H8v-2zm4 0h2v2h-2v-2z"
+                                                 fill="#e5edff"
+                                                 scaleX="1.1"
+                                                 scaleY="1.1"/>
+                                        <Label text="Booking Deadline" styleClass="infoLabel"/>
+                                        <Pane HBox.hgrow="ALWAYS"/>
+                                        <Label fx:id="deadlineLabel" styleClass="deadlineValue"/>
+                                    </HBox>
                                 </VBox>
-                                <Button text="Book Now →" onAction="#onBookNow" styleClass="infoBook"/>
+                                <Button text="Book Now →" onAction="#onBookNow" styleClass="infoBook" maxWidth="Infinity" prefWidth="Infinity"/>
                             </VBox>
                         </HBox>
                     </content>

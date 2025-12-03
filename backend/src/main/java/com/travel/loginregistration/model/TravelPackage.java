@@ -2,6 +2,7 @@ package com.travel.loginregistration.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.UUID;
 
 /*
@@ -57,6 +58,8 @@ public class TravelPackage {
     private boolean active = true;
     @Column(name = "package_available")
     private boolean packageAvailable = false;
+    @Column(name = "booking_deadline")
+    private LocalDate bookingDeadline;
 
     public UUID getId() { return id; }
     public void setId(UUID id) { this.id = id; }
@@ -92,5 +95,7 @@ public class TravelPackage {
     public void setActive(boolean active) { this.active = active; }
     public boolean isPackageAvailable() { return packageAvailable; }
     public void setPackageAvailable(boolean packageAvailable) { this.packageAvailable = packageAvailable; }
+    public LocalDate getBookingDeadline() { return bookingDeadline; }
+    public void setBookingDeadline(LocalDate bookingDeadline) { this.bookingDeadline = bookingDeadline; }
 }
 

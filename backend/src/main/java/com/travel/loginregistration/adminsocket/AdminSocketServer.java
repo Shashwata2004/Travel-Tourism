@@ -425,6 +425,7 @@ public class AdminSocketServer {
         if (item.containsKey("groupSize")) p.setGroupSize(str(item.get("groupSize")));
         if (item.containsKey("active")) p.setActive(Boolean.TRUE.equals(item.get("active")) || "true".equalsIgnoreCase(str(item.get("active"))));
         if (item.containsKey("packageAvailable")) p.setPackageAvailable(bool(item.get("packageAvailable")));
+        if (item.containsKey("bookingDeadline")) p.setBookingDeadline(toDate(item.get("bookingDeadline")));
     }
 
     private void applyDest(Destination d, Map<String, Object> item) {
@@ -523,6 +524,13 @@ public class AdminSocketServer {
 
     private int intVal(Object o) { try { return o == null ? 0 : Integer.parseInt(String.valueOf(o)); } catch (Exception e) { return 0; } }
     private boolean bool(Object o) { return o != null && Boolean.parseBoolean(String.valueOf(o)); }
+    private java.time.LocalDate toDate(Object o) {
+        if (o == null) return null;
+        if (o instanceof java.time.LocalDate d) return d;
+        String s = str(o);
+        if (s == null || s.isBlank()) return null;
+        try { return java.time.LocalDate.parse(s); } catch (Exception e) { return null; }
+    }
     private boolean hasMatchingDestination(String location) {
         String loc = norm(location);
         if (loc == null || loc.isEmpty()) return false;
@@ -559,6 +567,7 @@ public class AdminSocketServer {
         m.put("groupSize", p.getGroupSize());
         m.put("active", p.isActive());
         m.put("packageAvailable", p.isPackageAvailable());
+        m.put("bookingDeadline", p.getBookingDeadline() == null ? null : p.getBookingDeadline().toString());
         List<Map<String, Object>> its = new ArrayList<>();
         List<PackageItinerary> steps = itineraryRepo.findByTravelPackageIdOrderByDayNumberAsc(p.getId());
         for (PackageItinerary it : steps) {

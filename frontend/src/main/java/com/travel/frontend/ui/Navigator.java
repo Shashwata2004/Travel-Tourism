@@ -80,6 +80,7 @@ public final class Navigator {
     public static void goAdminHotels() { load("admin_hotels.fxml"); }
     public static void goAdminRooms() { load("admin_rooms.fxml"); }
     public static void goAdminRoomBookings() { load("admin_room_bookings.fxml"); }
+    public static void goAdminPackageBookings() { load("admin_package_bookings.fxml"); }
 
     /* Sanity check before loading anything: reminds developers to call init(...)
        before touching navigation, otherwise JavaFX would throw null pointers. */

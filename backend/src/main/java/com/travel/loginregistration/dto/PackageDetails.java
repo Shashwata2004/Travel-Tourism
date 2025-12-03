@@ -3,6 +3,7 @@ package com.travel.loginregistration.dto;
 import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.List;
+import java.time.LocalDate;
 
 /*
  * Simple DTO representing travel package details.
@@ -26,4 +27,5 @@ public class PackageDetails {
     public String timing;
     public List<ItineraryItem> itinerary;
     public String groupSize;
+    public LocalDate bookingDeadline;
 }

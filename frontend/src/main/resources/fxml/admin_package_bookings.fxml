@@ -4,8 +4,8 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.travel.frontend.controller.AdminRoomBookingsController"
-            prefWidth="780" prefHeight="520"
+            fx:controller="com.travel.frontend.controller.AdminPackageBookingsController"
+            prefWidth="820" prefHeight="520"
             stylesheets="@/css/admin.css">
     <top>
         <VBox spacing="8">
@@ -21,24 +21,23 @@
                 <Button text="Reload" onAction="#onReload"/>
             </HBox>
             <HBox spacing="12" alignment="CENTER_LEFT">
-                <Label text="Next available date:"/>
-                <Label fx:id="nextAvailableLabel"/>
+                <Label text="Booking deadline:"/>
+                <Label fx:id="deadlineLabel"/>
+                <Label text="Total persons booked:"/>
+                <Label fx:id="totalPersonsLabel"/>
             </HBox>
         </VBox>
     </top>
     <center>
         <TableView fx:id="bookingTable">
             <columns>
-                <TableColumn fx:id="checkInCol" text="Check-in" prefWidth="120"/>
-                <TableColumn fx:id="checkOutCol" text="Check-out" prefWidth="120"/>
-                <TableColumn fx:id="roomsCol" text="Rooms" prefWidth="90"/>
-                <TableColumn fx:id="guestsCol" text="Guests" prefWidth="90"/>
-                <TableColumn fx:id="customerCol" text="Customer" prefWidth="260"/>
-                <TableColumn fx:id="emailCol" text="Email" prefWidth="280"/>
+                <TableColumn fx:id="createdCol" text="Booked At" prefWidth="200"/>
+                <TableColumn fx:id="customerCol" text="Customer" prefWidth="280"/>
+                <TableColumn fx:id="emailCol" text="Email" prefWidth="300"/>
                 <TableColumn fx:id="idTypeCol" text="ID Type" prefWidth="140"/>
                 <TableColumn fx:id="idNumberCol" text="ID Number" prefWidth="200"/>
+                <TableColumn fx:id="personsCol" text="Persons" prefWidth="90"/>
                 <TableColumn fx:id="priceCol" text="Total Price" prefWidth="140"/>
-                <TableColumn fx:id="createdCol" text="Booked At" prefWidth="180"/>
             </columns>
         </TableView>
     </center>

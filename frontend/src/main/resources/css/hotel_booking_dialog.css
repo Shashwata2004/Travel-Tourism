@@ -63,3 +63,63 @@
     -fx-border-width: 2;
     -fx-background-color: rgba(220,38,38,0.06);
 }
+.personDisplay {
+    -fx-background-color: linear-gradient(to bottom right, rgba(236,240,255,0.9), rgba(219,227,255,0.8));
+    -fx-border-color: #c7d2fe;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-padding: 18 34;
+    -fx-min-width: 220;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(12,22,45,0.08), 18, 0.25, 0, 4);
+}
+.personCount {
+    -fx-text-fill: #4338ca;
+    -fx-font-size: 24px;
+    -fx-font-weight: 800;
+}
+.personSub {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 12px;
+}
+.arrowBtn {
+    -fx-background-radius: 14;
+    -fx-padding: 14 16;
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 18, 0.35, 0, 6);
+    -fx-min-width: 52;
+}
+.upBtn { -fx-background-color: linear-gradient(to bottom, #7c3aed, #5b21b6); }
+.downBtn { -fx-background-color: linear-gradient(to bottom, #6b7280, #4b5563); }
+.arrowBtn:hover { -fx-opacity: 0.92; -fx-translate-y: -1; }
+.arrowBtn:pressed { -fx-opacity: 0.85; -fx-translate-y: 0; }
+.priceCard {
+    -fx-background-color: linear-gradient(to bottom right, rgba(255,255,255,0.6), rgba(255,245,220,0.8));
+    -fx-border-color: rgba(255,170,0,0.45);
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-padding: 12 16;
+    -fx-effect: dropshadow(gaussian, rgba(255,170,0,0.24), 18, 0.35, 0, 4);
+}
+.priceIcon { -fx-fill: #f97316; }
+.priceLabel { -fx-text-fill: #9a6700; -fx-font-weight: 700; -fx-font-size: 13px; }
+.priceValue { -fx-text-fill: #f97316; -fx-font-size: 26px; -fx-font-weight: 800; }
+
+.pillBtn {
+    -fx-background-radius: 14;
+    -fx-padding: 16 20;
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 16, 0.35, 0, 6);
+}
+.pillBtn.primary { -fx-background-color: linear-gradient(to right, #5b21b6, #6d28d9); }
+.pillBtn.primary:hover { -fx-background-color: linear-gradient(to right, #4c1d95, #5b21b6); }
+.pillBtn.primary:pressed { -fx-translate-y: 1; -fx-opacity: 0.95; }
+.pillBtn.secondary { -fx-background-color: linear-gradient(to right, #ec4899, #f97316); }
+.pillBtn.secondary:hover { -fx-background-color: linear-gradient(to right, #db2777, #ea580c); }
+.pillBtn.secondary:pressed { -fx-translate-y: 1; -fx-opacity: 0.95; }

@@ -38,6 +38,12 @@ public class Booking {
     @Column(name = "id_number")
     private String idNumber;
 
+    @Column(name = "id_type")
+    private String idType;
+
+    @Column(name = "user_email")
+    private String userEmail;
+
     @Column(name = "created_at")
     private Instant createdAt = Instant.now();
 
@@ -55,6 +61,10 @@ public class Booking {
     public void setCustomerName(String customerName) { this.customerName = customerName; }
     public String getIdNumber() { return idNumber; }
     public void setIdNumber(String idNumber) { this.idNumber = idNumber; }
+    public String getIdType() { return idType; }
+    public void setIdType(String idType) { this.idType = idType; }
+    public String getUserEmail() { return userEmail; }
+    public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
     public Instant getCreatedAt() { return createdAt; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 }

@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 public class AdminDashboardController {
     @FXML private ListView<PackageVM> listView;
@@ -29,6 +30,7 @@ public class AdminDashboardController {
     @FXML private TextArea timingArea;
     @FXML private TextArea itineraryArea;
     @FXML private TextField groupSizeField;
+    @FXML private DatePicker bookingDeadlinePicker;
     @FXML private CheckBox packageAvailableBox;
     @FXML private CheckBox activeBox;
     @FXML private Label statusLabel;
@@ -115,6 +117,7 @@ public class AdminDashboardController {
                         current.locationPoints = vm.locationPoints;
                         current.timing = vm.timing;
                         current.itinerary = vm.itinerary;
+                        current.bookingDeadline = vm.bookingDeadline;
                         current.active = vm.active;
                         listView.refresh();
                         statusLabel.setText("Saved");
@@ -148,6 +151,21 @@ public class AdminDashboardController {
         }).start();
     }
 
+    @FXML public void onViewBookings() {
+        PackageVM sel = listView.getSelectionModel().getSelectedItem();
+        if (sel == null) {
+            statusLabel.setText("Select a package first to view bookings");
+            return;
+        }
+        if (sel.id == null || sel.id.isBlank()) {
+            statusLabel.setText("Selected package is missing an id. Try Refresh.");
+            return;
+        }
+        AdminPackagesState.set(sel.id.trim(), sel.name);
+        statusLabel.setText("");
+        Navigator.goAdminPackageBookings();
+    }
+
     /* Populates the form controls from a PackageVM, helping the admin see what
        they’re editing right after selecting an item from the ListView. */
     private void fillForm(PackageVM vm) {
@@ -164,6 +182,9 @@ public class AdminDashboardController {
         timingArea.setText(n(vm.timing));
         itineraryArea.setText(toItineraryLines(vm));
         groupSizeField.setText(n(vm.groupSize));
+        if (bookingDeadlinePicker != null) {
+            bookingDeadlinePicker.setValue(parseDate(vm.bookingDeadline));
+        }
         packageAvailableBox.setSelected(vm.packageAvailable);
         activeBox.setSelected(vm.active);
     }
@@ -189,6 +210,9 @@ public class AdminDashboardController {
         vm.timing = timingArea.getText();
         vm.itinerary = parseItinerary(itineraryArea.getText());
         vm.groupSize = t(groupSizeField);
+        vm.bookingDeadline = bookingDeadlinePicker != null && bookingDeadlinePicker.getValue() != null
+                ? bookingDeadlinePicker.getValue().toString()
+                : null;
         vm.packageAvailable = packageAvailableBox.isSelected();
         vm.active = activeBox.isSelected();
         return vm;
@@ -208,12 +232,17 @@ public class AdminDashboardController {
         timingArea.clear();
         itineraryArea.clear();
         groupSizeField.clear();
+        if (bookingDeadlinePicker != null) bookingDeadlinePicker.setValue(null);
         packageAvailableBox.setSelected(false);
         activeBox.setSelected(true);
     }
 
     private static String t(TextField f) { return f.getText() == null ? "" : f.getText().trim(); }
     private static String n(String s) { return s == null ? "" : s; }
+    private java.time.LocalDate parseDate(String s) {
+        if (s == null || s.isBlank()) return null;
+        try { return java.time.LocalDate.parse(s); } catch (Exception e) { return null; }
+    }
     private String detailedMessage(Exception e) {
         if (e.getMessage() != null && !e.getMessage().isBlank()) return e.getMessage();
         Throwable c = e.getCause();

@@ -7,6 +7,7 @@ import com.travel.loginregistration.model.HotelRoomBooking;
 import com.travel.loginregistration.repository.HotelRepository;
 import com.travel.loginregistration.repository.HotelRoomBookingRepository;
 import com.travel.loginregistration.repository.HotelRoomRepository;
+import com.travel.loginregistration.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,13 +22,16 @@ public class HotelBookingService {
     private final HotelRoomRepository roomRepository;
     private final HotelRoomBookingRepository bookingRepository;
     private final HotelRepository hotelRepository;
+    private final UserRepository userRepository;
 
     public HotelBookingService(HotelRoomRepository roomRepository,
                                HotelRoomBookingRepository bookingRepository,
-                               HotelRepository hotelRepository) {
+                               HotelRepository hotelRepository,
+                               UserRepository userRepository) {
         this.roomRepository = roomRepository;
         this.bookingRepository = bookingRepository;
         this.hotelRepository = hotelRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -58,6 +62,9 @@ public class HotelBookingService {
         b.setCustomerName(req.customerName);
         b.setIdType(req.idType);
         b.setIdNumber(req.idNumber);
+        if (req.userId != null) {
+            userRepository.findById(req.userId).ifPresent(u -> b.setUserEmail(u.getEmail()));
+        }
         bookingRepository.save(b);
 
         RoomBookingResponse res = new RoomBookingResponse();

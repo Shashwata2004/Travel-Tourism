@@ -22,6 +22,7 @@
             <Button text="Refresh" onAction="#onRefresh"/>
             <Button text="New" onAction="#onNew"/>
             <Button text="Save" onAction="#onSave" id="primaryBtn"/>
+            <Button text="View Bookings" onAction="#onViewBookings"/>
             <Button text="Delete" onAction="#onDelete"/>
         </HBox>
     </top>
@@ -76,14 +77,17 @@
                         <Label text="Group Size" GridPane.rowIndex="11" GridPane.columnIndex="0"/>
                         <TextField fx:id="groupSizeField" GridPane.rowIndex="11" GridPane.columnIndex="1"/>
 
-                        <Label text="Itinerary (one per line: day|title|subtitle)" GridPane.rowIndex="12" GridPane.columnIndex="0"/>
-                        <TextArea fx:id="itineraryArea" GridPane.rowIndex="12" GridPane.columnIndex="1" prefRowCount="3"/>
+                        <Label text="Booking Deadline" GridPane.rowIndex="12" GridPane.columnIndex="0"/>
+                        <DatePicker fx:id="bookingDeadlinePicker" GridPane.rowIndex="12" GridPane.columnIndex="1"/>
 
-                        <Label text="Package Available" GridPane.rowIndex="13" GridPane.columnIndex="0"/>
-                        <CheckBox fx:id="packageAvailableBox" GridPane.rowIndex="13" GridPane.columnIndex="1"/>
+                        <Label text="Itinerary (one per line: day|title|subtitle)" GridPane.rowIndex="13" GridPane.columnIndex="0"/>
+                        <TextArea fx:id="itineraryArea" GridPane.rowIndex="13" GridPane.columnIndex="1" prefRowCount="3"/>
 
-                        <Label text="Active" GridPane.rowIndex="14" GridPane.columnIndex="0"/>
-                        <CheckBox fx:id="activeBox" GridPane.rowIndex="14" GridPane.columnIndex="1" selected="true"/>
+                        <Label text="Package Available" GridPane.rowIndex="14" GridPane.columnIndex="0"/>
+                        <CheckBox fx:id="packageAvailableBox" GridPane.rowIndex="14" GridPane.columnIndex="1"/>
+
+                        <Label text="Active" GridPane.rowIndex="15" GridPane.columnIndex="0"/>
+                        <CheckBox fx:id="activeBox" GridPane.rowIndex="15" GridPane.columnIndex="1" selected="true"/>
                     </GridPane>
                     <Label fx:id="statusLabel" id="statusLabel"/>
                 </VBox>

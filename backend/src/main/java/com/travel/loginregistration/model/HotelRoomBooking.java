@@ -52,6 +52,9 @@ public class HotelRoomBooking {
     @Column(name = "id_number")
     private String idNumber;
 
+    @Column(name = "user_email")
+    private String userEmail;
+
     public UUID getId() { return id; }
     public void setId(UUID id) { this.id = id; }
     public UUID getRoomId() { return roomId; }
@@ -80,4 +83,6 @@ public class HotelRoomBooking {
     public void setIdType(String idType) { this.idType = idType; }
     public String getIdNumber() { return idNumber; }
     public void setIdNumber(String idNumber) { this.idNumber = idNumber; }
+    public String getUserEmail() { return userEmail; }
+    public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
 }

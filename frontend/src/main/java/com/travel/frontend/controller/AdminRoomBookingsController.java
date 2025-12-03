@@ -14,7 +14,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Region;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -34,6 +37,7 @@ public class AdminRoomBookingsController {
     @FXML private TableColumn<RoomBookingAdminView, Integer> roomsCol;
     @FXML private TableColumn<RoomBookingAdminView, Integer> guestsCol;
     @FXML private TableColumn<RoomBookingAdminView, String> customerCol;
+    @FXML private TableColumn<RoomBookingAdminView, String> emailCol;
     @FXML private TableColumn<RoomBookingAdminView, String> idTypeCol;
     @FXML private TableColumn<RoomBookingAdminView, String> idNumberCol;
     @FXML private TableColumn<RoomBookingAdminView, java.math.BigDecimal> priceCol;
@@ -58,15 +62,19 @@ public class AdminRoomBookingsController {
         if (subHeaderLabel != null) subHeaderLabel.setText(nullSafe(hotelName));
 
         if (bookingTable != null) {
+            bookingTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
             checkInCol.setCellValueFactory(new PropertyValueFactory<>("checkIn"));
             checkOutCol.setCellValueFactory(new PropertyValueFactory<>("checkOut"));
             roomsCol.setCellValueFactory(new PropertyValueFactory<>("roomsBooked"));
             guestsCol.setCellValueFactory(new PropertyValueFactory<>("totalGuests"));
             customerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+            emailCol.setCellValueFactory(new PropertyValueFactory<>("userEmail"));
             idTypeCol.setCellValueFactory(new PropertyValueFactory<>("idType"));
             idNumberCol.setCellValueFactory(new PropertyValueFactory<>("idNumber"));
             priceCol.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
             createdCol.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
+            applyWrap(customerCol);
+            applyWrap(emailCol);
         }
         loadData();
     }
@@ -123,4 +131,27 @@ public class AdminRoomBookingsController {
 
     private void status(String msg) { if (statusLabel != null) statusLabel.setText(msg); }
     private String nullSafe(String s) { return s == null ? "" : s; }
+
+    // Wrap long text for readability without scrollbars
+    private void applyWrap(TableColumn<RoomBookingAdminView, String> col) {
+        col.setCellFactory(tc -> new TableCell<>() {
+            private final javafx.scene.control.Label label = new javafx.scene.control.Label();
+            {
+                label.setWrapText(true);
+                label.setMaxWidth(Double.MAX_VALUE);
+                label.setPadding(new javafx.geometry.Insets(6, 10, 6, 10));
+            }
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    label.setText(item);
+                    label.setPrefWidth(col.getWidth() - 16);
+                    setGraphic(label);
+                }
+            }
+        });
+    }
 }

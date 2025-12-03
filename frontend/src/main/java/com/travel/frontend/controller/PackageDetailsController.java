@@ -4,6 +4,7 @@
 package com.travel.frontend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.travel.frontend.cache.DataCache;
 import com.travel.frontend.net.ApiClient;
 import javafx.application.Platform;
@@ -53,6 +54,7 @@ public class PackageDetailsController {
     @FXML private Label priceLabel;
     @FXML private Label durationLabel;
     @FXML private Label groupLabel;
+    @FXML private Label deadlineLabel;
     @FXML private Label overviewText;
     @FXML private Label locationPointsText;
     @FXML private VBox timingContainer;
@@ -73,7 +75,7 @@ public class PackageDetailsController {
     @FXML private Pane topBar;
 
     private final ApiClient api = ApiClient.get();
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
     private UUID packageId;
 
     /* Entry point from the packages list: stores the selected id, loads the
@@ -158,6 +160,10 @@ public class PackageDetailsController {
             System.out.println("[PackageDetails] No image loaded for package " + vm.id + ". Check URLs.");
             overviewText.setText("No images available for this package. Please verify URLs in admin.");
         }
+
+        if (deadlineLabel != null) {
+            deadlineLabel.setText(formatDate(vm.bookingDeadline));
+        }
     }
 
     /* Button handler bridging to the booking dialog, sending through the id and
@@ -169,7 +175,7 @@ public class PackageDetailsController {
             a.showAndWait();
             return;
         }
-        BookingDialogController.open(packageId, nameLabel.getText(), priceLabel.getText());
+        BookingDialogController.open(packageId, nameLabel.getText(), priceLabel.getText(), groupLabel.getText());
     }
 
     @FXML
@@ -193,6 +199,16 @@ public class PackageDetailsController {
     private void swapFromThumb(ImageView thumb) {
         if (thumb != null && thumb.getImage() != null && mainImage != null) {
             mainImage.setImage(thumb.getImage());
+        }
+    }
+
+    private String formatDate(java.time.LocalDate d) {
+        if (d == null) return "No deadline";
+        try {
+            java.time.format.DateTimeFormatter fmt = java.time.format.DateTimeFormatter.ofPattern("d MMMM, yyyy");
+            return d.format(fmt);
+        } catch (Exception e) {
+            return d.toString();
         }
     }
 
@@ -416,6 +432,7 @@ public class PackageDetailsController {
         public String timing;
         public java.util.List<ItineraryItem> itinerary;
         public String groupSize;
+        public java.time.LocalDate bookingDeadline;
     }
 
     public static class ItineraryItem {

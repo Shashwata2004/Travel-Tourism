@@ -270,6 +270,7 @@ public class AdminSocketClient {
         public String timing;
         public List<ItineraryVM> itinerary;
         public String groupSize;
+        public String bookingDeadline;
         public boolean active = true;
         public boolean packageAvailable;
         public String toString() { return name + " (" + location + ")"; }

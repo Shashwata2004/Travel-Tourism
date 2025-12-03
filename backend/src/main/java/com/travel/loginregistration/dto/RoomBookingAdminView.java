@@ -10,6 +10,7 @@ public class RoomBookingAdminView {
     public UUID roomId;
     public String roomName;
     public String hotelName;
+    public String userEmail;
     public LocalDate checkIn;
     public LocalDate checkOut;
     public Integer roomsBooked;

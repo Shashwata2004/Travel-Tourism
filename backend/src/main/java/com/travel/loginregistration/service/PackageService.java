@@ -67,6 +67,7 @@ public class PackageService {
         d.timing = p.getTiming();
         d.itinerary = steps.stream().map(this::toItineraryItem).collect(Collectors.toList());
         d.groupSize = p.getGroupSize();
+        d.bookingDeadline = p.getBookingDeadline();
         return d;
     }
 
