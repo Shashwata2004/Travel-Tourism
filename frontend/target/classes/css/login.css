@@ -108,8 +108,8 @@
 }
 
 .loginRoot .hyperlink {
-    -fx-text-fill: #4f46e5;
-    -fx-font-weight: 600;
+    -fx-text-fill: #2563eb;
+    -fx-font-weight: 700;
     -fx-border-color: transparent;
 }
 .loginRoot .hyperlink:hover { -fx-text-fill: #1d4ed8; }
@@ -118,6 +118,18 @@
 .loginRoot .createAccount {
     -fx-font-size: 16px;
     -fx-font-weight: 800;
+}
+.loginRoot .alreadyAccount {
+    -fx-text-fill: white !important;
+    -fx-font-weight: 700;
+}
+.registerFooter Label {
+    -fx-text-fill: white !important;
+    -fx-font-weight: 700;
+}
+.registerFooter .hyperlink {
+    -fx-text-fill: #2563eb !important;
+    -fx-font-weight: 700;
 }
 
 /* === LAYOUT PANES === */

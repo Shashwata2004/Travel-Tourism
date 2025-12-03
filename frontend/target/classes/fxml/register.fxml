@@ -23,8 +23,8 @@
                         <TextField fx:id="locationField" promptText="Location (e.g., Dhaka)"/>
 
                         <Button text="Register" onAction="#onRegister" styleClass="primary-btn" maxWidth="Infinity"/>
-                        <HBox alignment="CENTER" spacing="6">
-                            <Label text="Already have an account?" />
+                        <HBox alignment="CENTER" spacing="6" styleClass="registerFooter">
+                            <Label text="Already have an account?" styleClass="alreadyAccount"/>
                             <Hyperlink text="Go to Login" onAction="#onGoLogin"/>
                         </HBox>
                         <Label fx:id="statusLabel" text="" styleClass="status"/>

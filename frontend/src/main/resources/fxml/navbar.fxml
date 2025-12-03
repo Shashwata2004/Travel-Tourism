@@ -32,7 +32,6 @@
             <Button fx:id="destinationsBtn" text="Destinations" styleClass="navItem"/>
             <Button fx:id="historyBtn" text="History" styleClass="navItem"/>
             <Button fx:id="aboutBtn" text="About" styleClass="navItem"/>
-            <ToggleButton fx:id="themeToggle" text="Dark" styleClass="navItem"/>
         </HBox>
         <Pane HBox.hgrow="ALWAYS"/>
     </HBox>
