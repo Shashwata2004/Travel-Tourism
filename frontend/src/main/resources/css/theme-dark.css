@@ -1,0 +1,473 @@
+.dark-theme {
+    -fx-base: #0b1024;
+    -fx-background-color: linear-gradient(to bottom right, #0b1024, #0f172a, #0b2542);
+    -fx-text-fill: #e5e7eb;
+}
+.dark-theme .label { -fx-text-fill: #e5e7eb; }
+.dark-theme .button {
+    -fx-background-color: rgba(255,255,255,0.08);
+    -fx-text-fill: #e5e7eb;
+    -fx-border-color: rgba(255,255,255,0.15);
+}
+.dark-theme .text-field, .dark-theme .password-field {
+    -fx-background-color: rgba(255,255,255,0.06);
+    -fx-border-color: rgba(255,255,255,0.25);
+    -fx-text-fill: #e5e7eb;
+}
+.dark-theme .text-field:disabled, .dark-theme .password-field:disabled {
+    -fx-opacity: 1.0;
+    -fx-text-fill: #cbd5e1;
+    -fx-background-color: rgba(255,255,255,0.04);
+    -fx-border-color: rgba(255,255,255,0.12);
+}
+.dark-theme .text-field:focused, .dark-theme .password-field:focused {
+    -fx-border-color: rgba(99,102,241,0.7);
+    -fx-background-color: rgba(255,255,255,0.08);
+}
+
+/* Packages page overrides */
+.dark-theme .packagesRoot {
+    -fx-background-color: linear-gradient(to bottom right, #0b1024, #0f172a, #0b2542);
+}
+.dark-theme .blobA { -fx-fill: rgba(79,70,229,0.2); }
+.dark-theme .blobB { -fx-fill: rgba(14,165,233,0.18); }
+.dark-theme .blobC { -fx-fill: rgba(148,163,184,0.16); }
+
+.dark-theme .pkgNavbar {
+    -fx-background-color: rgba(15, 23, 42, 0.82);
+    -fx-border-color: rgba(255,255,255,0.08);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 20, 0.35, 0, 8);
+}
+.dark-theme .brandIcon { -fx-text-fill: #e5e7eb; }
+.dark-theme .brandTitle { -fx-text-fill: #f8fafc; }
+.dark-theme .brandSubtitle { -fx-text-fill: #cbd5f5; }
+
+.dark-theme .navItem {
+    -fx-text-fill: #e2e8f0;
+}
+.dark-theme .navItem:hover { -fx-text-fill: #fff; -fx-background-color: rgba(255,255,255,0.06); }
+.dark-theme .navItem.activeNav {
+    -fx-background-color: linear-gradient(to right, #4f46e5, #2563eb);
+    -fx-text-fill: white;
+}
+.dark-theme .logoutNav {
+    -fx-background-color: linear-gradient(to right, #0ea5e9, #2563eb);
+    -fx-text-fill: #e5e7eb;
+    -fx-border-color: transparent;
+}
+
+.dark-theme .headerBlock .sectionTitle { -fx-text-fill: #e5e7eb; }
+.dark-theme .headerBlock .sectionSubtitle { -fx-text-fill: #cbd5e1; }
+.dark-theme .accentBar { -fx-background-color: linear-gradient(to bottom, #4f46e5, #0ea5e9); }
+
+.dark-theme .pkg-card {
+    -fx-background-color: linear-gradient(to bottom, #0f172a, #111827);
+    -fx-border-color: rgba(255,255,255,0.06);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 24, 0.32, 0, 12);
+}
+.dark-theme .pkg-card .cardBody {
+    -fx-background-color: transparent;
+}
+.dark-theme .pkg-card .cardTitle { -fx-text-fill: #f8fafc; }
+.dark-theme .pkg-card .cardMeta { -fx-text-fill: #cbd5e1; }
+.dark-theme .pkg-card .priceRow { -fx-text-fill: #e2e8f0; }
+.dark-theme .pkg-card .priceHint { -fx-text-fill: #cbd5e1; }
+.dark-theme .pkg-card .badge {
+    -fx-background-color: rgba(255,255,255,0.08);
+    -fx-text-fill: #f8fafc;
+}
+.dark-theme .pkg-card .primaryBtn {
+    -fx-background-color: linear-gradient(to right, #6366f1, #22d3ee);
+    -fx-text-fill: #0b1024;
+}
+
+.dark-theme .pageReloadBtn {
+    -fx-background-color: linear-gradient(to right, #22d3ee, #6366f1);
+    -fx-text-fill: #0b1024;
+}
+
+/* Destinations page */
+.dark-theme .destinationsRoot {
+    -fx-background-color: linear-gradient(to bottom right, #0b1024, #0f172a, #0b2542);
+}
+.dark-theme .orbA { -fx-fill: rgba(79,70,229,0.18); }
+.dark-theme .orbB { -fx-fill: rgba(14,165,233,0.16); }
+.dark-theme .orbC { -fx-fill: rgba(148,163,184,0.15); }
+.dark-theme .heroSection {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 28, 0.35, 0, 12);
+}
+.dark-theme .heroTitle { -fx-text-fill: #e5e7eb; }
+.dark-theme .heroSubtitle { -fx-text-fill: #cbd5e1; }
+.dark-theme .searchWrap {
+    -fx-background-color: rgba(17,24,39,0.9);
+    -fx-border-color: rgba(255,255,255,0.12);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 22, 0.35, 0, 8);
+}
+.dark-theme .searchInput {
+    -fx-text-fill: #e5e7eb;
+    -fx-prompt-text-fill: rgba(203,213,225,0.8);
+}
+.dark-theme .searchIcon { -fx-text-fill: #a5b4fc; }
+.dark-theme .dest-card {
+    -fx-background-color: linear-gradient(to bottom, #0f172a, #111827);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 24, 0.35, 0, 10);
+}
+.dark-theme .dest-card .destName { -fx-text-fill: #f8fafc; }
+.dark-theme .regionRow .label,
+.dark-theme .regionText,
+.dark-theme .tagRow,
+.dark-theme .seasonRow .label {
+    -fx-text-fill: #e2e8f0;
+}
+.dark-theme .emptyState { -fx-text-fill: #cbd5e1; }
+.dark-theme .hotelsBadge {
+    -fx-background-color: rgba(99,102,241,0.25);
+}
+.dark-theme .hotelIcon, .dark-theme .hotelText { -fx-text-fill: #c7d2fe; }
+.dark-theme .exploreBtn {
+    -fx-background-color: linear-gradient(to right, #6366f1, #22d3ee);
+}
+/* keep packageChip colors as-is */
+.dark-theme .packageChip,
+.dark-theme .packageChipButton {
+    -fx-background-color: linear-gradient(to right, #22c55e, #16a34a);
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+}
+
+/* Hotel search page */
+.dark-theme .hotelRoot {
+    -fx-background-color: linear-gradient(to bottom right, #0b1024, #0f172a, #0b2542);
+}
+.dark-theme .hotelHero {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 28, 0.4, 0, 12);
+}
+.dark-theme .heroTitle { -fx-text-fill: #e5e7eb; }
+.dark-theme .heroSubtitle { -fx-text-fill: #cbd5e1; }
+.dark-theme .heroBadge { -fx-background-color: rgba(99,102,241,0.18); }
+.dark-theme .heroBadgeText { -fx-text-fill: #c7d2fe; }
+.dark-theme .searchCapsule {
+    -fx-background-color: rgba(17,24,39,0.92);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 28, 0.4, 0, 12);
+}
+.dark-theme .searchPill {
+    -fx-background-color: rgba(255,255,255,0.06);
+    -fx-border-color: rgba(255,255,255,0.18);
+}
+.dark-theme .pillLabel { -fx-text-fill: #c7d2fe; }
+.dark-theme .pillValue { -fx-text-fill: #f8fafc; }
+.dark-theme .searchCTA {
+    -fx-background-color: linear-gradient(to right, #facc15, #f59e0b);
+    -fx-text-fill: #0f172a;
+}
+.dark-theme .propertiesCount { -fx-text-fill: #e5e7eb; }
+.dark-theme .sortSelect {
+    -fx-background-color: linear-gradient(to bottom, #0f172a, #111827);
+    -fx-border-color: rgba(255,255,255,0.18);
+    -fx-text-fill: #e5e7eb;
+}
+.dark-theme .sortSelect .arrow { -fx-background-color: #cbd5e1; }
+.dark-theme .hotelCard {
+    -fx-background-color: linear-gradient(to bottom, #0f172a, #111827);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 24, 0.35, 0, 12);
+}
+.dark-theme .hotelCardTitle { -fx-text-fill: #f8fafc; }
+.dark-theme .ratingBadge {
+    -fx-background-color: rgba(148,163,184,0.2);
+    -fx-text-fill: #e5e7eb;
+    -fx-border-color: rgba(255,255,255,0.2);
+}
+.dark-theme .locationIcon { -fx-fill: #cbd5e1; }
+.dark-theme .hotelLocation { -fx-text-fill: #e2e8f0; }
+.dark-theme .roomsAlert {
+    -fx-text-fill: #fca5a5;
+    -fx-border-color: #fca5a5;
+}
+.dark-theme .facilityPill { -fx-text-fill: #e5e7eb; }
+.dark-theme .facilityIcon { -fx-fill: #a5b4fc; }
+.dark-theme .facilityAir {
+    -fx-background-color: linear-gradient(to right, #1f2937, #0f172a);
+    -fx-border-color: rgba(147,197,253,0.4);
+}
+.dark-theme .facilityKids {
+    -fx-background-color: linear-gradient(to right, #1f2937, #111827);
+    -fx-border-color: rgba(192,132,252,0.4);
+}
+.dark-theme .facilityBath {
+    -fx-background-color: linear-gradient(to right, #1f2937, #0f172a);
+    -fx-border-color: rgba(52,211,153,0.4);
+}
+.dark-theme .facilityCouple {
+    -fx-background-color: linear-gradient(to right, #1f2937, #0f172a);
+    -fx-border-color: rgba(244,114,182,0.4);
+}
+.dark-theme .facilityDefault {
+    -fx-background-color: linear-gradient(to right, #1f2937, #0f172a);
+    -fx-border-color: rgba(165,180,252,0.4);
+}
+.dark-theme .discountBadge { -fx-background-color: linear-gradient(to right, #22c55e, #16a34a); }
+.dark-theme .hotelPrice { -fx-text-fill: #f472b6; }
+.dark-theme .strikePrice {
+    -fx-text-fill: #ffffff !important;
+    -fx-fill: #ffffff !important;
+    -fx-strikethrough: true;
+}
+.dark-theme .hotelSelectBtn { -fx-background-color: linear-gradient(to right, #6366f1, #22d3ee); }
+.dark-theme .guestOverlay { -fx-background-color: rgba(15,23,42,0.65); }
+.dark-theme .guestOverlay .guestCard {
+    -fx-background-color: #0f172a;
+    -fx-border-color: rgba(255,255,255,0.08);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 20, 0.35, 0, 10);
+}
+.dark-theme .guestOverlay .guestCard .label { -fx-text-fill: #e5e7eb; }
+.dark-theme .guestOverlay .guestCard .roundBtn,
+.dark-theme .guestOverlay .guestCard .roundBtnMini {
+    -fx-text-fill: #e5e7eb;
+    -fx-background-color: rgba(255,255,255,0.08);
+}
+.dark-theme .guestOverlay .guestCard .helperNote,
+.dark-theme .helperNoteMini {
+    -fx-text-fill: #e5e7eb;
+    -fx-background-color: rgba(255,255,255,0.08);
+}
+.dark-theme .guestOverlay .guestCard .doneBtn,
+.dark-theme .guestOverlay .guestCard .doneBtnMini {
+    -fx-background-color: linear-gradient(to right, #6366f1, #22d3ee);
+    -fx-text-fill: #0b1024;
+}
+.dark-theme .guestOverlayMini {
+    -fx-background-color: transparent;
+}
+.dark-theme .guestCardMini {
+    -fx-background-color: #0f172a;
+    -fx-border-color: rgba(255,255,255,0.08);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 20, 0.35, 0, 10);
+}
+.dark-theme .guestCardMini .pillLabel,
+.dark-theme .guestCardMini .pillValue {
+    -fx-text-fill: #e5e7eb;
+}
+.dark-theme .guestCardMini .helperNoteMini {
+    -fx-text-fill: #e5e7eb;
+    -fx-background-color: rgba(255,255,255,0.08);
+}
+.dark-theme .guestCardMini .roundBtnMini {
+    -fx-background-color: rgba(255,255,255,0.08);
+    -fx-text-fill: #e5e7eb;
+}
+.dark-theme .guestCardMini .doneBtnMini {
+    -fx-background-color: linear-gradient(to right, #6366f1, #22d3ee);
+    -fx-text-fill: #0b1024;
+}
+.dark-theme .guestIcon { -fx-fill: #e5e7eb; }
+
+/* Hotel details page */
+.dark-theme .detailsRoot {
+    -fx-background-color: transparent;
+}
+.dark-theme .orbLayer { -fx-background-color: transparent; }
+.dark-theme .orbA { -fx-fill: rgba(79,70,229,0.22); }
+.dark-theme .orbB { -fx-fill: rgba(14,165,233,0.20); }
+.dark-theme .orbC { -fx-fill: rgba(148,163,184,0.18); }
+.dark-theme .orbD { -fx-fill: rgba(99,102,241,0.22); }
+.dark-theme .orbE { -fx-fill: rgba(59,130,246,0.20); }
+.dark-theme .summaryCard,
+.dark-theme .galleryCard, .dark-theme .infoCard {
+    -fx-background-color: linear-gradient(to bottom, #0f172a, #111827);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 24, 0.35, 0, 12);
+}
+.dark-theme .summaryHeader { -fx-background-color: linear-gradient(to right, #1d4ed8, #312e81); }
+.dark-theme .summarySubhead,
+.dark-theme .summaryLabel,
+.dark-theme .summaryNote { -fx-text-fill: #cbd5e1; }
+.dark-theme .summaryTotal {
+    -fx-text-fill: #4338ca; /* match light theme */
+    -fx-font-weight: 900;
+    -fx-font-size: 30px;
+}
+.dark-theme .summaryRoomRow {
+    -fx-background-color: linear-gradient(to bottom right, #eef2ff, #e0f2ff);
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.18), 14, 0.35, 0, 6);
+}
+.dark-theme .summaryRoomRow .label { -fx-text-fill: #0f172a; }
+.dark-theme .summaryRoomPrice {
+    -fx-text-fill: #1d4ed8 !important;
+    -fx-font-weight: 800;
+    -fx-font-size: 18px;
+}
+.dark-theme .summaryRemove {
+    -fx-background-color: linear-gradient(to right, #4f46e5, #2563eb);
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.25), 10, 0.35, 0, 3);
+}
+.dark-theme .hotelName,
+.dark-theme .sectionTitle,
+.dark-theme .nearbyText,
+.dark-theme .locationText,
+.dark-theme .pillLabel,
+.dark-theme .pillValue,
+.dark-theme .facilityText,
+.dark-theme .descText {
+    -fx-text-fill: #e5e7eb;
+}
+.dark-theme .ratingBadge {
+    -fx-background-color: rgba(148,163,184,0.2);
+    -fx-text-fill: #f8fafc;
+    -fx-border-color: rgba(255,255,255,0.2);
+}
+.dark-theme .locationIcon,
+.dark-theme .nearbyIcon,
+.dark-theme .nearbyDot,
+.dark-theme .facilityIcon,
+.dark-theme .nearbyPill .nearbyIcon {
+    -fx-fill: #cbd5e1;
+}
+.dark-theme .nearbyPill {
+    -fx-background-color: linear-gradient(to right, #eef2ff, #e0f2ff);
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.18), 10, 0.35, 0, 4);
+    -fx-border-color: transparent;
+}
+.dark-theme .nearbyText { -fx-text-fill: #1f2937; }
+.dark-theme .facilityTile {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: rgba(59,130,246,0.14);
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.08), 10, 0.35, 0, 4);
+}
+.dark-theme .facilityIcon,
+.dark-theme .facilityTile .material-symbols-outlined {
+    -fx-fill: #2563eb;
+}
+.dark-theme .facilityText,
+.dark-theme .facilityTileText { -fx-text-fill: #1f2937; }
+.dark-theme .facilityTileIcon { -fx-fill: #2563eb; }
+.dark-theme .facilityIconCircle { -fx-background-color: white; }
+/* Preserve light gradients for facility tiles in dark mode */
+.dark-theme .facilityTileDefault { -fx-background-color: linear-gradient(to right, #d8defa, #c7d2f0) !important; }
+.dark-theme .facilityTileAir { -fx-background-color: linear-gradient(to right, #d7e7ff, #c7ddf7) !important; }
+.dark-theme .facilityTileCheckIn { -fx-background-color: linear-gradient(to right, #c8f3d4, #b5e8c4) !important; }
+.dark-theme .facilityTileCheckOut { -fx-background-color: linear-gradient(to right, #f8e0c7, #f4d3b3) !important; }
+.dark-theme .facilityTileAccessible { -fx-background-color: linear-gradient(to right, #ddd5ff, #cbc1fa) !important; }
+.dark-theme .facilityTileElevator { -fx-background-color: linear-gradient(to right, #d8e2ff, #cdd8f8) !important; }
+.dark-theme .facilityTileKids { -fx-background-color: linear-gradient(to right, #ecd4e8, #e3c4dc) !important; }
+.dark-theme .facilityTileCouple { -fx-background-color: linear-gradient(to right, #ecd4e8, #e3c4dc) !important; }
+.dark-theme .facilityTileGarden { -fx-background-color: linear-gradient(to right, #c8f3d4, #b5e8c4) !important; }
+.dark-theme .facilityTileCoffee { -fx-background-color: linear-gradient(to right, #f3dfc1, #ebd3ae) !important; }
+.dark-theme .aboutText { -fx-text-fill: #e5e7eb; }
+.dark-theme .roomCard {
+    -fx-background-color: linear-gradient(to bottom, #0f172a, #111827);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 20, 0.35, 0, 10);
+}
+.dark-theme .roomGallery { -fx-background-color: #0b1024; }
+.dark-theme .roomTitle { -fx-text-fill: #f8fafc; }
+.dark-theme .bedMeta, .dark-theme .capMeta {
+    -fx-background-color: rgba(59,130,246,0.15);
+    -fx-text-fill: #c7d2fe; /* whitish blue */
+}
+.dark-theme .bedMetaText, .dark-theme .capMetaText { -fx-text-fill: #c7d2fe; }
+.dark-theme .metaIcon { -fx-fill: #c7d2fe; }
+.dark-theme .remainingCapsule {
+    -fx-background-color: rgba(34,197,94,0.18);
+    -fx-text-fill: #dcfce7;
+}
+.dark-theme .facilityChip {
+    -fx-background-color: linear-gradient(to right, #ecfeff, #dcfce7) !important;
+}
+.dark-theme .facilityLabel { -fx-text-fill: #0f172a; }
+.dark-theme .facilityTick { -fx-fill: #16a34a; }
+.dark-theme .roomPriceCard {
+    -fx-background-color: linear-gradient(to right, #f6d0b6, #f7c4d1);
+}
+.dark-theme .discountBadge {
+    -fx-background-color: linear-gradient(to right, #22c55e, #16a34a);
+    -fx-text-fill: white;
+}
+.dark-theme .realPrice { -fx-text-fill: #6b7280; }
+.dark-theme .currentPrice {
+    -fx-text-fill: #b832c6; /* deeper violet, not pink */
+    -fx-font-size: 21px;
+    -fx-font-weight: 800;
+}
+.dark-theme .addRoomBtn { -fx-background-color: linear-gradient(to right, #c026d3, #db2777); }
+.dark-theme .roundBtn, .dark-theme .roundBtnMini { -fx-text-fill: #e5e7eb; }
+.dark-theme .summaryContinueBtn {
+    -fx-background-color: linear-gradient(to right, #10b981, #22c55e, #14b8a6);
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-font-size: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(16,185,129,0.3), 16, 0.4, 0, 6);
+}
+.dark-theme .rootScroll,
+.dark-theme .rootScroll > .viewport {
+    -fx-background-color: linear-gradient(to bottom right, #0b1024, #0f172a, #0b2542);
+}
+
+/* Login page */
+.dark-theme .loginRoot {
+    -fx-background-color: linear-gradient(to bottom right, #0b1024, #0f172a);
+}
+.dark-theme #brandPane { -fx-background-color: transparent; }
+.dark-theme .brandScrim { -fx-background-color: linear-gradient(to bottom right, rgba(15,23,42,0.8), rgba(14,165,233,0.35)); }
+.dark-theme #brandTitle { -fx-text-fill: #f8fafc; }
+.dark-theme #brandSubtitle { -fx-text-fill: #cbd5e1; }
+.dark-theme .formHost { -fx-background-color: transparent; }
+.dark-theme .loginCard, .dark-theme #card, .dark-theme.loginRoot .loginCard, .dark-theme.loginRoot #card {
+    -fx-background-color: linear-gradient(to bottom right, rgba(17,24,39,0.96), rgba(15,23,42,0.96)) !important;
+    -fx-border-color: rgba(255,255,255,0.14) !important;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 20, 0.4, 0, 12);
+}
+.dark-theme #cardTitle { -fx-text-fill: #f8fafc !important; }
+.dark-theme #cardSubtitle { -fx-text-fill: #cbd5e1 !important; }
+.dark-theme .fieldLabel, .dark-theme.loginRoot .fieldLabel { -fx-text-fill: #e5e7eb !important; }
+.dark-theme .roleRow { -fx-text-fill: #e5e7eb !important; }
+.dark-theme .radio-button, .dark-theme .hyperlink { -fx-text-fill: #e5e7eb !important; }
+.dark-theme .hyperlink:hover { -fx-text-fill: #22d3ee; }
+.dark-theme #primaryBtn {
+    -fx-background-color: linear-gradient(to right, #6366f1, #22d3ee) !important;
+    -fx-text-fill: #0b1024 !important;
+}
+.dark-theme .createAccount { -fx-text-fill: #22d3ee !important; }
+.dark-theme #statusLabel { -fx-text-fill: #f87171 !important; }
+.dark-theme.loginRoot .text-field, .dark-theme.loginRoot .password-field {
+    -fx-background-color: rgba(255,255,255,0.08);
+    -fx-border-color: rgba(255,255,255,0.24);
+    -fx-text-fill: #f8fafc;
+    -fx-prompt-text-fill: #cbd5e1 !important;
+}
+
+/* Profile / Personal info page */
+.dark-theme .profilePage {
+    -fx-background-color: linear-gradient(to bottom, #0b1024, #0f172a);
+}
+.dark-theme .profileCard, .dark-theme #card {
+    -fx-background-color: linear-gradient(to bottom right, #0f172a, #111827);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 20, 0.35, 0, 10);
+}
+.dark-theme .profileHeader {
+    -fx-background-color: linear-gradient(to right, #1f2937, #0ea5e9);
+}
+.dark-theme .profileHeaderTitle { -fx-text-fill: #f8fafc; }
+.dark-theme .profileHeaderSubtitle { -fx-text-fill: #cbd5e1; }
+.dark-theme .profileFieldLabel { -fx-text-fill: #e5e7eb; }
+.dark-theme .profileField {
+    -fx-background-color: rgba(255,255,255,0.06);
+    -fx-border-color: rgba(255,255,255,0.18);
+    -fx-text-fill: #f8fafc;
+}
+.dark-theme .profileField:disabled {
+    -fx-text-fill: #cbd5e1;
+}
+.dark-theme .pillToggle {
+    -fx-background-color: rgba(255,255,255,0.06);
+    -fx-text-fill: #e5e7eb;
+    -fx-border-color: rgba(255,255,255,0.08);
+}
+.dark-theme .pillToggle:selected {
+    -fx-background-color: linear-gradient(to right, #6366f1, #22d3ee);
+    -fx-text-fill: #0b1024;
+}
+.dark-theme .profileUpdateBtn {
+    -fx-background-color: linear-gradient(to right, #6366f1, #22d3ee);
+    -fx-text-fill: #0b1024;
+}

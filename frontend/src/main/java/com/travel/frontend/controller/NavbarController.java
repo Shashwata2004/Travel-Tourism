@@ -2,9 +2,11 @@ package com.travel.frontend.controller;
 
 import com.travel.frontend.cache.DataCache;
 import com.travel.frontend.ui.Navigator;
+import com.travel.frontend.ui.ThemeManager;
 import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -21,6 +23,7 @@ public class NavbarController {
     @FXML private Button historyBtn;
     @FXML private Button aboutBtn;
     @FXML private Button logoutBtn;
+    @FXML private ToggleButton themeToggle;
     @FXML private Label brandSubtitle;
     @FXML private HBox navActions;
     @FXML private StackPane brandMark;
@@ -41,11 +44,19 @@ public class NavbarController {
         destinationsBtn.setOnAction(e -> Navigator.goDestinations());
         historyBtn.setOnAction(e -> { /* no-op until implemented */ });
         aboutBtn.setOnAction(e -> { /* no-op until implemented */ });
-        logoutBtn.setOnAction(e -> {
-            DataCache.clear();
-            Navigator.goLogin();
-        });
-    }
+            logoutBtn.setOnAction(e -> {
+                DataCache.clear();
+                Navigator.goLogin();
+            });
+            if (themeToggle != null) {
+                themeToggle.setSelected(ThemeManager.isDark());
+                themeToggle.setOnAction(e -> {
+                    ThemeManager.setTheme(themeToggle.isSelected() ? ThemeManager.Theme.DARK : ThemeManager.Theme.LIGHT);
+                    Navigator.applyTheme();
+                    System.out.println("[Navbar] Theme toggled to " + ThemeManager.getTheme());
+                });
+            }
+        }
 
     public void setActive(ActivePage page) {
         clearActive();

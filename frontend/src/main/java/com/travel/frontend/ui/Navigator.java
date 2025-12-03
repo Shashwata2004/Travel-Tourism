@@ -10,10 +10,21 @@ import java.util.Objects;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.Node;
+import javafx.scene.control.ToggleButton;
 import javafx.stage.Stage;
+
+import com.travel.frontend.ui.ThemeManager;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.layout.StackPane;
+import javafx.animation.RotateTransition;
+import javafx.util.Duration;
 
 public final class Navigator {
     private static Stage STAGE;
+    private static StackPane ROOT_WRAPPER;
+    private static ToggleButton THEME_TOGGLE;
 
     private Navigator() {}
 
@@ -43,18 +54,41 @@ public final class Navigator {
 
             Scene scene = STAGE.getScene();
             if (scene == null) {
-                scene = new Scene(root, 920, 600);
+                ROOT_WRAPPER = new StackPane();
+                ROOT_WRAPPER.getChildren().add(root);
+                ROOT_WRAPPER.setPickOnBounds(true);
 
-                // Attach your only stylesheet (login.css). Safe if missing.
+                scene = new Scene(ROOT_WRAPPER, 920, 600);
+
+                // Attach base stylesheet (login.css). Safe if missing.
                 URL cssUrl = Navigator.class.getResource("/css/login.css");
                 if (cssUrl != null) {
                     scene.getStylesheets().add(cssUrl.toExternalForm());
                 }
+                URL toggleCss = Navigator.class.getResource("/css/theme_toggle.css");
+                if (toggleCss != null) scene.getStylesheets().add(toggleCss.toExternalForm());
+
+                createThemeToggle();
+                ROOT_WRAPPER.getChildren().add(THEME_TOGGLE);
+                StackPane.setAlignment(THEME_TOGGLE, Pos.BOTTOM_RIGHT);
+                StackPane.setMargin(THEME_TOGGLE, new Insets(0, 18, 18, 0));
 
                 STAGE.setScene(scene);
             } else {
-                scene.setRoot(root);
+                // Replace content inside wrapper while keeping overlay toggle
+                if (ROOT_WRAPPER != null) {
+                    if (!ROOT_WRAPPER.getChildren().isEmpty()) {
+                        ROOT_WRAPPER.getChildren().set(0, root);
+                    } else {
+                        ROOT_WRAPPER.getChildren().add(0, root);
+                    }
+                } else {
+                    scene.setRoot(root);
+                }
             }
+            ThemeManager.apply(scene);
+            syncThemeToggles(scene);
+            System.out.println("[Navigator] Loaded " + fxmlFileName + " with theme=" + ThemeManager.getTheme());
 
             STAGE.centerOnScreen();
             STAGE.show();
@@ -80,7 +114,59 @@ public final class Navigator {
     public static void goAdminHotels() { load("admin_hotels.fxml"); }
     public static void goAdminRooms() { load("admin_rooms.fxml"); }
     public static void goAdminRoomBookings() { load("admin_room_bookings.fxml"); }
+
+    public static void applyTheme() {
+        if (STAGE != null && STAGE.getScene() != null) {
+            com.travel.frontend.ui.ThemeManager.apply(STAGE.getScene());
+            syncThemeToggles(STAGE.getScene());
+        }
+    }
+
+    private static void createThemeToggle() {
+        if (THEME_TOGGLE != null) return;
+        THEME_TOGGLE = new ToggleButton();
+        THEME_TOGGLE.getStyleClass().add("themeFab");
+        THEME_TOGGLE.setSelected(ThemeManager.isDark());
+        updateThemeIcon();
+        THEME_TOGGLE.setOnAction(e -> {
+            ThemeManager.setTheme(THEME_TOGGLE.isSelected() ? ThemeManager.Theme.DARK : ThemeManager.Theme.LIGHT);
+            applyTheme();
+            playToggleAnimation();
+            updateThemeIcon();
+            System.out.println("[Navigator] Overlay theme toggle -> " + ThemeManager.getTheme());
+        });
+    }
+
+    private static void playToggleAnimation() {
+        if (THEME_TOGGLE == null) return;
+        RotateTransition rt = new RotateTransition(Duration.millis(360), THEME_TOGGLE);
+        rt.setByAngle(360);
+        rt.setCycleCount(1);
+        rt.play();
+    }
+
+    private static void updateThemeIcon() {
+        if (THEME_TOGGLE == null) return;
+        THEME_TOGGLE.setText(ThemeManager.isDark() ? "☀" : "☾");
+    }
     public static void goAdminPackageBookings() { load("admin_package_bookings.fxml"); }
+
+    private static void syncThemeToggles(Scene scene) {
+        if (THEME_TOGGLE != null) {
+            THEME_TOGGLE.setSelected(ThemeManager.isDark());
+            updateThemeIcon();
+        }
+        if (scene != null) {
+            Parent root = scene.getRoot();
+            if (root != null) {
+                for (Node node : root.lookupAll("#themeToggle")) {
+                    if (node instanceof ToggleButton tb) {
+                        tb.setSelected(ThemeManager.isDark());
+                    }
+                }
+            }
+        }
+    }
 
     /* Sanity check before loading anything: reminds developers to call init(...)
        before touching navigation, otherwise JavaFX would throw null pointers. */

@@ -3,6 +3,7 @@
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/PackagesController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/session/Session.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/cache/DataCache.java
+/home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/ui/ThemeManager.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/AdminDashboardController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/model/PackageBookingAdminResponse.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/DestinationsController.java

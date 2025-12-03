@@ -1,0 +1,28 @@
+.themeFab {
+    -fx-background-color: linear-gradient(to bottom right, rgba(63, 81, 181, 0.92), rgba(99, 102, 241, 0.92));
+    -fx-text-fill: #fff;
+    -fx-font-size: 14px;
+    -fx-padding: 8 10;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: rgba(255, 255, 255, 0.25);
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 12, 0.35, 0, 4);
+    -fx-cursor: hand;
+}
+
+.themeFab:hover {
+    -fx-translate-y: -2;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.45), 14, 0.35, 0, 5);
+}
+
+.themeFab:pressed {
+    -fx-translate-y: 0;
+    -fx-scale-x: 0.96;
+    -fx-scale-y: 0.96;
+}
+
+.themeFab:selected {
+    -fx-background-color: linear-gradient(to bottom right, rgba(17, 24, 39, 0.94), rgba(55, 65, 81, 0.94));
+    -fx-border-color: rgba(255, 255, 255, 0.35);
+}
