@@ -172,6 +172,10 @@
     -fx-font-weight: 900;
     -fx-font-size: 18px;
 }
+.startAfterHint {
+    -fx-text-fill: #cbd5e1;
+    -fx-font-size: 12px;
+}
 .infoIcon {
     -fx-text-fill: #cbd5f5;
 }

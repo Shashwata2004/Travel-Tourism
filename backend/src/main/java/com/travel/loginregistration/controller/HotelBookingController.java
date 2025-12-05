@@ -21,11 +21,13 @@ public class HotelBookingController {
     @PostMapping("/{hotelId}/rooms/{roomId}/book")
     public ResponseEntity<?> book(@PathVariable UUID hotelId,
                                   @PathVariable UUID roomId,
-                                  @RequestBody RoomBookingRequest req) {
+                                  @RequestBody RoomBookingRequest req,
+                                  org.springframework.security.core.Authentication auth) {
         try {
             req.roomId = roomId;
             // Optional hotelId could be logged later; we keep signature untouched.
-            RoomBookingResponse res = service.book(req);
+            String email = auth != null ? (String) auth.getPrincipal() : null;
+            RoomBookingResponse res = service.book(req, email);
             return ResponseEntity.ok(res);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

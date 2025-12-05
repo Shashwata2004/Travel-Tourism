@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.travel.frontend.controller.HistoryController.markDirty;
 public class HotelBookingDialogController {
     @FXML private Label checkInLabel;
     @FXML private Label checkOutLabel;
@@ -260,6 +261,7 @@ public class HotelBookingDialogController {
                 }
                 Platform.runLater(() -> {
                     showStatus("Payment successful! Booking stored.", false);
+                    markDirty();
                     if (onSuccess != null) {
                         onSuccess.run();
                     }

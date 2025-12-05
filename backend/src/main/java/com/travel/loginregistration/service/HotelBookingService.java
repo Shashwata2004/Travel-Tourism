@@ -35,7 +35,7 @@ public class HotelBookingService {
     }
 
     @Transactional
-    public RoomBookingResponse book(RoomBookingRequest req) {
+    public RoomBookingResponse book(RoomBookingRequest req, String authEmail) {
         validate(req);
         HotelRoom room = roomRepository.findById(req.roomId)
                 .orElseThrow(() -> new IllegalArgumentException("ROOM_NOT_FOUND"));
@@ -46,6 +46,11 @@ public class HotelBookingService {
         int remaining = capacity - (booked == null ? 0 : booked.intValue());
         if (remaining < req.rooms) {
             throw new IllegalArgumentException("INSUFFICIENT_ROOMS");
+        }
+
+        // Try to associate booking with authenticated user if client didn't send userId
+        if (req.userId == null && authEmail != null && !authEmail.isBlank()) {
+            userRepository.findByEmail(authEmail.toLowerCase(Locale.ROOT)).ifPresent(u -> req.userId = u.getId());
         }
 
         HotelRoomBooking b = new HotelRoomBooking();
@@ -64,6 +69,8 @@ public class HotelBookingService {
         b.setIdNumber(req.idNumber);
         if (req.userId != null) {
             userRepository.findById(req.userId).ifPresent(u -> b.setUserEmail(u.getEmail()));
+        } else if (authEmail != null) {
+            b.setUserEmail(authEmail.toLowerCase(Locale.ROOT));
         }
         bookingRepository.save(b);
 

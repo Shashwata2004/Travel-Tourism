@@ -73,10 +73,12 @@ public class PackageDetailsController {
     @FXML private VBox pricePanel;
     @FXML private Pane detailShell;
     @FXML private Pane topBar;
+    @FXML private Label startAfterLabel;
 
     private final ApiClient api = ApiClient.get();
     private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
     private UUID packageId;
+    private java.time.LocalDate bookingDeadline;
 
     /* Entry point from the packages list: stores the selected id, loads the
        FXML layout, and displays a modal Stage sized for content-heavy tabs. */
@@ -162,7 +164,18 @@ public class PackageDetailsController {
         }
 
         if (deadlineLabel != null) {
+            this.bookingDeadline = vm.bookingDeadline;
             deadlineLabel.setText(formatDate(vm.bookingDeadline));
+        }
+        if (startAfterLabel != null) {
+            if (vm.bookingDeadline != null) {
+                java.time.LocalDate start = vm.bookingDeadline.plusDays(2);
+                startAfterLabel.setText("Tour starts on " + formatDate(start) + " (2 days after deadline)");
+                startAfterLabel.setVisible(true);
+            } else {
+                startAfterLabel.setText("");
+                startAfterLabel.setVisible(false);
+            }
         }
     }
 
@@ -172,6 +185,11 @@ public class PackageDetailsController {
     private void onBookNow() {
         if (packageId == null) {
             javafx.scene.control.Alert a = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.WARNING, "Package not loaded yet. Please try again.");
+            a.showAndWait();
+            return;
+        }
+        if (bookingDeadline != null && java.time.LocalDate.now().isAfter(bookingDeadline)) {
+            javafx.scene.control.Alert a = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION, "Sorry, the booking deadline is over for this package.");
             a.showAndWait();
             return;
         }

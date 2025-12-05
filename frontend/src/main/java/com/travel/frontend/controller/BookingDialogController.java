@@ -25,6 +25,8 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.travel.frontend.controller.HistoryController.markDirty;
+
 public class BookingDialogController {
     @FXML private TextField usernameField;
     @FXML private TextField fullNameField;
@@ -139,6 +141,7 @@ public class BookingDialogController {
                 var res = api.rawPostJson("/bookings", mapper.writeValueAsString(body), true);
                 if (res.statusCode() == 200) {
                     Platform.runLater(() -> {
+                        markDirty();
                         showAlert("Booking confirmed! Check history later.");
                         close();
                     });

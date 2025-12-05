@@ -38,6 +38,69 @@
     -fx-border-color: rgba(255,255,255,0.08);
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 20, 0.35, 0, 8);
 }
+
+/* History page overrides */
+.dark-theme .historyRoot {
+    -fx-background-color:
+        radial-gradient(center 0% 0%, radius 60%, rgba(79, 209, 197, 0.3), rgba(79, 209, 197, 0.0)),
+        linear-gradient(to bottom right, #0D4D45, #1A2F2E, #0A0F0E);
+}
+.dark-theme .historyShell { -fx-background-color: rgba(255,255,255,0.04); }
+.dark-theme .historyTitle { -fx-text-fill: #e5e7eb; }
+.dark-theme .historySubtitle { -fx-text-fill: #cbd5e1; }
+.dark-theme .pillToggle {
+    -fx-background-color: rgba(255,255,255,0.08);
+    -fx-text-fill: #e5e7eb;
+}
+.dark-theme .pillToggle:selected { -fx-text-fill: white; }
+.dark-theme .searchField {
+    -fx-background-color: rgba(255,255,255,0.08);
+    -fx-text-fill: #e5e7eb;
+    -fx-prompt-text-fill: rgba(255,255,255,0.55);
+    -fx-border-color: rgba(255,255,255,0.08);
+}
+.dark-theme .noteCard { -fx-background-color: rgba(255,255,255,0.06); }
+.dark-theme .noteTitle { -fx-text-fill: #e5e7eb; }
+.dark-theme .noteBody { -fx-text-fill: #cbd5e1; }
+.dark-theme .bookingCard { -fx-background-color: rgba(255,255,255,0.08); }
+.dark-theme .cardTitle { -fx-text-fill: #e5e7eb; }
+.dark-theme .cardSubtitle { -fx-text-fill: #cbd5e1; }
+.dark-theme .cardMeta { -fx-text-fill: #9ca3af; }
+.dark-theme .cardValue { -fx-text-fill: #e5e7eb; }
+.dark-theme .cardNote { -fx-text-fill: #a5adbb; }
+.dark-theme .cardPrice { -fx-text-fill: #e5e7eb; }
+.dark-theme .ghostButton {
+    -fx-background-color: rgba(255,255,255,0.06);
+    -fx-text-fill: #e5e7eb;
+    -fx-border-color: rgba(255,255,255,0.15);
+}
+.dark-theme .ghostButton:hover { -fx-background-color: rgba(255,255,255,0.12); }
+.dark-theme .accentButton {
+    -fx-background-radius: 12;
+    -fx-background-color: linear-gradient(to right, #10b981, #22c55e);
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-padding: 8 14;
+    -fx-border-color: transparent;
+}
+.dark-theme .emptyCard {
+    -fx-background-color: rgba(255,255,255,0.04);
+    -fx-border-color: rgba(255,255,255,0.08);
+}
+.dark-theme .detailCard { -fx-background-color: rgba(255,255,255,0.08); }
+.dark-theme .detailTitle { -fx-text-fill: #e5e7eb; }
+.dark-theme .detailSubtitle { -fx-text-fill: #cbd5e1; }
+.dark-theme .detailSection { -fx-background-color: rgba(255,255,255,0.05); }
+.dark-theme .sectionHeader { -fx-text-fill: #e5e7eb; }
+.dark-theme .kvKey { -fx-text-fill: #9ca3af; }
+.dark-theme .kvValue { -fx-text-fill: #e5e7eb; }
+.dark-theme .paragraph { -fx-text-fill: #cbd5e1; }
+.dark-theme .pillButton {
+    -fx-background-color: rgba(255,255,255,0.12);
+    -fx-text-fill: #e5e7eb;
+    -fx-border-color: rgba(255,255,255,0.2);
+}
+.dark-theme .pillButton:hover { -fx-background-color: rgba(255,255,255,0.18); }
 .dark-theme .brandIcon { -fx-text-fill: #e5e7eb; }
 .dark-theme .brandTitle { -fx-text-fill: #f8fafc; }
 .dark-theme .brandSubtitle { -fx-text-fill: #cbd5f5; }

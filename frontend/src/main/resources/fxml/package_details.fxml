@@ -134,6 +134,7 @@
                                         <Pane HBox.hgrow="ALWAYS"/>
                                         <Label fx:id="deadlineLabel" styleClass="deadlineValue"/>
                                     </HBox>
+                                    <Label fx:id="startAfterLabel" styleClass="startAfterHint" wrapText="true"/>
                                 </VBox>
                                 <Button text="Book Now →" onAction="#onBookNow" styleClass="infoBook" maxWidth="Infinity" prefWidth="Infinity"/>
                             </VBox>

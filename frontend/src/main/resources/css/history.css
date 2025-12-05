@@ -1,0 +1,204 @@
+.historyRoot {
+    -fx-background-color:
+        radial-gradient(center 0% 0%, radius 60%, rgba(79, 209, 197, 0.7), rgba(79, 209, 197, 0.0)),
+        linear-gradient(to bottom right, #4FD1C5, #C6F6D5, #FFFFFF);
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.bgGradient { -fx-background-color: transparent; }
+.historyScroll {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-control-inner-background: transparent;
+}
+.historyScroll > .viewport {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+.historyScroll > .viewport > .content {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.historyScroll .corner { -fx-background-color: transparent; }
+.historyShell {
+    -fx-background-color: transparent;
+    -fx-background-radius: 22;
+}
+.listScroll {
+    -fx-background-color: transparent;
+}
+.listScroll > .viewport {
+    -fx-background-color: transparent;
+}
+.listScroll .scroll-bar {
+    -fx-padding: 0;
+    -fx-opacity: 0;
+}
+.listScroll .corner { -fx-background-color: transparent; }
+.historyTitle {
+    -fx-text-fill: #111827;
+    -fx-font-size: 22px;
+    -fx-font-weight: 800;
+}
+.historySubtitle {
+    -fx-text-fill: #374151;
+    -fx-font-size: 14px;
+}
+.pillToggle {
+    -fx-background-radius: 14;
+    -fx-padding: 10 18;
+    -fx-background-color: rgba(15,23,42,0.08);
+    -fx-text-fill: #111827;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-border-radius: 14;
+    -fx-border-width: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0.2, 0, 2);
+}
+.pillToggle:selected {
+    -fx-background-color: linear-gradient(to right, #4f46e5, #22d3ee);
+    -fx-text-fill: white;
+}
+.searchField {
+    -fx-background-radius: 14;
+    -fx-background-color: rgba(15,23,42,0.05);
+    -fx-text-fill: #111827;
+    -fx-prompt-text-fill: rgba(55,65,81,0.65);
+    -fx-border-color: rgba(15,23,42,0.12);
+    -fx-padding: 10 14;
+    -fx-max-width: 620;
+    -fx-pref-width: 620;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0.25, 0, 3);
+}
+.noteCard {
+    -fx-background-color: rgba(255,255,255,0.35);
+    -fx-background-radius: 16;
+    -fx-padding: 12;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.18), 16, 0.25, 0, 8);
+}
+.noteTitle { -fx-text-fill: #0f172a; -fx-font-weight: 700; }
+.noteBody { -fx-text-fill: #334155; -fx-font-size: 12px; }
+
+.bookingCard {
+    -fx-background-color: rgba(255,255,255,0.42);
+    -fx-background-radius: 18;
+    -fx-padding: 16;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.16), 14, 0.25, 0, 8);
+    -fx-border-color: rgba(255,255,255,0.4);
+    -fx-border-radius: 18;
+}
+.cardTitle { -fx-text-fill: #111827; -fx-font-weight: 800; }
+.cardTitle { -fx-text-fill: #111827; -fx-font-weight: 800; -fx-font-size: 18px; }
+.cardSubtitle { -fx-text-fill: #4b5563; -fx-font-size: 14px; }
+.cardMeta { -fx-text-fill: #6b7280; -fx-font-size: 14px; }
+.cardValue { -fx-text-fill: #111827; -fx-font-weight: 700; -fx-font-size: 15px; }
+.cardNote { -fx-text-fill: #6b7280; -fx-font-size: 13px; }
+.cardPrice { -fx-text-fill: #111827; -fx-font-weight: 800; -fx-font-size: 20px; }
+.statusPill, .packagePill {
+    -fx-background-radius: 999;
+    -fx-padding: 6 12;
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+}
+.statusPill { -fx-background-color: #22c55e; }
+.packagePill { -fx-background-color: #4f46e5; }
+
+.ghostButton {
+    -fx-background-radius: 12;
+    -fx-background-color: rgba(15,23,42,0.05);
+    -fx-text-fill: #1f2937;
+    -fx-padding: 8 14;
+    -fx-border-color: rgba(15,23,42,0.08);
+}
+.ghostButton:hover { -fx-background-color: rgba(15,23,42,0.08); }
+.ghostButton:pressed { -fx-scale-x: 0.97; -fx-scale-y: 0.97; }
+.accentButton {
+    -fx-background-radius: 12;
+    -fx-background-color: linear-gradient(to right, #10b981, #22c55e);
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-padding: 8 14;
+    -fx-border-color: transparent;
+}
+.accentButton:hover { -fx-translate-y: -1; }
+.accentButton:pressed { -fx-translate-y: 0; -fx-scale-x: 0.97; -fx-scale-y: 0.97; }
+.primaryButton {
+    -fx-background-radius: 14;
+    -fx-background-color: linear-gradient(to right, #4f46e5, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-padding: 10 16;
+}
+.primaryButton:hover { -fx-translate-y: -1; }
+.primaryButton:pressed { -fx-scale-x: 0.97; -fx-scale-y: 0.97; }
+
+.emptyCard {
+    -fx-background-color: rgba(255,255,255,0.85);
+    -fx-background-radius: 18;
+    -fx-padding: 16;
+    -fx-border-color: rgba(15,23,42,0.06);
+    -fx-border-radius: 18;
+}
+
+.detailCard {
+    /* mint shell for the detail panel */
+    -fx-background-color: linear-gradient(to bottom right, #9fe7d7, #c4f5e9);
+    -fx-background-radius: 18;
+    -fx-padding: 12;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.2), 16, 0.28, 0, 8);
+    -fx-border-color: rgba(255,255,255,0.7);
+    -fx-border-radius: 18;
+}
+.detailTitle { -fx-text-fill: #111827; -fx-font-weight: 800; -fx-font-size: 18px; }
+.detailSubtitle { -fx-text-fill: #4b5563; -fx-font-size: 13px; }
+.detailSection {
+    /* glassy white interior cards */
+    -fx-background-color: rgba(255,255,255,0.95);
+    -fx-background-radius: 12;
+    -fx-padding: 8;
+    -fx-border-color: rgba(15,23,42,0.08);
+    -fx-border-radius: 12;
+}
+.sectionHeader { -fx-text-fill: #111827; -fx-font-weight: 800; -fx-font-size: 14px; }
+.kvKey { -fx-text-fill: #6b7280; -fx-font-size: 12px; }
+.kvValue { -fx-text-fill: #111827; -fx-font-weight: 700; -fx-font-size: 13px; }
+.paragraph { -fx-text-fill: #4b5563; -fx-font-size: 12px; }
+.pillStatus {
+    -fx-background-color: #22c55e;
+    -fx-text-fill: white;
+    -fx-padding: 6 12;
+    -fx-background-radius: 999;
+    -fx-font-weight: 700;
+}
+.pillType {
+    -fx-background-color: #4f46e5;
+    -fx-text-fill: white;
+    -fx-padding: 6 12;
+    -fx-background-radius: 999;
+    -fx-font-weight: 700;
+}
+.pillButton {
+    -fx-background-radius: 12;
+    -fx-background-color: linear-gradient(to right, #eef2ff, #e0f2fe);
+    -fx-text-fill: #0f172a;
+    -fx-border-color: rgba(79,70,229,0.15);
+    -fx-padding: 8 14;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.12), 8, 0.2, 0, 3);
+    -fx-cursor: hand;
+    -fx-background-insets: 0;
+    -fx-border-radius: 12;
+}
+.pillButton:hover {
+    -fx-translate-y: -1;
+    -fx-effect: dropshadow(gaussian, rgba(79,70,229,0.18), 10, 0.25, 0, 4);
+}
+.pillButton:pressed {
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
+    -fx-translate-y: 0;
+}

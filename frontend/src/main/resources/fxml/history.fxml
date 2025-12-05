@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.travel.frontend.controller.HistoryController"
+           stylesheets="@/css/login.css,@/css/packages.css,@/css/history.css"
+           styleClass="historyRoot">
+    <children>
+        <Pane styleClass="bgGradient"/>
+        <ScrollPane fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="historyScroll">
+            <content>
+                <VBox alignment="TOP_CENTER" spacing="18">
+                    <fx:include source="navbar.fxml" fx:id="navbar"/>
+                    <BorderPane maxWidth="1280" prefWidth="1200" styleClass="historyShell">
+                    <padding><Insets top="32" right="32" bottom="32" left="32"/></padding>
+
+                    <top>
+                        <VBox spacing="10">
+                            <VBox spacing="4">
+                                <Label text="History" styleClass="historyTitle"/>
+                                <Label text="Review and manage your hotel and package bookings." styleClass="historySubtitle"/>
+                            </VBox>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                                <ToggleButton fx:id="upcomingToggle" text="Upcoming" styleClass="pillToggle" selected="true"/>
+                                <ToggleButton fx:id="pastToggle" text="Past" styleClass="pillToggle"/>
+                                <ToggleButton fx:id="canceledToggle" text="Canceled" styleClass="pillToggle"/>
+                                <Pane HBox.hgrow="ALWAYS"/>
+                                <TextField fx:id="searchField" promptText="Search hotels, destinations, packages or IDs" styleClass="searchField"/>
+                            </HBox>
+                        </VBox>
+                    </top>
+
+                    <center>
+                        <HBox spacing="18" alignment="TOP_LEFT">
+                            <padding><Insets top="16" right="0" bottom="0" left="0"/></padding>
+                            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" HBox.hgrow="ALWAYS" styleClass="listScroll">
+                                <content>
+                                    <VBox fx:id="listContainer" spacing="14">
+                                        <!-- Cards injected by controller -->
+                                    </VBox>
+                                </content>
+                            </ScrollPane>
+
+                            <StackPane fx:id="detailHolder" prefWidth="0" minWidth="0" maxWidth="520" opacity="0" visible="false">
+                                <!-- Detail content injected by controller -->
+                            </StackPane>
+                        </HBox>
+                    </center>
+                </BorderPane>
+                </VBox>
+            </content>
+        </ScrollPane>
+
+        <Button onAction="#reloadHistory"
+                styleClass="pageReloadBtn"
+                StackPane.alignment="TOP_RIGHT">
+            <graphic>
+                <HBox alignment="CENTER" spacing="6">
+                    <SVGPath styleClass="reloadIcon"
+                             content="M12 5v4l3-3m-6 0 3 3V5a7 7 0 1 1-7 7h2a5 5 0 1 0 5-5z"/>
+                    <Label text="Reload" styleClass="reloadLabel"/>
+                </HBox>
+            </graphic>
+            <StackPane.margin>
+                <Insets top="104" right="18" bottom="0" left="0"/>
+            </StackPane.margin>
+        </Button>
+    </children>
+</StackPane>

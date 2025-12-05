@@ -51,6 +51,10 @@ public final class Navigator {
             }
 
             Parent root = FXMLLoader.load(fxmlUrl);
+            boolean isAdmin = fxmlFileName.startsWith("admin_");
+            if (isAdmin && ThemeManager.isDark()) {
+                ThemeManager.setTheme(ThemeManager.Theme.LIGHT);
+            }
 
             Scene scene = STAGE.getScene();
             if (scene == null) {
@@ -86,6 +90,10 @@ public final class Navigator {
                     scene.setRoot(root);
                 }
             }
+            if (THEME_TOGGLE != null) {
+                THEME_TOGGLE.setVisible(!isAdmin);
+                THEME_TOGGLE.setManaged(!isAdmin);
+            }
             ThemeManager.apply(scene);
             syncThemeToggles(scene);
             System.out.println("[Navigator] Loaded " + fxmlFileName + " with theme=" + ThemeManager.getTheme());
@@ -114,6 +122,7 @@ public final class Navigator {
     public static void goAdminHotels() { load("admin_hotels.fxml"); }
     public static void goAdminRooms() { load("admin_rooms.fxml"); }
     public static void goAdminRoomBookings() { load("admin_room_bookings.fxml"); }
+    public static void goHistory() { load("history.fxml"); }
 
     public static void applyTheme() {
         if (STAGE != null && STAGE.getScene() != null) {

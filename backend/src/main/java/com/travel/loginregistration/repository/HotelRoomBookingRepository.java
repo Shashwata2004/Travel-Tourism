@@ -19,4 +19,8 @@ public interface HotelRoomBookingRepository extends JpaRepository<HotelRoomBooki
                               @Param("checkOut") LocalDate checkOut);
 
     List<HotelRoomBooking> findByRoomIdOrderByCheckInAsc(UUID roomId);
+
+    List<HotelRoomBooking> findByUserIdOrderByCreatedAtDesc(UUID userId);
+
+    List<HotelRoomBooking> findByUserIdOrUserEmailOrderByCreatedAtDesc(UUID userId, String userEmail);
 }
