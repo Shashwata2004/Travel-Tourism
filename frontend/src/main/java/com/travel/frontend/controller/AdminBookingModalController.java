@@ -35,6 +35,7 @@ public class AdminBookingModalController {
     @FXML private Label primaryValue3;
     @FXML private Label primaryLabel4;
     @FXML private Label primaryValue4;
+    @FXML private Label bookingIdLabel;
 
     @FXML private Label txnLabel;
     @FXML private Label bookedAtLabel;
@@ -98,6 +99,7 @@ public class AdminBookingModalController {
                 "Persons", String.valueOf(v.totalPersons),
                 "Booked At", formatInstant(v.createdAt),
                 "Status", ns(v.status));
+        if (bookingIdLabel != null) bookingIdLabel.setText(v.id == null ? "—" : v.id.toString());
 
         if (txnLabel != null) txnLabel.setText(ns(v.transactionId));
         if (bookedAtLabel != null) bookedAtLabel.setText(formatInstant(v.createdAt));
@@ -127,6 +129,7 @@ public class AdminBookingModalController {
                 "Hotel", ns(v.hotelName),
                 "Room / Persons", ns(v.roomName) + " · " + (v.totalGuests == null ? "-" : v.totalGuests) + " guests",
                 "Check-in / out", fmtDate(v.checkIn) + " - " + fmtDate(v.checkOut));
+        if (bookingIdLabel != null) bookingIdLabel.setText(v.id == null ? "—" : v.id.toString());
 
         if (txnLabel != null) txnLabel.setText(ns(v.transactionId));
         if (bookedAtLabel != null) bookedAtLabel.setText(formatInstant(v.createdAt));

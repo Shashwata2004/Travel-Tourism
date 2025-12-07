@@ -10,7 +10,7 @@
            styleClass="overlay-root">
     <children>
         <VBox spacing="8" styleClass="modal-root"
-              prefWidth="820" maxWidth="820" minWidth="760"
+              prefWidth="860" maxWidth="860" minWidth="780"
               prefHeight="420" maxHeight="420"
               StackPane.alignment="CENTER">
             <children>
@@ -86,6 +86,10 @@
                                         <VBox spacing="2">
                                             <Label fx:id="primaryLabel4" text="Field 4" styleClass="field-label"/>
                                             <Label fx:id="primaryValue4" text="—" styleClass="field-value"/>
+                                        </VBox>
+                                        <VBox spacing="2">
+                                            <Label text="Booking ID" styleClass="field-label"/>
+                                            <Label fx:id="bookingIdLabel" text="—" styleClass="field-value"/>
                                         </VBox>
                                     </children>
                                 </VBox>

@@ -19,4 +19,5 @@ public class HistoryPackageItem {
     public String transactionId;
     public String cardLast4;
     public Instant canceledAt;
+    public String canceledBy;
 }
