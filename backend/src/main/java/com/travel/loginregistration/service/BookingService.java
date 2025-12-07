@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Instant;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
@@ -88,6 +89,7 @@ public class BookingService {
         b.setCreatedAt(Instant.now());
         b.setTransactionId(generateTxnId(tx -> bookingRepo.existsByTransactionId(tx)));
         b.setCardLast4(generateLast4());
+        b.setStatus("CONFIRMED");
         bookingRepo.save(b); // booking saved to database
 
         logToFile(b, user.getEmail(), pack.getName());
@@ -100,6 +102,49 @@ public class BookingService {
         res.createdAt = b.getCreatedAt();
         res.transactionId = b.getTransactionId();
         res.cardLast4 = b.getCardLast4();
+        res.status = b.getStatus();
+        res.canceledAt = b.getCanceledAt();
+        res.canceledBy = b.getCanceledBy();
+        return res;
+    }
+
+    @Transactional
+    public BookingResponse cancel(UUID bookingId, String email) {
+        String emailNorm = email == null ? null : email.toLowerCase(Locale.ROOT);
+        Booking booking = bookingRepo.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+        if ("CANCELED".equalsIgnoreCase(booking.getStatus())) {
+            throw new IllegalArgumentException("Booking already canceled");
+        }
+        boolean allowed = false;
+        if (booking.getUserEmail() != null && emailNorm != null
+                && booking.getUserEmail().equalsIgnoreCase(emailNorm)) {
+            allowed = true;
+        }
+        if (!allowed && booking.getUserId() != null) {
+            allowed = userRepo.findById(booking.getUserId())
+                    .map(u -> u.getEmail() != null && u.getEmail().equalsIgnoreCase(emailNorm))
+                    .orElse(false);
+        }
+        if (!allowed) {
+            throw new IllegalArgumentException("Cannot cancel booking for another user");
+        }
+        booking.setStatus("CANCELED");
+        booking.setCanceledAt(Instant.now());
+        booking.setCanceledBy("USER");
+        bookingRepo.save(booking);
+
+        BookingResponse res = new BookingResponse();
+        res.id = booking.getId();
+        res.packageId = booking.getPackageId();
+        res.totalPersons = booking.getTotalPersons();
+        res.priceTotal = booking.getPriceTotal();
+        res.createdAt = booking.getCreatedAt();
+        res.transactionId = booking.getTransactionId();
+        res.cardLast4 = booking.getCardLast4();
+        res.status = booking.getStatus();
+        res.canceledAt = booking.getCanceledAt();
+        res.canceledBy = booking.getCanceledBy();
         return res;
     }
 

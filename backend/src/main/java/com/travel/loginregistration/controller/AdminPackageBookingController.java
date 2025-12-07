@@ -57,6 +57,18 @@ public class AdminPackageBookingController {
         }
     }
 
+    // List all package bookings (all packages)
+    @GetMapping("/bookings")
+    public ResponseEntity<List<PackageBookingAdminView>> all() {
+        List<Booking> bookings = bookingRepository.findAllByOrderByCreatedAtDesc();
+        var names = travelPackageRepository.findAll().stream()
+                .collect(java.util.stream.Collectors.toMap(TravelPackage::getId, TravelPackage::getName));
+        List<PackageBookingAdminView> items = bookings.stream()
+                .map(b -> toView(b, names.get(b.getPackageId())))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(items);
+    }
+
     private PackageBookingAdminView toView(Booking b, String packageName) {
         PackageBookingAdminView v = new PackageBookingAdminView();
         v.id = b.getId();
@@ -80,6 +92,9 @@ public class AdminPackageBookingController {
         v.priceTotal = b.getPriceTotal();
         v.createdAt = b.getCreatedAt();
         v.transactionId = b.getTransactionId();
+        v.status = b.getStatus();
+        v.canceledAt = b.getCanceledAt();
+        v.canceledBy = b.getCanceledBy();
         return v;
     }
 }

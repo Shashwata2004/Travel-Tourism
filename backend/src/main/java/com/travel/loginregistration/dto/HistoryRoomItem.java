@@ -7,6 +7,8 @@ import java.util.UUID;
 
 public class HistoryRoomItem {
     public UUID id;
+    public UUID roomId;
+    public UUID hotelId;
     public String hotelName;
     public String roomName;
     public LocalDate checkIn;
@@ -18,4 +20,6 @@ public class HistoryRoomItem {
     public String status; // placeholder for future
     public String transactionId;
     public String cardLast4;
+    public Instant canceledAt;
+    public String canceledBy;
 }

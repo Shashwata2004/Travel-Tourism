@@ -9,6 +9,7 @@ import com.travel.loginregistration.model.TravelPackage;
 import com.travel.loginregistration.model.User;
 import com.travel.loginregistration.repository.BookingRepository;
 import com.travel.loginregistration.repository.HotelRoomBookingRepository;
+import com.travel.loginregistration.repository.HotelRoomRepository;
 import com.travel.loginregistration.repository.TravelPackageRepository;
 import com.travel.loginregistration.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
@@ -28,15 +29,18 @@ public class HistoryController {
 
     private final BookingRepository bookingRepository;
     private final HotelRoomBookingRepository roomBookingRepository;
+    private final HotelRoomRepository hotelRoomRepository;
     private final TravelPackageRepository travelPackageRepository;
     private final UserRepository userRepository;
 
     public HistoryController(BookingRepository bookingRepository,
             HotelRoomBookingRepository roomBookingRepository,
+            HotelRoomRepository hotelRoomRepository,
             TravelPackageRepository travelPackageRepository,
             UserRepository userRepository) {
         this.bookingRepository = bookingRepository;
         this.roomBookingRepository = roomBookingRepository;
+        this.hotelRoomRepository = hotelRoomRepository;
         this.travelPackageRepository = travelPackageRepository;
         this.userRepository = userRepository;
     }
@@ -69,6 +73,9 @@ public class HistoryController {
     private HistoryRoomItem mapRoom(HotelRoomBooking b) {
         HistoryRoomItem dto = new HistoryRoomItem();
         dto.id = b.getId();
+        dto.roomId = b.getRoomId();
+        dto.hotelId = b.getRoomId() == null ? null
+                : hotelRoomRepository.findById(b.getRoomId()).map(r -> r.getHotelId()).orElse(null);
         dto.hotelName = b.getHotelName();
         dto.roomName = b.getRoomName();
         dto.checkIn = b.getCheckIn();
@@ -77,7 +84,9 @@ public class HistoryController {
         dto.roomsBooked = b.getRoomsBooked();
         dto.totalPrice = b.getTotalPrice();
         dto.createdAt = b.getCreatedAt();
-        dto.status = "Upcoming"; // placeholder
+        dto.status = b.getStatus();
+        dto.canceledAt = b.getCanceledAt();
+        dto.canceledBy = b.getCanceledBy();
         dto.transactionId = b.getTransactionId();
         dto.cardLast4 = b.getCardLast4();
         return dto;
@@ -90,7 +99,9 @@ public class HistoryController {
         dto.totalPersons = b.getTotalPersons();
         dto.totalPrice = b.getPriceTotal();
         dto.createdAt = b.getCreatedAt();
-        dto.status = "Upcoming"; // placeholder
+        dto.status = b.getStatus();
+        dto.canceledAt = b.getCanceledAt();
+        dto.canceledBy = b.getCanceledBy();
         dto.transactionId = b.getTransactionId();
         dto.cardLast4 = b.getCardLast4();
         dto.packageName = null;

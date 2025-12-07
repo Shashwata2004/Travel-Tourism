@@ -12,4 +12,6 @@ public class BookingResponse {
     public Instant createdAt;
     public String transactionId;
     public String cardLast4;
+    public String status;
+    public Instant canceledAt;
 }

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.travel.frontend.controller.AdminBookingModalController"
+           stylesheets="@/css/admin_booking_modal.css"
+           styleClass="overlay-root">
+    <children>
+        <VBox spacing="8" styleClass="modal-root"
+              prefWidth="820" maxWidth="820" minWidth="760"
+              prefHeight="420" maxHeight="420"
+              StackPane.alignment="CENTER">
+            <children>
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <children>
+                        <VBox>
+                            <children>
+                                <Label fx:id="titleLabel" text="Booking Details" styleClass="modal-title"/>
+                                <Label fx:id="subtitleLabel" text="Complete booking information" styleClass="modal-subtitle"/>
+                            </children>
+                        </VBox>
+                        <Pane HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="headerCloseButton" text="✕" styleClass="close-btn"/>
+                    </children>
+                </HBox>
+
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <children>
+                        <VBox fx:id="alertBox" spacing="6" visible="false" managed="false" styleClass="alert-box">
+                            <children>
+                                <Label text="Booking Canceled" styleClass="alert-title"/>
+                                <Label text="This booking has been canceled." styleClass="alert-body"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <HBox spacing="12" alignment="TOP_LEFT">
+                    <children>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS" styleClass="section-card">
+                            <children>
+                                <Label text="Customer Information" styleClass="section-title"/>
+                        <VBox spacing="6">
+                                    <children>
+                                        <VBox spacing="2">
+                                            <Label text="Customer Name" styleClass="field-label"/>
+                                            <Label fx:id="customerNameLabel" text="—" styleClass="field-value"/>
+                                        </VBox>
+                                        <VBox spacing="2">
+                                            <Label text="Email Address" styleClass="field-label"/>
+                                            <Label fx:id="emailLabel" text="—" styleClass="field-value"/>
+                                        </VBox>
+                                        <VBox spacing="2">
+                                            <Label text="ID Type" styleClass="field-label"/>
+                                            <Label fx:id="idTypeLabel" text="—" styleClass="field-value"/>
+                                        </VBox>
+                                        <VBox spacing="2">
+                                            <Label text="ID Number" styleClass="field-label"/>
+                                            <Label fx:id="idNumberLabel" text="—" styleClass="field-value"/>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="6" HBox.hgrow="ALWAYS" styleClass="section-card">
+                            <children>
+                                <Label text="Booking Information" styleClass="section-title"/>
+                                <VBox spacing="8">
+                                    <children>
+                                        <VBox spacing="2">
+                                            <Label fx:id="primaryLabel1" text="Field 1" styleClass="field-label"/>
+                                            <Label fx:id="primaryValue1" text="—" styleClass="field-value"/>
+                                        </VBox>
+                                        <VBox spacing="2">
+                                            <Label fx:id="primaryLabel2" text="Field 2" styleClass="field-label"/>
+                                            <Label fx:id="primaryValue2" text="—" styleClass="field-value"/>
+                                        </VBox>
+                                        <VBox spacing="2">
+                                            <Label fx:id="primaryLabel3" text="Field 3" styleClass="field-label"/>
+                                            <Label fx:id="primaryValue3" text="—" styleClass="field-value"/>
+                                        </VBox>
+                                        <VBox spacing="2">
+                                            <Label fx:id="primaryLabel4" text="Field 4" styleClass="field-label"/>
+                                            <Label fx:id="primaryValue4" text="—" styleClass="field-value"/>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="6" HBox.hgrow="ALWAYS" styleClass="section-card">
+                            <children>
+                                <Label text="Transaction Information" styleClass="section-title"/>
+                                <VBox spacing="8">
+                                    <children>
+                                        <VBox spacing="2">
+                                            <Label text="Transaction ID" styleClass="field-label"/>
+                                            <Label fx:id="txnLabel" text="—" styleClass="field-value"/>
+                                        </VBox>
+                                        <VBox spacing="2">
+                                            <Label text="Booked At" styleClass="field-label"/>
+                                            <Label fx:id="bookedAtLabel" text="—" styleClass="field-value"/>
+                                        </VBox>
+                                        <VBox spacing="2">
+                                            <Label text="Canceled At" styleClass="field-label"/>
+                                            <Label fx:id="canceledAtLabel" text="—" styleClass="field-value"/>
+                                        </VBox>
+                                        <VBox spacing="2">
+                                            <Label text="Canceled By" styleClass="field-label"/>
+                                            <Label fx:id="canceledByLabel" text="—" styleClass="field-value"/>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <children>
+                        <Button fx:id="cancelActionButton" text="Cancel Booking" styleClass="danger-btn"/>
+                        <Pane HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="closeButton" text="Close" styleClass="ghost-btn"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</StackPane>

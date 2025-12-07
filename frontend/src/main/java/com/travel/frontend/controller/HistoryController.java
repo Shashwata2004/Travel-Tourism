@@ -2,6 +2,8 @@ package com.travel.frontend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.travel.frontend.cache.DataCache;
+import com.travel.frontend.cache.FileCache;
 import com.travel.frontend.model.HistoryPackageItem;
 import com.travel.frontend.model.HistoryResponse;
 import com.travel.frontend.model.HistoryRoomItem;
@@ -17,6 +19,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
@@ -78,6 +82,7 @@ public class HistoryController {
     private ScrollPane listScroll;
 
     private static final double DETAIL_WIDTH = 460;
+    private static final String HOTEL_CACHE_VERSION = "v2";
     private final ApiClient api = ApiClient.get();
     private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
     private final DateTimeFormatter df = DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.ENGLISH);
@@ -285,7 +290,7 @@ public class HistoryController {
         Label subtitle = new Label("ID · " + (r.id == null ? "-" : r.id.toString()));
         subtitle.getStyleClass().add("detailSubtitle");
         String pillText = status == null ? "Upcoming" : status;
-        HBox headRow = new HBox(8, header, spacer(), pill(pillText, "pillStatus"));
+        HBox headRow = new HBox(8, header, spacer(), statusPill(pillText));
         header.getChildren().addAll(title, subtitle);
         headRow.setAlignment(Pos.CENTER_LEFT);
         root.getChildren().add(headRow);
@@ -345,7 +350,7 @@ public class HistoryController {
         VBox pillsBox = new VBox(6);
         pillsBox.setAlignment(Pos.TOP_RIGHT);
         String pillText = status == null ? "Upcoming" : status;
-        pillsBox.getChildren().addAll(pill("Package", "pillType"), pill(pillText, "pillStatus"));
+        pillsBox.getChildren().addAll(pill("Package", "pillType"), statusPill(pillText));
 
         HBox headRow = new HBox(8, header, spacer(), pillsBox);
         headRow.setAlignment(Pos.CENTER_LEFT);
@@ -427,29 +432,49 @@ public class HistoryController {
 
         VBox right = new VBox(6);
         right.setAlignment(Pos.CENTER_RIGHT);
-        right.getChildren().add(pill(status, "statusPill"));
+        if (!"Canceled".equalsIgnoreCase(status)) {
+            right.getChildren().add(statusPill(status));
+        }
         Label price = new Label(r.totalPrice == null ? "BDT —" : "BDT " + r.totalPrice);
         price.getStyleClass().add("cardPrice");
         right.getChildren().add(price);
         right.getChildren().add(labelMeta("ID · " + (r.id == null ? "-" : r.id.toString())));
+        if ("Canceled".equalsIgnoreCase(status) && r.canceledAt != null) {
+            Label canceledOn = new Label("Canceled on " + fmt(r.canceledAt.atZone(java.time.ZoneId.systemDefault()).toLocalDate()));
+            canceledOn.getStyleClass().add("cardNote");
+            right.getChildren().add(canceledOn);
+        }
 
         top.getChildren().addAll(info, spacer(), right);
         card.getChildren().add(top);
 
         HBox actions = new HBox(10);
         actions.setAlignment(Pos.CENTER_RIGHT);
-        Button view = new Button("View details");
-        view.getStyleClass().add("ghostButton");
-        view.setOnAction(e -> setDetail(buildHotelDetail(r, status)));
-        Button cancel = new Button("Cancel booking");
-        cancel.getStyleClass().add("accentButton");
-        cancel.setOnAction(e -> openCancelFlow(r));
-        if ("Past".equalsIgnoreCase(status)) {
-            actions.getChildren().add(view);
+        if ("Canceled".equalsIgnoreCase(status)) {
+            Button canceled = new Button("Canceled");
+            canceled.getStyleClass().addAll("cancel-accent", "canceledPillAction");
+            canceled.setDisable(true);
+            canceled.setMouseTransparent(true);
+            canceled.setMinWidth(160);
+            actions.getChildren().add(canceled);
+            card.getStyleClass().add("canceledCard");
         } else {
-            actions.getChildren().addAll(view, cancel);
+            Button view = new Button("View details");
+            view.getStyleClass().add("ghostButton");
+            view.setOnAction(e -> setDetail(buildHotelDetail(r, status)));
+            Button cancel = new Button("Cancel booking");
+            cancel.getStyleClass().add("accentButton");
+            cancel.setOnAction(e -> openCancelFlow(r));
+            if ("Past".equalsIgnoreCase(status)) {
+                actions.getChildren().add(view);
+            } else {
+                actions.getChildren().addAll(view, cancel);
+            }
         }
         card.getChildren().add(actions);
+        if ("Canceled".equalsIgnoreCase(status)) {
+            card.setOpacity(0.82);
+        }
         return card;
     }
 
@@ -484,39 +509,62 @@ public class HistoryController {
 
         VBox right = new VBox(6);
         right.setAlignment(Pos.TOP_RIGHT);
-        // Stack pills to free horizontal space
         right.setMinWidth(140);
         right.setMaxWidth(200);
         right.setFillWidth(false);
-        VBox pills = new VBox(4, pill("Package", "packagePill"), pill(status, "statusPill"));
+        VBox pills = new VBox(4);
+        pills.getChildren().add(pill("Package", "packagePill"));
+        if (!"Canceled".equalsIgnoreCase(status)) {
+            pills.getChildren().add(statusPill(status));
+        }
         pills.setAlignment(Pos.TOP_RIGHT);
         right.getChildren().add(pills);
         Label price = new Label(p.totalPrice == null ? "BDT —" : "BDT " + p.totalPrice);
         price.getStyleClass().add("cardPrice");
         right.getChildren().add(price);
         right.getChildren().add(labelMeta("ID · " + (p.id == null ? "-" : p.id.toString())));
+        if ("Canceled".equalsIgnoreCase(status) && p.canceledAt != null) {
+            Label canceledOn = new Label("Canceled on " + fmt(p.canceledAt.atZone(java.time.ZoneId.systemDefault()).toLocalDate()));
+            canceledOn.getStyleClass().add("cardNote");
+            right.getChildren().add(canceledOn);
+        }
 
         top.getChildren().addAll(info, spacer(), right);
         card.getChildren().add(top);
 
         HBox actions = new HBox(10);
         actions.setAlignment(Pos.CENTER_RIGHT);
-        Button view = new Button("View details");
-        view.getStyleClass().add("ghostButton");
-        view.setOnAction(e -> setDetail(buildPackageDetail(p, status)));
-        Button cancel = new Button("Cancel booking");
-        cancel.getStyleClass().add("accentButton");
-        cancel.setOnAction(e -> openCancelFlow(p));
-        if ("Past".equalsIgnoreCase(status)) {
-            actions.getChildren().add(view);
+        if ("Canceled".equalsIgnoreCase(status)) {
+            Button canceled = new Button("Canceled");
+            canceled.getStyleClass().addAll("cancel-accent", "canceledPillAction");
+            canceled.setDisable(true);
+            canceled.setMouseTransparent(true);
+            canceled.setMinWidth(160);
+            actions.getChildren().add(canceled);
+            card.getStyleClass().add("canceledCard");
         } else {
-            actions.getChildren().addAll(view, cancel);
+            Button view = new Button("View details");
+            view.getStyleClass().add("ghostButton");
+            view.setOnAction(e -> setDetail(buildPackageDetail(p, status)));
+            Button cancel = new Button("Cancel booking");
+            cancel.getStyleClass().add("accentButton");
+            cancel.setOnAction(e -> openCancelFlow(p));
+            if ("Past".equalsIgnoreCase(status)) {
+                actions.getChildren().add(view);
+            } else {
+                actions.getChildren().addAll(view, cancel);
+            }
         }
         card.getChildren().add(actions);
+        if ("Canceled".equalsIgnoreCase(status)) {
+            card.setOpacity(0.82);
+        }
         return card;
     }
 
     private String roomStatus(HistoryRoomItem r, LocalDate today) {
+        if (r.status != null && "CANCELED".equalsIgnoreCase(r.status)) return "Canceled";
+        if (r.canceledAt != null) return "Canceled";
         // Consider past if check-in is today or earlier (midnight cutoff), or check-out
         // is today/past
         if (r.checkIn != null && !r.checkIn.isAfter(today))
@@ -527,6 +575,8 @@ public class HistoryController {
     }
 
     private String packageStatus(HistoryPackageItem p, LocalDate today) {
+        if (p.status != null && "CANCELED".equalsIgnoreCase(p.status)) return "Canceled";
+        if (p.canceledAt != null) return "Canceled";
         LocalDate start = p.bookingDeadline != null ? p.bookingDeadline.plusDays(2) : null;
         if (start != null && !start.isAfter(today))
             return "Past";
@@ -724,6 +774,19 @@ public class HistoryController {
         return l;
     }
 
+    private Label statusPill(String status) {
+        return statusPill(status, false);
+    }
+
+    private Label statusPill(String status, boolean emphasized) {
+        String s = status == null ? "Status" : status;
+        String cls = "statusPill";
+        if ("Canceled".equalsIgnoreCase(s)) cls = "canceledPill";
+        Label l = pill(s, cls);
+        if (emphasized) l.getStyleClass().add("canceledPillEmphasis");
+        return l;
+    }
+
     private Button pillButton(String text) {
         Button b = new Button(text);
         b.getStyleClass().add("pillButton");
@@ -737,23 +800,24 @@ public class HistoryController {
     }
 
     private void openCancelFlow(HistoryRoomItem r) {
-        String txn = r.transactionId == null || r.transactionId.isBlank()
-                ? "TXN-" + (r.id == null ? "000000"
-                        : r.id.toString().replace("-", "").substring(0, 6).toUpperCase(Locale.ENGLISH))
-                : r.transactionId;
-        String amount = r.totalPrice == null ? "BDT 0" : "BDT " + r.totalPrice;
-        String method = cardMethod(r.cardLast4);
-        FeeBreakdown fb = calcFee(r.totalPrice, r.checkIn);
-        showCancelStep1(txn, fb.refundStr, fb.feeStr, method, this::closeCancelFlow,
-                () -> showCancelStep2(txn, fb.refundStr, fb.feeStr, method, false));
+        CancelContext ctx = buildCancelContext(r);
+        showCancelStep1(ctx);
     }
 
     private void openCancelFlow(HistoryPackageItem p) {
-        String txn = p.transactionId == null || p.transactionId.isBlank()
-                ? "TXN-" + (p.id == null ? "000000"
-                        : p.id.toString().replace("-", "").substring(0, 6).toUpperCase(Locale.ENGLISH))
-                : p.transactionId;
-        String method = cardMethod(p.cardLast4);
+        CancelContext ctx = buildCancelContext(p);
+        showCancelStep1(ctx);
+    }
+
+    private CancelContext buildCancelContext(HistoryRoomItem r) {
+        String txn = resolveTxn(r.id, r.transactionId);
+        FeeBreakdown fb = calcFee(r.totalPrice, r.checkIn);
+        return new CancelContext(CancelKind.ROOM, r.id, r.hotelId, r.roomId, txn, fb.refundStr, fb.feeStr,
+                cardMethod(r.cardLast4), false);
+    }
+
+    private CancelContext buildCancelContext(HistoryPackageItem p) {
+        String txn = resolveTxn(p.id, p.transactionId);
         boolean withinWindow = true;
         if (p.createdAt != null) {
             long hoursSince = ChronoUnit.HOURS.between(p.createdAt, Instant.now());
@@ -762,31 +826,28 @@ public class HistoryController {
         BigDecimal total = p.totalPrice == null ? BigDecimal.ZERO : p.totalPrice;
         final boolean isWithin = withinWindow;
         FeeBreakdown fb;
-        String infoText;
-        String subtitle;
         if (isWithin) {
             fb = new FeeBreakdown(formatMoney(total), formatMoney(BigDecimal.ZERO));
-            infoText = "Are you sure you want to cancel this booking? You will receive your refund within 3–7 business days.";
-            subtitle = "Please confirm your cancellation";
         } else {
-            // Non-refundable but cancellable: refund 0, fee = total
             fb = new FeeBreakdown(formatMoney(BigDecimal.ZERO), formatMoney(total));
-            infoText = "This package is non-refundable. If you cancel now, you will not receive a refund. Do you still want to cancel?";
-            subtitle = "This package is non-refundable";
         }
-        showCancelStep1(txn, fb.refundStr, fb.feeStr, method, this::closeCancelFlow,
-                () -> showCancelStep2(txn, fb.refundStr, fb.feeStr, method, !isWithin), infoText, subtitle);
+        return new CancelContext(CancelKind.PACKAGE, p.id, null, null, txn, fb.refundStr, fb.feeStr,
+                cardMethod(p.cardLast4), !isWithin);
     }
 
-    private void showCancelStep1(String txn, String refund, String fee, String method, Runnable onKeep,
-            Runnable onConfirm) {
-        showCancelStep1(txn, refund, fee, method, onKeep, onConfirm,
-                "Are you sure you want to cancel this booking? You will receive your refund within 3–7 business days.",
-                "Please confirm your cancellation");
+    private String resolveTxn(java.util.UUID id, String txn) {
+        return txn == null || txn.isBlank()
+                ? "TXN-" + (id == null ? "000000" : id.toString().replace("-", "").substring(0, 6).toUpperCase(Locale.ENGLISH))
+                : txn;
     }
 
-    private void showCancelStep1(String txn, String refund, String fee, String method, Runnable onKeep,
-            Runnable onConfirm, String infoText, String subtitle) {
+    private void showCancelStep1(CancelContext ctx) {
+        String infoText = ctx.nonRefundable
+                ? "This booking is non-refundable. If you cancel now, no refund will be issued."
+                : "Are you sure you want to cancel this booking? You will receive your refund within 3–7 business days.";
+        String subtitle = ctx.nonRefundable
+                ? "This booking is non-refundable"
+                : "Please confirm your cancellation";
         VBox modal = new VBox(16);
         modal.getStyleClass().add("cancel-modal");
 
@@ -811,20 +872,20 @@ public class HistoryController {
         VBox detailCard = new VBox(10);
         detailCard.getStyleClass().add("cancel-detail");
         detailCard.getChildren().addAll(
-                cancelRow("Transaction ID", txn),
-                cancelRow("Refund amount", refund),
-                cancelRow("Payment method", method),
-                cancelRow("Cancellation fee", fee));
+                cancelRow("Transaction ID", ctx.txn),
+                cancelRow("Refund amount", ctx.refund),
+                cancelRow("Payment method", ctx.method),
+                cancelRow("Cancellation fee", ctx.fee));
 
         HBox actions = new HBox(10);
         actions.setAlignment(Pos.CENTER);
         actions.setMaxWidth(Double.MAX_VALUE);
         Button keep = new Button("Keep Booking");
         keep.getStyleClass().add("cancel-ghost");
-        keep.setOnAction(e -> onKeep.run());
+        keep.setOnAction(e -> closeCancelFlow());
         Button confirm = new Button("Cancel Booking");
         confirm.getStyleClass().add("cancel-accent");
-        confirm.setOnAction(e -> onConfirm.run());
+        confirm.setOnAction(e -> beginCancellation(ctx));
         actions.getChildren().addAll(keep, confirm);
         HBox.setHgrow(keep, javafx.scene.layout.Priority.ALWAYS);
         HBox.setHgrow(confirm, javafx.scene.layout.Priority.ALWAYS);
@@ -834,7 +895,11 @@ public class HistoryController {
         showModal(modal);
     }
 
-    private void showCancelStep2(String txn, String refund, String fee, String method, boolean nonRefundable) {
+    private void beginCancellation(CancelContext ctx) {
+        showCancelStep2(ctx);
+    }
+
+    private void showCancelStep2(CancelContext ctx) {
         VBox modal = new VBox(16);
         modal.getStyleClass().add("cancel-modal");
 
@@ -848,7 +913,7 @@ public class HistoryController {
         headerText.getChildren().forEach(n -> n.getStyleClass().add("cancel-header-text"));
         header.getChildren().add(headerText);
 
-        Label desc = new Label(nonRefundable
+        Label desc = new Label(ctx.nonRefundable
                 ? "We're canceling your booking. This booking is non-refundable, so no refund will be issued."
                 : "We're canceling your booking and starting your refund request.");
         desc.setWrapText(true);
@@ -857,24 +922,64 @@ public class HistoryController {
         VBox status = new VBox(12);
         status.getChildren().addAll(
                 statusRow("Booking canceled", "Your reservation has been canceled", true),
-                statusRow(nonRefundable ? "No refund" : "Refund initiated",
-                        nonRefundable ? "This booking is non-refundable." : "Processing your refund...", false));
+                statusRow(ctx.nonRefundable ? "No refund" : "Refund initiated",
+                        ctx.nonRefundable ? "This booking is non-refundable." : "Processing your refund...", false));
 
         ProgressBar bar = new ProgressBar(0);
         bar.getStyleClass().add("cancel-progress");
-        bar.setProgress(0);
         bar.setPrefWidth(Double.MAX_VALUE);
-        Timeline tl = new Timeline(
-                new KeyFrame(Duration.ZERO, new KeyValue(bar.progressProperty(), 0)),
-                new KeyFrame(Duration.seconds(1.2), new KeyValue(bar.progressProperty(), 1, Interpolator.EASE_BOTH)));
-        tl.setOnFinished(e -> showCancelStep3(txn, refund, method, nonRefundable));
-        tl.play();
+        Label timing = new Label("Canceling...");
+        timing.getStyleClass().add("status-desc");
 
-        modal.getChildren().addAll(header, desc, status, bar);
+        modal.getChildren().addAll(header, desc, status, bar, timing);
         showModal(modal);
+
+        // Animate progress toward 90% while waiting; final value is set after API returns.
+        Timeline progressAnim = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(bar.progressProperty(), 0)),
+                new KeyFrame(Duration.seconds(3), new KeyValue(bar.progressProperty(), 0.9, Interpolator.EASE_BOTH)));
+        progressAnim.setCycleCount(Timeline.INDEFINITE);
+        progressAnim.play();
+
+        new Thread(() -> {
+            Instant started = Instant.now();
+            Instant canceledAt = null;
+            String error = null;
+            try {
+                if (ctx.kind == CancelKind.ROOM) {
+                    var res = api.cancelRoomBooking(ctx.bookingId);
+                    canceledAt = res.canceledAt;
+                } else {
+                    var res = api.cancelPackageBooking(ctx.bookingId);
+                    canceledAt = res.canceledAt;
+                }
+            } catch (ApiClient.ApiException ex) {
+                error = ex.getMessage();
+            } catch (Exception ex) {
+                error = "Unexpected error: " + ex.getMessage();
+            }
+            long elapsed = java.time.Duration.between(started, Instant.now()).toMillis();
+            Instant finalCanceledAt = canceledAt == null ? Instant.now() : canceledAt;
+            final String errorMsg = error;
+            if (errorMsg != null) {
+                Platform.runLater(() -> {
+                    progressAnim.stop();
+                    showCancelError(errorMsg);
+                });
+            } else {
+                Platform.runLater(() -> {
+                    progressAnim.stop();
+                    bar.setProgress(1);
+                    timing.setText("Completed in " + prettyMillis(elapsed));
+                    afterCancellation(ctx);
+                    Timeline tl = new Timeline(new KeyFrame(Duration.millis(220), ev -> showCancelStep3(ctx, finalCanceledAt, elapsed)));
+                    tl.play();
+                });
+            }
+        }).start();
     }
 
-    private void showCancelStep3(String txn, String refund, String method, boolean nonRefundable) {
+    private void showCancelStep3(CancelContext ctx, Instant canceledAt, long elapsedMs) {
         VBox modal = new VBox(16);
         modal.getStyleClass().add("cancel-modal");
 
@@ -916,10 +1021,11 @@ public class HistoryController {
                         new KeyValue(tick.opacityProperty(), 1, Interpolator.EASE_OUT)));
         pop.play();
 
-        Label body = new Label(nonRefundable
+        String elapsedTxt = prettyMillis(elapsedMs);
+        Label body = new Label(ctx.nonRefundable
                 ? "Your booking has been canceled.\nThis booking was non-refundable, so no refund will be issued."
-                : "Your refund of " + refund
-                        + " has been initiated.\nYou'll receive the amount in 3–7 business days via " + method + ".");
+                : "Your refund of " + ctx.refund
+                        + " has been initiated.\nYou'll receive the amount in 3–7 business days via " + ctx.method + ".");
         body.setWrapText(true);
         body.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         body.getStyleClass().add("cancel-body");
@@ -928,20 +1034,41 @@ public class HistoryController {
         body.setPrefWidth(Double.MAX_VALUE);
         VBox.setMargin(body, new Insets(0, 12, 0, 12));
 
-        Label txnLabel = new Label("Transaction ID: " + txn);
+        Label txnLabel = new Label("Transaction ID: " + ctx.txn);
         txnLabel.getStyleClass().add("cancel-body");
         txnLabel.setAlignment(Pos.CENTER);
         txnLabel.setMaxWidth(Double.MAX_VALUE);
         txnLabel.setPrefWidth(Double.MAX_VALUE);
         txnLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
 
+        Label canceledOn = new Label("Canceled at " + fmt(canceledAt.atZone(java.time.ZoneId.systemDefault()).toLocalDate())
+                + " • " + elapsedTxt);
+        canceledOn.getStyleClass().add("status-desc");
+        canceledOn.setAlignment(Pos.CENTER);
+        canceledOn.setMaxWidth(Double.MAX_VALUE);
+
         Button done = new Button("Done");
         done.getStyleClass().add("cancel-accent");
         done.setMaxWidth(Double.MAX_VALUE);
         done.setOnAction(e -> closeCancelFlow());
 
-        modal.getChildren().addAll(header, tickWrap, body, txnLabel, done);
+        modal.getChildren().addAll(header, tickWrap, body, txnLabel, canceledOn, done);
         showModal(modal);
+    }
+
+    private void showCancelError(String msg) {
+        closeCancelFlow();
+        new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK).showAndWait();
+    }
+
+    private void afterCancellation(CancelContext ctx) {
+        markDirty();
+        fetchHistory(true);
+        if (ctx.hotelId != null) {
+            String key = "hotel:details:" + HOTEL_CACHE_VERSION + ":" + ctx.hotelId;
+            DataCache.remove(key);
+            FileCache.remove("hotel_details_" + HOTEL_CACHE_VERSION + "_" + ctx.hotelId);
+        }
     }
 
     private HBox cancelRow(String key, String value) {
@@ -1016,7 +1143,41 @@ public class HistoryController {
         return "BDT " + amount.setScale(2, java.math.RoundingMode.HALF_UP).toPlainString();
     }
 
+    private String prettyMillis(long ms) {
+        if (ms < 1000) return ms + " ms";
+        double seconds = ms / 1000.0;
+        return String.format(Locale.ENGLISH, "%.1f s", seconds);
+    }
+
     private record FeeBreakdown(String refundStr, String feeStr) {
+    }
+
+    private enum CancelKind { ROOM, PACKAGE }
+
+    private static class CancelContext {
+        final CancelKind kind;
+        final java.util.UUID bookingId;
+        final java.util.UUID hotelId;
+        final java.util.UUID roomId;
+        final String txn;
+        final String refund;
+        final String fee;
+        final String method;
+        final boolean nonRefundable;
+
+        CancelContext(CancelKind kind, java.util.UUID bookingId, java.util.UUID hotelId, java.util.UUID roomId,
+                      String txn, String refund, String fee, String method,
+                      boolean nonRefundable) {
+            this.kind = kind;
+            this.bookingId = bookingId;
+            this.hotelId = hotelId;
+            this.roomId = roomId;
+            this.txn = txn;
+            this.refund = refund;
+            this.fee = fee;
+            this.method = method;
+            this.nonRefundable = nonRefundable;
+        }
     }
 
     private void showPackageTooLateModal() {

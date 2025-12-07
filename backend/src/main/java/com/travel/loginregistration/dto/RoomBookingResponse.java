@@ -22,4 +22,7 @@ public class RoomBookingResponse {
     public String idNumber;
     public String transactionId;
     public String cardLast4;
+    public String status;
+    public Instant canceledAt;
+    public String canceledBy;
 }

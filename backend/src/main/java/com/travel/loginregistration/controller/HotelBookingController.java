@@ -33,4 +33,15 @@ public class HotelBookingController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PostMapping("/bookings/{bookingId}/cancel")
+    public ResponseEntity<?> cancel(@PathVariable UUID bookingId, org.springframework.security.core.Authentication auth) {
+        try {
+            String email = auth != null ? (String) auth.getPrincipal() : null;
+            RoomBookingResponse res = service.cancel(bookingId, email);
+            return ResponseEntity.ok(res);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

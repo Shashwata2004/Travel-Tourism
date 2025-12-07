@@ -21,4 +21,8 @@ public class RoomBookingAdminView {
     public String idNumber;
     public Instant createdAt;
     public String transactionId;
+    public String status;
+    public Instant canceledAt;
+    public String canceledBy;
+    public String destinationName;
 }

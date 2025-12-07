@@ -14,8 +14,10 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     List<Booking> findByUserIdOrUserEmailOrderByCreatedAtDesc(UUID userId, String userEmail);
     List<Booking> findByPackageIdOrderByCreatedAtDesc(UUID packageId);
 
-    @Query("select coalesce(sum(b.totalPersons),0) from Booking b where b.packageId = :packageId")
+    @Query("select coalesce(sum(b.totalPersons),0) from Booking b where b.packageId = :packageId and (b.status is null or upper(b.status) <> 'CANCELED')")
     long sumPersonsForPackage(@Param("packageId") UUID packageId);
 
     boolean existsByTransactionId(String transactionId);
+
+    List<Booking> findAllByOrderByCreatedAtDesc();
 }

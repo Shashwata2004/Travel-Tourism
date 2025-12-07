@@ -76,6 +76,18 @@
     -fx-background-color: transparent;
     -fx-padding: 6 4 6 4;
 }
+.table-view .table-row-cell.canceledRow {
+    -fx-background-color: #fff5f5;
+}
+.table-view .table-row-cell.canceledRow .table-cell {
+    -fx-text-fill: #b91c1c;
+}
+.table-view .table-row-cell.canceledRow:filled:selected {
+    -fx-background-color: linear-gradient(to right, #ffe5e5, #ffdede);
+}
+.table-view .table-row-cell.canceledRow:filled:selected .table-cell {
+    -fx-text-fill: #b91c1c;
+}
 .table-view .table-row-cell:filled:selected {
     -fx-background-color: linear-gradient(to right, #dbeafe, #bfdbfe);
     -fx-text-fill: #0f172a;

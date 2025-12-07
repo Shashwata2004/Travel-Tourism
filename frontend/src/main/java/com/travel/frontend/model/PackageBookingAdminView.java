@@ -16,6 +16,9 @@ public class PackageBookingAdminView {
     public BigDecimal priceTotal;
     public Instant createdAt;
     public String transactionId;
+    public String status;
+    public Instant canceledAt;
+    public String canceledBy;
 
     public UUID getId() { return id; }
     public UUID getPackageId() { return packageId; }
@@ -28,6 +31,9 @@ public class PackageBookingAdminView {
     public BigDecimal getPriceTotal() { return priceTotal; }
     public Instant getCreatedAt() { return createdAt; }
     public String getTransactionId() { return transactionId; }
+    public String getStatus() { return status; }
+    public Instant getCanceledAt() { return canceledAt; }
+    public String getCanceledBy() { return canceledBy; }
 
     public void setId(UUID id) { this.id = id; }
     public void setPackageId(UUID packageId) { this.packageId = packageId; }
@@ -40,4 +46,7 @@ public class PackageBookingAdminView {
     public void setPriceTotal(BigDecimal priceTotal) { this.priceTotal = priceTotal; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
     public void setTransactionId(String transactionId) { this.transactionId = transactionId; }
+    public void setStatus(String status) { this.status = status; }
+    public void setCanceledAt(Instant canceledAt) { this.canceledAt = canceledAt; }
+    public void setCanceledBy(String canceledBy) { this.canceledBy = canceledBy; }
 }

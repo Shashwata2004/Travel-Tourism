@@ -122,6 +122,8 @@ public final class Navigator {
     public static void goAdminHotels() { load("admin_hotels.fxml"); }
     public static void goAdminRooms() { load("admin_rooms.fxml"); }
     public static void goAdminRoomBookings() { load("admin_room_bookings.fxml"); }
+    public static void goAdminAllPackageBookings() { load("admin_all_package_bookings.fxml"); }
+    public static void goAdminAllRoomBookings() { load("admin_all_room_bookings.fxml"); }
     public static void goHistory() { load("history.fxml"); }
 
     public static void applyTheme() {

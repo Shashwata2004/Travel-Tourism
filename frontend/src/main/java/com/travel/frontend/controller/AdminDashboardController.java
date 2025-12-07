@@ -166,6 +166,10 @@ public class AdminDashboardController {
         Navigator.goAdminPackageBookings();
     }
 
+    @FXML public void onViewAllBookings() {
+        Navigator.goAdminAllPackageBookings();
+    }
+
     /* Populates the form controls from a PackageVM, helping the admin see what
        they’re editing right after selecting an item from the ListView. */
     private void fillForm(PackageVM vm) {

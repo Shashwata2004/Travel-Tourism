@@ -106,7 +106,19 @@
     -fx-font-weight: 700;
 }
 .statusPill { -fx-background-color: #22c55e; }
+.canceledPill { -fx-background-color: #ef4444; -fx-text-fill: #fff; }
+.canceledPillEmphasis { -fx-background-color: #fee2e2; -fx-text-fill: #991b1b; }
 .packagePill { -fx-background-color: #4f46e5; }
+.canceledCard { -fx-opacity: 0.82; -fx-border-color: rgba(239,68,68,0.35); }
+.button.cancel-accent.canceledPillAction,
+.button.cancel-accent.canceledPillAction:disabled {
+    -fx-background-color: linear-gradient(to right, #ef4444, #f97316);
+    -fx-text-fill: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-padding: 10 18;
+    -fx-opacity: 1.0;
+}
 
 .ghostButton {
     -fx-background-radius: 12;

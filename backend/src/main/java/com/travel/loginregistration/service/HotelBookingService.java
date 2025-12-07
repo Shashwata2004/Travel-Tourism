@@ -76,6 +76,7 @@ public class HotelBookingService {
         }
         b.setTransactionId(generateTxnId(tx -> bookingRepository.existsByTransactionId(tx)));
         b.setCardLast4(generateLast4());
+        b.setStatus("CONFIRMED");
         bookingRepository.save(b);
 
         RoomBookingResponse res = new RoomBookingResponse();
@@ -95,6 +96,58 @@ public class HotelBookingService {
         res.idNumber = b.getIdNumber();
         res.transactionId = b.getTransactionId();
         res.cardLast4 = b.getCardLast4();
+        res.status = b.getStatus();
+        res.canceledAt = b.getCanceledAt();
+        res.canceledBy = b.getCanceledBy();
+        return res;
+    }
+
+    @Transactional
+    public RoomBookingResponse cancel(UUID bookingId, String authEmail) {
+        String emailNorm = authEmail == null ? null : authEmail.toLowerCase(Locale.ROOT);
+        HotelRoomBooking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("BOOKING_NOT_FOUND"));
+        if ("CANCELED".equalsIgnoreCase(booking.getStatus())) {
+            throw new IllegalArgumentException("BOOKING_ALREADY_CANCELED");
+        }
+        boolean allowed = false;
+        if (booking.getUserEmail() != null && emailNorm != null
+                && booking.getUserEmail().equalsIgnoreCase(emailNorm)) {
+            allowed = true;
+        }
+        if (!allowed && booking.getUserId() != null) {
+            allowed = userRepository.findById(booking.getUserId())
+                    .map(u -> u.getEmail() != null && u.getEmail().equalsIgnoreCase(emailNorm))
+                    .orElse(false);
+        }
+        if (!allowed) {
+            throw new IllegalArgumentException("CANNOT_CANCEL_FOR_ANOTHER_USER");
+        }
+        booking.setStatus("CANCELED");
+        booking.setCanceledAt(java.time.Instant.now());
+        booking.setCanceledBy("USER");
+        bookingRepository.save(booking);
+
+        RoomBookingResponse res = new RoomBookingResponse();
+        res.id = booking.getId();
+        res.roomId = booking.getRoomId();
+        res.checkIn = booking.getCheckIn();
+        res.checkOut = booking.getCheckOut();
+        res.rooms = booking.getRoomsBooked() == null ? 0 : booking.getRoomsBooked();
+        res.totalGuests = booking.getTotalGuests() == null ? 0 : booking.getTotalGuests();
+        res.totalPrice = booking.getTotalPrice();
+        res.createdAt = booking.getCreatedAt();
+        res.userId = booking.getUserId();
+        res.roomName = booking.getRoomName();
+        res.hotelName = booking.getHotelName();
+        res.customerName = booking.getCustomerName();
+        res.idType = booking.getIdType();
+        res.idNumber = booking.getIdNumber();
+        res.transactionId = booking.getTransactionId();
+        res.cardLast4 = booking.getCardLast4();
+        res.status = booking.getStatus();
+        res.canceledAt = booking.getCanceledAt();
+        res.canceledBy = booking.getCanceledBy();
         return res;
     }
 

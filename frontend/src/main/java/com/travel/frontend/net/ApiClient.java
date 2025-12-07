@@ -18,7 +18,8 @@ public final class ApiClient {
     public static ApiClient get() { return INSTANCE; }
 
     private final HttpClient http = HttpClient.newHttpClient();
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
 
     // Change base URL if your backend runs elsewhere
     private static final String BASE = "http://localhost:8080/api";
@@ -181,6 +182,60 @@ public final class ApiClient {
             }
         }
         throw error(res, "Load hotel details failed");
+    }
+
+    // --- Admin bookings (all) ---
+    public java.util.List<com.travel.frontend.model.PackageBookingAdminView> getAllPackageBookings() throws ApiException {
+        HttpResponse<String> res = get("/admin/packages/bookings", true);
+        if (res.statusCode() == 200) {
+            try {
+                return mapper.readValue(res.body(),
+                        mapper.getTypeFactory().constructCollectionType(java.util.List.class,
+                                com.travel.frontend.model.PackageBookingAdminView.class));
+            } catch (Exception e) {
+                throw new ApiException("Invalid bookings response", e);
+            }
+        }
+        throw error(res, "Load package bookings failed");
+    }
+
+    public java.util.List<com.travel.frontend.model.RoomBookingAdminView> getAllRoomBookings() throws ApiException {
+        HttpResponse<String> res = get("/admin/rooms/bookings", true);
+        if (res.statusCode() == 200) {
+            try {
+                return mapper.readValue(res.body(),
+                        mapper.getTypeFactory().constructCollectionType(java.util.List.class,
+                                com.travel.frontend.model.RoomBookingAdminView.class));
+            } catch (Exception e) {
+                throw new ApiException("Invalid bookings response", e);
+            }
+        }
+        throw error(res, "Load room bookings failed");
+    }
+
+    // --- Cancellations ---
+    public com.travel.frontend.model.BookingResponse cancelPackageBooking(java.util.UUID bookingId) throws ApiException {
+        HttpResponse<String> res = post("/bookings/" + bookingId + "/cancel", "{}", true);
+        if (res.statusCode() == 200) {
+            try {
+                return mapper.readValue(res.body(), com.travel.frontend.model.BookingResponse.class);
+            } catch (Exception e) {
+                throw new ApiException("Invalid cancel response", e);
+            }
+        }
+        throw error(res, "Cancel booking failed");
+    }
+
+    public com.travel.frontend.model.RoomBookingResponse cancelRoomBooking(java.util.UUID bookingId) throws ApiException {
+        HttpResponse<String> res = post("/hotels/bookings/" + bookingId + "/cancel", "{}", true);
+        if (res.statusCode() == 200) {
+            try {
+                return mapper.readValue(res.body(), com.travel.frontend.model.RoomBookingResponse.class);
+            } catch (Exception e) {
+                throw new ApiException("Invalid cancel response", e);
+            }
+        }
+        throw error(res, "Cancel booking failed");
     }
 
     // --- Low-level helpers ---

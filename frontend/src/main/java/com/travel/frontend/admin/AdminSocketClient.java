@@ -220,14 +220,14 @@ public class AdminSocketClient {
        reply, and converts it back into a map. Covers connection timeouts and
        stream handling so each action method stays small. */
     private Map<String, Object> call(Map<String, Object> req) throws IOException {
-        return callWithRetry(req, 1);
+        return callWithRetry(req, 2);
     }
 
     private Map<String, Object> callWithRetry(Map<String, Object> req, int retries) throws IOException {
         try (Socket s = new Socket()) {
             try {
-                s.connect(new java.net.InetSocketAddress(host, port), 5000);
-                s.setSoTimeout(15000);
+                s.connect(new java.net.InetSocketAddress(host, port), 8000);
+                s.setSoTimeout(30000);
             } catch (IOException ce) {
                 throw new IOException("Connect failed to " + host + ":" + port + ": " + ce.getMessage(), ce);
             }
@@ -246,6 +246,7 @@ public class AdminSocketClient {
             }
         } catch (java.net.SocketTimeoutException ste) {
             if (retries > 0) {
+                try { Thread.sleep(200); } catch (InterruptedException ignored) {}
                 return callWithRetry(req, retries - 1);
             }
             throw ste;

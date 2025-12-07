@@ -53,6 +53,15 @@ public class Booking {
     @Column(name = "card_last4")
     private String cardLast4;
 
+    @Column(name = "status")
+    private String status = "CONFIRMED";
+
+    @Column(name = "canceled_at")
+    private Instant canceledAt;
+
+    @Column(name = "canceled_by")
+    private String canceledBy;
+
     public UUID getId() {
         return id;
     }
@@ -147,5 +156,29 @@ public class Booking {
 
     public void setCardLast4(String cardLast4) {
         this.cardLast4 = cardLast4;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Instant getCanceledAt() {
+        return canceledAt;
+    }
+
+    public void setCanceledAt(Instant canceledAt) {
+        this.canceledAt = canceledAt;
+    }
+
+    public String getCanceledBy() {
+        return canceledBy;
+    }
+
+    public void setCanceledBy(String canceledBy) {
+        this.canceledBy = canceledBy;
     }
 }

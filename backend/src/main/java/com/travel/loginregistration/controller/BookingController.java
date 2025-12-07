@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 /*
     Handles booking-related API requests, delegating to BookingService.
     sends credentials to BookingService to process bookings for authenticated users.
@@ -28,6 +30,17 @@ public class BookingController {
         try {
             String email = (String) auth.getPrincipal();
             BookingResponse res = service.book(email, req);
+            return ResponseEntity.ok(res);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/cancel")
+    public ResponseEntity<?> cancel(Authentication auth, @PathVariable UUID id) {
+        try {
+            String email = (String) auth.getPrincipal();
+            BookingResponse res = service.cancel(id, email);
             return ResponseEntity.ok(res);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

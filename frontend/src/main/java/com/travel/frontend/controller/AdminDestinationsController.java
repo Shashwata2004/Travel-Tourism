@@ -59,6 +59,10 @@ public class AdminDestinationsController {
         }
     }
 
+    @FXML public void onViewAllBookings() {
+        Navigator.goAdminAllRoomBookings();
+    }
+
     @FXML
     public void onRefresh() {
         if (AdminSession.getToken() == null) {

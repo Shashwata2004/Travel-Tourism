@@ -13,7 +13,8 @@ public interface HotelRoomBookingRepository extends JpaRepository<HotelRoomBooki
 
     @Query("select coalesce(sum(b.roomsBooked),0) " +
            "from HotelRoomBooking b " +
-           "where b.roomId = :roomId and b.checkIn < :checkOut and b.checkOut > :checkIn")
+           "where b.roomId = :roomId and b.checkIn < :checkOut and b.checkOut > :checkIn " +
+           "and (b.status is null or upper(b.status) <> 'CANCELED')")
     Integer sumBookedBetween(@Param("roomId") UUID roomId,
                               @Param("checkIn") LocalDate checkIn,
                               @Param("checkOut") LocalDate checkOut);
@@ -25,4 +26,6 @@ public interface HotelRoomBookingRepository extends JpaRepository<HotelRoomBooki
     List<HotelRoomBooking> findByUserIdOrUserEmailOrderByCreatedAtDesc(UUID userId, String userEmail);
 
     boolean existsByTransactionId(String transactionId);
+
+    List<HotelRoomBooking> findAllByOrderByCreatedAtDesc();
 }

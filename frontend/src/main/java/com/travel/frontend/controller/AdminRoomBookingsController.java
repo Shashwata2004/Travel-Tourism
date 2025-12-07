@@ -43,6 +43,7 @@ public class AdminRoomBookingsController {
     @FXML private TableColumn<RoomBookingAdminView, java.math.BigDecimal> priceCol;
     @FXML private TableColumn<RoomBookingAdminView, java.time.Instant> createdCol;
     @FXML private TableColumn<RoomBookingAdminView, String> txnCol;
+    @FXML private TableColumn<RoomBookingAdminView, java.time.Instant> canceledCol;
 
     private final ApiClient api = ApiClient.get();
     private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
@@ -75,9 +76,20 @@ public class AdminRoomBookingsController {
             priceCol.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
             createdCol.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
             txnCol.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
+            canceledCol.setCellValueFactory(new PropertyValueFactory<>("canceledAt"));
             applyWrap(customerCol);
             applyWrap(emailCol);
             applyWrap(txnCol);
+            bookingTable.setRowFactory(tv -> new javafx.scene.control.TableRow<>() {
+                @Override
+                protected void updateItem(RoomBookingAdminView item, boolean empty) {
+                    super.updateItem(item, empty);
+                    getStyleClass().remove("canceledRow");
+                    if (!empty && item != null && "CANCELED".equalsIgnoreCase(item.getStatus())) {
+                        getStyleClass().add("canceledRow");
+                    }
+                }
+            });
         }
         loadData();
     }

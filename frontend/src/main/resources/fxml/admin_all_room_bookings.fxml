@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.travel.frontend.controller.AdminAllRoomBookingsController"
+            stylesheets="@/css/admin.css">
+    <top>
+        <VBox spacing="8">
+            <padding><Insets topRightBottomLeft="10"/></padding>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button text="← Back" onAction="#onBack"/>
+                <Label text="All Destination/Room Bookings" styleClass="sectionTitle"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Label fx:id="statusLabel"/>
+                <Button text="Reload" onAction="#onReload"/>
+            </HBox>
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <Label text="Search"/>
+                <TextField fx:id="searchField" promptText="Search by any field" HBox.hgrow="ALWAYS"/>
+            </HBox>
+        </VBox>
+    </top>
+    <center>
+        <TableView fx:id="table">
+            <columns>
+                <TableColumn fx:id="customerCol" text="Customer Name" prefWidth="150"/>
+                <TableColumn fx:id="emailCol" text="Email" prefWidth="180"/>
+                <TableColumn fx:id="destinationCol" text="Destination" prefWidth="140"/>
+                <TableColumn fx:id="hotelCol" text="Hotel" prefWidth="160"/>
+                <TableColumn fx:id="roomCol" text="Room" prefWidth="140"/>
+                <TableColumn fx:id="roomsCol" text="Rooms" prefWidth="80"/>
+                <TableColumn fx:id="guestsCol" text="Persons" prefWidth="80"/>
+                <TableColumn fx:id="idCol" text="ID Number" prefWidth="140"/>
+                <TableColumn fx:id="checkInCol" text="Check-in" prefWidth="120"/>
+                <TableColumn fx:id="checkOutCol" text="Check-out" prefWidth="120"/>
+                <TableColumn fx:id="bookedCol" text="Booked At" prefWidth="140"/>
+                <TableColumn fx:id="canceledCol" text="Canceled At" prefWidth="140"/>
+                <TableColumn fx:id="txnCol" text="Transaction ID" prefWidth="160"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

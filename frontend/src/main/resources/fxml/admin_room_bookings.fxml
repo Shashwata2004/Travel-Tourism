@@ -39,6 +39,7 @@
                 <TableColumn fx:id="idNumberCol" text="ID Number" prefWidth="200"/>
                 <TableColumn fx:id="priceCol" text="Total Price" prefWidth="140"/>
                 <TableColumn fx:id="createdCol" text="Booked At" prefWidth="180"/>
+                <TableColumn fx:id="canceledCol" text="Canceled At" prefWidth="180"/>
                 <TableColumn fx:id="txnCol" text="Transaction ID" prefWidth="160"/>
             </columns>
         </TableView>

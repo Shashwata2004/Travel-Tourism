@@ -33,6 +33,7 @@
                     <padding><Insets topRightBottomLeft="10"/></padding>
                     <Label text="Packages" styleClass="sectionTitle"/>
                     <ListView fx:id="listView" prefWidth="260"/>
+                    <Button text="View All Bookings" onAction="#onViewAllBookings" />
                 </VBox>
                 <VBox spacing="8">
                     <padding><Insets topRightBottomLeft="10"/></padding>

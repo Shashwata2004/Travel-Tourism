@@ -16,4 +16,7 @@ public class PackageBookingAdminView {
     public BigDecimal priceTotal;
     public Instant createdAt;
     public String transactionId;
+    public String status;
+    public Instant canceledAt;
+    public String canceledBy;
 }
