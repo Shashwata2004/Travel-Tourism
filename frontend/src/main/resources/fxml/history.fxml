@@ -8,11 +8,11 @@
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="com.travel.frontend.controller.HistoryController"
-           stylesheets="@/css/login.css,@/css/packages.css,@/css/history.css"
+           stylesheets="@/css/login.css,@/css/packages.css,@/css/history.css,@/css/history_cancel.css"
            styleClass="historyRoot">
     <children>
         <Pane styleClass="bgGradient"/>
-        <ScrollPane fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="historyScroll">
+        <ScrollPane fx:id="mainScroll" fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="historyScroll">
             <content>
                 <VBox alignment="TOP_CENTER" spacing="18">
                     <fx:include source="navbar.fxml" fx:id="navbar"/>
@@ -38,7 +38,7 @@
                     <center>
                         <HBox spacing="18" alignment="TOP_LEFT">
                             <padding><Insets top="16" right="0" bottom="0" left="0"/></padding>
-                            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" HBox.hgrow="ALWAYS" styleClass="listScroll">
+                            <ScrollPane fx:id="listScroll" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" HBox.hgrow="ALWAYS" styleClass="listScroll">
                                 <content>
                                     <VBox fx:id="listContainer" spacing="14">
                                         <!-- Cards injected by controller -->
@@ -56,7 +56,7 @@
             </content>
         </ScrollPane>
 
-        <Button onAction="#reloadHistory"
+        <Button fx:id="reloadButton" onAction="#reloadHistory"
                 styleClass="pageReloadBtn"
                 StackPane.alignment="TOP_RIGHT">
             <graphic>
@@ -70,5 +70,11 @@
                 <Insets top="104" right="18" bottom="0" left="0"/>
             </StackPane.margin>
         </Button>
+
+        <!-- Cancellation modal overlay -->
+        <StackPane fx:id="cancelOverlay" visible="false" pickOnBounds="false">
+            <Pane fx:id="cancelBackdrop" styleClass="modal-backdrop" mouseTransparent="false" />
+            <StackPane fx:id="cancelModalHolder" styleClass="modal-holder" StackPane.alignment="CENTER"/>
+        </StackPane>
     </children>
 </StackPane>

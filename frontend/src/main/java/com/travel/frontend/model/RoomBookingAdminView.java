@@ -20,6 +20,7 @@ public class RoomBookingAdminView {
     public String idNumber;
     public String userEmail;
     public Instant createdAt;
+    public String transactionId;
 
     public UUID getId() { return id; }
     public UUID getRoomId() { return roomId; }
@@ -35,6 +36,7 @@ public class RoomBookingAdminView {
     public String getIdNumber() { return idNumber; }
     public String getUserEmail() { return userEmail; }
     public Instant getCreatedAt() { return createdAt; }
+    public String getTransactionId() { return transactionId; }
 
     // setters for Jackson
     public void setId(UUID id) { this.id = id; }
@@ -51,4 +53,5 @@ public class RoomBookingAdminView {
     public void setIdNumber(String idNumber) { this.idNumber = idNumber; }
     public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    public void setTransactionId(String transactionId) { this.transactionId = transactionId; }
 }

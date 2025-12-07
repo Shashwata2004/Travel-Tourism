@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 */
 
 @RestController
-@RequestMapping("/api/bookings")            
+@RequestMapping("/api/bookings")
 public class BookingController {
     private final BookingService service;
 
@@ -21,7 +21,8 @@ public class BookingController {
         this.service = service;
     }
 
-    // Accepts POST /api/bookings with JWT-authenticated user, delegates to BookingService.
+    // Accepts POST /api/bookings with JWT-authenticated user, delegates to
+    // BookingService.
     @PostMapping
     public ResponseEntity<?> book(Authentication auth, @RequestBody BookingRequest req) {
         try {

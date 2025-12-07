@@ -15,5 +15,6 @@ public class BookingResponse {
     public int totalPersons;
     public BigDecimal priceTotal;
     public Instant createdAt;
+    public String transactionId;
+    public String cardLast4;
 }
-

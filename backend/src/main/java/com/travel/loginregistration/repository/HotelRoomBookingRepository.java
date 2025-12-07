@@ -23,4 +23,6 @@ public interface HotelRoomBookingRepository extends JpaRepository<HotelRoomBooki
     List<HotelRoomBooking> findByUserIdOrderByCreatedAtDesc(UUID userId);
 
     List<HotelRoomBooking> findByUserIdOrUserEmailOrderByCreatedAtDesc(UUID userId, String userEmail);
+
+    boolean existsByTransactionId(String transactionId);
 }

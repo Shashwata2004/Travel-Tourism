@@ -78,6 +78,7 @@ public class AdminRoomBookingController {
         }
         v.userEmail = email;
         v.createdAt = b.getCreatedAt();
+        v.transactionId = b.getTransactionId();
         return v;
     }
 }

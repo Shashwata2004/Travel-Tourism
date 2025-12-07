@@ -47,25 +47,105 @@ public class Booking {
     @Column(name = "created_at")
     private Instant createdAt = Instant.now();
 
-    public UUID getId() { return id; }
-    public void setId(UUID id) { this.id = id; }
-    public UUID getUserId() { return userId; }
-    public void setUserId(UUID userId) { this.userId = userId; }
-    public UUID getPackageId() { return packageId; }
-    public void setPackageId(UUID packageId) { this.packageId = packageId; }
-    public int getTotalPersons() { return totalPersons; }
-    public void setTotalPersons(int totalPersons) { this.totalPersons = totalPersons; }
-    public BigDecimal getPriceTotal() { return priceTotal; }
-    public void setPriceTotal(BigDecimal priceTotal) { this.priceTotal = priceTotal; }
-    public String getCustomerName() { return customerName; }
-    public void setCustomerName(String customerName) { this.customerName = customerName; }
-    public String getIdNumber() { return idNumber; }
-    public void setIdNumber(String idNumber) { this.idNumber = idNumber; }
-    public String getIdType() { return idType; }
-    public void setIdType(String idType) { this.idType = idType; }
-    public String getUserEmail() { return userEmail; }
-    public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
-    public Instant getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
-}
+    @Column(name = "transaction_id", unique = true, nullable = false)
+    private String transactionId;
 
+    @Column(name = "card_last4")
+    private String cardLast4;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+
+    public UUID getPackageId() {
+        return packageId;
+    }
+
+    public void setPackageId(UUID packageId) {
+        this.packageId = packageId;
+    }
+
+    public int getTotalPersons() {
+        return totalPersons;
+    }
+
+    public void setTotalPersons(int totalPersons) {
+        this.totalPersons = totalPersons;
+    }
+
+    public BigDecimal getPriceTotal() {
+        return priceTotal;
+    }
+
+    public void setPriceTotal(BigDecimal priceTotal) {
+        this.priceTotal = priceTotal;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    public String getIdType() {
+        return idType;
+    }
+
+    public void setIdType(String idType) {
+        this.idType = idType;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public String getCardLast4() {
+        return cardLast4;
+    }
+
+    public void setCardLast4(String cardLast4) {
+        this.cardLast4 = cardLast4;
+    }
+}

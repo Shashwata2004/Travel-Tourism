@@ -20,9 +20,9 @@ public class HotelBookingController {
 
     @PostMapping("/{hotelId}/rooms/{roomId}/book")
     public ResponseEntity<?> book(@PathVariable UUID hotelId,
-                                  @PathVariable UUID roomId,
-                                  @RequestBody RoomBookingRequest req,
-                                  org.springframework.security.core.Authentication auth) {
+            @PathVariable UUID roomId,
+            @RequestBody RoomBookingRequest req,
+            org.springframework.security.core.Authentication auth) {
         try {
             req.roomId = roomId;
             // Optional hotelId could be logged later; we keep signature untouched.

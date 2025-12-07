@@ -16,4 +16,6 @@ public class HistoryPackageItem {
     public LocalDate bookingDeadline;
     public String status; // placeholder for future
     public Integer durationDays;
+    public String transactionId;
+    public String cardLast4;
 }

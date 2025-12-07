@@ -38,6 +38,7 @@ public class AdminPackageBookingsController {
     @FXML private TableColumn<PackageBookingAdminView, String> idNumberCol;
     @FXML private TableColumn<PackageBookingAdminView, Integer> personsCol;
     @FXML private TableColumn<PackageBookingAdminView, java.math.BigDecimal> priceCol;
+    @FXML private TableColumn<PackageBookingAdminView, String> txnCol;
 
     private final ApiClient api = ApiClient.get();
     private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
@@ -67,8 +68,10 @@ public class AdminPackageBookingsController {
             idNumberCol.setCellValueFactory(new PropertyValueFactory<>("idNumber"));
             personsCol.setCellValueFactory(new PropertyValueFactory<>("totalPersons"));
             priceCol.setCellValueFactory(new PropertyValueFactory<>("priceTotal"));
+            txnCol.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
             applyWrap(customerCol);
             applyWrap(emailCol);
+            applyWrap(txnCol);
         }
         loadData();
     }

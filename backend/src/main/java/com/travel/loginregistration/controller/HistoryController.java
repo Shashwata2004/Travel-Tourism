@@ -32,9 +32,9 @@ public class HistoryController {
     private final UserRepository userRepository;
 
     public HistoryController(BookingRepository bookingRepository,
-                             HotelRoomBookingRepository roomBookingRepository,
-                             TravelPackageRepository travelPackageRepository,
-                             UserRepository userRepository) {
+            HotelRoomBookingRepository roomBookingRepository,
+            TravelPackageRepository travelPackageRepository,
+            UserRepository userRepository) {
         this.bookingRepository = bookingRepository;
         this.roomBookingRepository = roomBookingRepository;
         this.travelPackageRepository = travelPackageRepository;
@@ -45,14 +45,17 @@ public class HistoryController {
     public ResponseEntity<?> history(Authentication auth) {
         try {
             String email = (String) auth.getPrincipal();
-            if (email == null) return ResponseEntity.badRequest().body("No user");
+            if (email == null)
+                return ResponseEntity.badRequest().body("No user");
             User user = userRepository.findByEmail(email.toLowerCase(Locale.ROOT))
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
             UUID userId = user.getId();
 
             String emailLower = user.getEmail() == null ? null : user.getEmail().toLowerCase(Locale.ROOT);
-            List<HotelRoomBooking> roomBookings = roomBookingRepository.findByUserIdOrUserEmailOrderByCreatedAtDesc(userId, emailLower);
-            List<Booking> packageBookings = bookingRepository.findByUserIdOrUserEmailOrderByCreatedAtDesc(userId, emailLower);
+            List<HotelRoomBooking> roomBookings = roomBookingRepository
+                    .findByUserIdOrUserEmailOrderByCreatedAtDesc(userId, emailLower);
+            List<Booking> packageBookings = bookingRepository.findByUserIdOrUserEmailOrderByCreatedAtDesc(userId,
+                    emailLower);
 
             HistoryResponse resp = new HistoryResponse();
             resp.rooms = roomBookings.stream().map(this::mapRoom).collect(Collectors.toList());
@@ -75,6 +78,8 @@ public class HistoryController {
         dto.totalPrice = b.getTotalPrice();
         dto.createdAt = b.getCreatedAt();
         dto.status = "Upcoming"; // placeholder
+        dto.transactionId = b.getTransactionId();
+        dto.cardLast4 = b.getCardLast4();
         return dto;
     }
 
@@ -86,6 +91,8 @@ public class HistoryController {
         dto.totalPrice = b.getPriceTotal();
         dto.createdAt = b.getCreatedAt();
         dto.status = "Upcoming"; // placeholder
+        dto.transactionId = b.getTransactionId();
+        dto.cardLast4 = b.getCardLast4();
         dto.packageName = null;
         dto.location = null;
         dto.bookingDeadline = null;
@@ -101,11 +108,13 @@ public class HistoryController {
     }
 
     private Integer parseDurationDays(String timing) {
-        if (timing == null) return null;
+        if (timing == null)
+            return null;
         // Expect formats like "3 days, 2 nights" or "3 Days ,2 Nights"
         String lower = timing.toLowerCase(Locale.ROOT);
         int idx = lower.indexOf("day");
-        if (idx == -1) return null;
+        if (idx == -1)
+            return null;
         String prefix = lower.substring(0, idx).replaceAll("[^0-9]", "");
         try {
             return prefix.isBlank() ? null : Integer.parseInt(prefix);

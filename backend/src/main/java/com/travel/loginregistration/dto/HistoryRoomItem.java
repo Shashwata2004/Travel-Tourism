@@ -16,5 +16,6 @@ public class HistoryRoomItem {
     public BigDecimal totalPrice;
     public Instant createdAt;
     public String status; // placeholder for future
+    public String transactionId;
+    public String cardLast4;
 }
-

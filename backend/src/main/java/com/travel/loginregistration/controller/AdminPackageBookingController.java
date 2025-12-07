@@ -79,6 +79,7 @@ public class AdminPackageBookingController {
         v.totalPersons = b.getTotalPersons();
         v.priceTotal = b.getPriceTotal();
         v.createdAt = b.getCreatedAt();
+        v.transactionId = b.getTransactionId();
         return v;
     }
 }

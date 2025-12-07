@@ -1,0 +1,247 @@
+.modal-backdrop {
+  -fx-background-color: rgba(0,0,0,0.55);
+}
+
+.cancel-modal {
+  -fx-background-color: white;
+  -fx-padding: 10 14 10 14;
+  -fx-spacing: 10;
+  -fx-background-radius: 18;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 24, 0.3, 0, 12);
+  -fx-max-width: 460;
+  -fx-pref-width: 420;
+  -fx-max-height: 360;
+}
+
+.cancel-header {
+  -fx-background-radius: 14;
+  -fx-padding: 12;
+  -fx-background-color: linear-gradient(to right, #ec4899, #8b5cf6);
+}
+
+.success-header {
+  -fx-background-radius: 14;
+  -fx-padding: 12;
+  -fx-background-color: linear-gradient(to right, #22c55e, #0ea5e9);
+}
+
+.cancel-header-text {
+  -fx-text-fill: white;
+  -fx-font-weight: 600;
+}
+
+.cancel-close {
+  -fx-background-color: transparent;
+  -fx-text-fill: white;
+  -fx-font-size: 14px;
+}
+
+.cancel-close:hover {
+  -fx-text-fill: #f8fafc;
+}
+
+.cancel-body {
+  -fx-text-fill: #374151;
+  -fx-font-size: 13px;
+}
+
+.cancel-detail {
+  -fx-background-color: linear-gradient(to bottom right, #eef2ff, #f8fafc);
+  -fx-background-radius: 12;
+  -fx-padding: 10;
+  -fx-spacing: 8;
+  -fx-border-color: #e5e7eb;
+  -fx-border-radius: 12;
+}
+
+.cancel-row {
+  -fx-alignment: center-left;
+}
+
+.cancel-row-key {
+  -fx-text-fill: #6b7280;
+}
+
+.cancel-row-val {
+  -fx-text-fill: #111827;
+  -fx-font-weight: 600;
+}
+.refund-amount { -fx-text-fill: #16a34a; }
+.fee-amount { -fx-text-fill: #ef4444; }
+
+.cancel-copy {
+  -fx-background-color: white;
+  -fx-border-color: #d1d5db;
+  -fx-border-radius: 8;
+  -fx-padding: 4 8;
+  -fx-text-fill: #374151;
+  -fx-cursor: hand;
+  -fx-transition: all 0.2s ease;
+}
+
+.cancel-copy:hover {
+  -fx-background-color: #f3f4f6;
+  -fx-scale-x: 1.05;
+  -fx-scale-y: 1.05;
+}
+
+.cancel-copy:pressed {
+  -fx-scale-x: 0.95;
+  -fx-scale-y: 0.95;
+}
+
+.cancel-ghost {
+  -fx-background-color: #f3f4f6;
+  -fx-text-fill: #111827;
+  -fx-background-radius: 12;
+  -fx-padding: 10 18;
+  -fx-cursor: hand;
+  -fx-min-width: 210;
+  -fx-transition: all 0.2s ease;
+}
+
+.cancel-accent {
+  -fx-background-color: linear-gradient(to right, #ef4444, #f97316);
+  -fx-text-fill: white;
+  -fx-background-radius: 12;
+  -fx-padding: 10 18;
+  -fx-cursor: hand;
+  -fx-min-width: 210;
+  -fx-transition: all 0.2s ease;
+}
+
+.cancel-ghost:hover {
+  -fx-background-color: #e5e7eb;
+  -fx-translate-y: -2;
+}
+
+.cancel-ghost:pressed {
+  -fx-background-color: #d1d5db;
+  -fx-translate-y: 0;
+}
+
+.cancel-accent:hover {
+  -fx-translate-y: -2;
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 10, 0.2, 0, 6);
+}
+
+.cancel-accent:pressed {
+  -fx-translate-y: 0;
+  -fx-effect: none;
+}
+
+.status-row {
+  -fx-background-color: rgba(16,185,129,0.08);
+  -fx-background-radius: 14;
+  -fx-padding: 10 12;
+  -fx-spacing: 6;
+  -fx-alignment: center-left;
+}
+
+.status-pending {
+  -fx-text-fill: #4338ca;
+  -fx-font-weight: 600;
+}
+
+.status-done {
+  -fx-text-fill: #16a34a;
+  -fx-font-weight: 600;
+}
+
+.status-desc {
+  -fx-text-fill: #4b5563;
+  -fx-font-size: 12px;
+}
+
+/* Keep modals light even in dark theme */
+.dark-theme .cancel-modal {
+  -fx-background-color: white;
+  -fx-text-fill: #111827;
+}
+.dark-theme .cancel-header-text,
+.dark-theme .cancel-close {
+  -fx-text-fill: #f8fafc;
+}
+.dark-theme .cancel-detail {
+  -fx-background-color: linear-gradient(to bottom right, #eef2ff, #f8fafc);
+  -fx-border-color: #e5e7eb;
+}
+.dark-theme .cancel-body,
+.dark-theme .cancel-row-key,
+.dark-theme .cancel-row-val,
+.dark-theme .refund-amount,
+.dark-theme .fee-amount,
+.dark-theme .status-desc {
+  -fx-text-fill: #111827;
+}
+.dark-theme .refund-amount { -fx-text-fill: #16a34a; }
+.dark-theme .fee-amount { -fx-text-fill: #ef4444; }
+.dark-theme .cancel-copy {
+  -fx-background-color: white;
+  -fx-text-fill: #374151;
+}
+.dark-theme .cancel-ghost {
+  -fx-background-color: #f3f4f6;
+  -fx-text-fill: #111827;
+}
+.dark-theme .cancel-accent {
+  -fx-background-color: linear-gradient(to right, #ef4444, #f97316);
+  -fx-text-fill: white;
+}
+.dark-theme .status-row {
+  -fx-background-color: rgba(16,185,129,0.08);
+}
+.dark-theme .status-pending { -fx-text-fill: #4338ca; }
+.dark-theme .status-done { -fx-text-fill: #16a34a; }
+.dark-theme .status-desc { -fx-text-fill: #4b5563; }
+.dark-theme .cancel-header {
+  -fx-background-color: linear-gradient(to right, #ec4899, #8b5cf6);
+}
+.dark-theme .success-header {
+  -fx-background-color: linear-gradient(to right, #22c55e, #0ea5e9);
+}
+.dark-theme .status-row .title,
+.dark-theme .status-row .subtitle {
+  -fx-text-fill: #0f172a;
+}
+.dark-theme .cancel-row {
+  -fx-text-fill: #111827;
+}
+
+.modal-holder {
+  -fx-alignment: center;
+  -fx-padding: 18;
+}
+
+.cancel-progress {
+  -fx-pref-height: 8;
+  -fx-background-radius: 999;
+  -fx-border-color: transparent;
+  -fx-padding: 0;
+  -fx-indeterminate-bar-length: 0;
+}
+
+.cancel-progress .track {
+  -fx-background-radius: 999;
+  -fx-background-color: rgba(209,213,219,0.8);
+  -fx-border-color: transparent;
+  -fx-background-insets: 0;
+}
+
+.cancel-progress .bar {
+  -fx-background-radius: 999;
+  -fx-background-color: linear-gradient(to right, #3b82f6, #a855f7);
+  -fx-border-color: transparent;
+  -fx-background-insets: 0;
+}
+
+.tick-wrap { -fx-alignment: center; }
+.tick-glow {
+  -fx-fill: rgba(34,197,94,0.2);
+  -fx-effect: dropshadow(gaussian, rgba(34,197,94,0.3), 20, 0.4, 0, 0);
+}
+.tick-icon {
+  -fx-fill: #16a34a;
+  -fx-scale-x: 2.5;
+  -fx-scale-y: 2.5;
+}

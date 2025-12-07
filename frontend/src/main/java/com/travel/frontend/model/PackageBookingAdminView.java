@@ -15,6 +15,7 @@ public class PackageBookingAdminView {
     public int totalPersons;
     public BigDecimal priceTotal;
     public Instant createdAt;
+    public String transactionId;
 
     public UUID getId() { return id; }
     public UUID getPackageId() { return packageId; }
@@ -26,6 +27,7 @@ public class PackageBookingAdminView {
     public int getTotalPersons() { return totalPersons; }
     public BigDecimal getPriceTotal() { return priceTotal; }
     public Instant getCreatedAt() { return createdAt; }
+    public String getTransactionId() { return transactionId; }
 
     public void setId(UUID id) { this.id = id; }
     public void setPackageId(UUID packageId) { this.packageId = packageId; }
@@ -37,4 +39,5 @@ public class PackageBookingAdminView {
     public void setTotalPersons(int totalPersons) { this.totalPersons = totalPersons; }
     public void setPriceTotal(BigDecimal priceTotal) { this.priceTotal = priceTotal; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    public void setTransactionId(String transactionId) { this.transactionId = transactionId; }
 }

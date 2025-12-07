@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Predicate;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -25,9 +27,9 @@ public class HotelBookingService {
     private final UserRepository userRepository;
 
     public HotelBookingService(HotelRoomRepository roomRepository,
-                               HotelRoomBookingRepository bookingRepository,
-                               HotelRepository hotelRepository,
-                               UserRepository userRepository) {
+            HotelRoomBookingRepository bookingRepository,
+            HotelRepository hotelRepository,
+            UserRepository userRepository) {
         this.roomRepository = roomRepository;
         this.bookingRepository = bookingRepository;
         this.hotelRepository = hotelRepository;
@@ -72,6 +74,8 @@ public class HotelBookingService {
         } else if (authEmail != null) {
             b.setUserEmail(authEmail.toLowerCase(Locale.ROOT));
         }
+        b.setTransactionId(generateTxnId(tx -> bookingRepository.existsByTransactionId(tx)));
+        b.setCardLast4(generateLast4());
         bookingRepository.save(b);
 
         RoomBookingResponse res = new RoomBookingResponse();
@@ -89,14 +93,35 @@ public class HotelBookingService {
         res.customerName = b.getCustomerName();
         res.idType = b.getIdType();
         res.idNumber = b.getIdNumber();
+        res.transactionId = b.getTransactionId();
+        res.cardLast4 = b.getCardLast4();
         return res;
     }
 
     private void validate(RoomBookingRequest req) {
-        if (req == null || req.roomId == null) throw new IllegalArgumentException("roomId required");
-        if (req.checkIn == null || req.checkOut == null) throw new IllegalArgumentException("dates required");
-        if (!req.checkIn.isBefore(req.checkOut)) throw new IllegalArgumentException("checkIn must be before checkOut");
-        if (req.rooms <= 0) throw new IllegalArgumentException("rooms must be > 0");
-        if (req.totalPrice != null && req.totalPrice.signum() < 0) throw new IllegalArgumentException("totalPrice must be >= 0");
+        if (req == null || req.roomId == null)
+            throw new IllegalArgumentException("roomId required");
+        if (req.checkIn == null || req.checkOut == null)
+            throw new IllegalArgumentException("dates required");
+        if (!req.checkIn.isBefore(req.checkOut))
+            throw new IllegalArgumentException("checkIn must be before checkOut");
+        if (req.rooms <= 0)
+            throw new IllegalArgumentException("rooms must be > 0");
+        if (req.totalPrice != null && req.totalPrice.signum() < 0)
+            throw new IllegalArgumentException("totalPrice must be >= 0");
+    }
+
+    private String generateTxnId(Predicate<String> exists) {
+        for (int i = 0; i < 20; i++) {
+            int num = ThreadLocalRandom.current().nextInt(0, 1_000_000);
+            String tx = "TXN-" + String.format("%06d", num);
+            if (!exists.test(tx))
+                return tx;
+        }
+        throw new RuntimeException("Could not generate unique transaction ID");
+    }
+
+    private String generateLast4() {
+        return String.format("%04d", ThreadLocalRandom.current().nextInt(0, 10000));
     }
 }

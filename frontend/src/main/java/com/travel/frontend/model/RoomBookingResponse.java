@@ -5,17 +5,21 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class HistoryRoomItem {
+public class RoomBookingResponse {
     public UUID id;
-    public String hotelName;
-    public String roomName;
+    public UUID roomId;
     public LocalDate checkIn;
     public LocalDate checkOut;
-    public Integer totalGuests;
-    public Integer roomsBooked;
-    public BigDecimal totalPrice;
+    public int rooms;
     public Instant createdAt;
-    public String status;
+    public int totalGuests;
+    public BigDecimal totalPrice;
+    public UUID userId;
+    public String hotelName;
+    public String roomName;
+    public String customerName;
+    public String idType;
+    public String idNumber;
     public String transactionId;
     public String cardLast4;
 }

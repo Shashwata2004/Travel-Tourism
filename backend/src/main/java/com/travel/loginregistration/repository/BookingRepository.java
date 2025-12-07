@@ -16,4 +16,6 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
     @Query("select coalesce(sum(b.totalPersons),0) from Booking b where b.packageId = :packageId")
     long sumPersonsForPackage(@Param("packageId") UUID packageId);
+
+    boolean existsByTransactionId(String transactionId);
 }

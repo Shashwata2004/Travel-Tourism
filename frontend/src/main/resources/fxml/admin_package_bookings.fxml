@@ -38,6 +38,7 @@
                 <TableColumn fx:id="idNumberCol" text="ID Number" prefWidth="200"/>
                 <TableColumn fx:id="personsCol" text="Persons" prefWidth="90"/>
                 <TableColumn fx:id="priceCol" text="Total Price" prefWidth="140"/>
+                <TableColumn fx:id="txnCol" text="Transaction ID" prefWidth="160"/>
             </columns>
         </TableView>
     </center>

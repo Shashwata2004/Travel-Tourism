@@ -7,9 +7,9 @@
 
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="com.travel.frontend.controller.HotelBookingDialogController"
-           stylesheets="@../css/hotel_booking_dialog.css">
+           stylesheets="@../css/hotel_booking_dialog.css,@../css/payment_success.css">
     <children>
-        <BorderPane prefWidth="520" prefHeight="720" styleClass="bookingCard">
+        <BorderPane fx:id="cardRoot" prefWidth="520" prefHeight="720" styleClass="bookingCard">
             <top>
                 <VBox spacing="16" styleClass="hero">
                     <padding>
@@ -94,5 +94,10 @@
                 </VBox>
             </center>
         </BorderPane>
+        <!-- Payment success modal -->
+        <StackPane fx:id="paymentOverlay" visible="false" pickOnBounds="false">
+            <Pane fx:id="paymentBackdrop" styleClass="modal-backdrop" />
+            <StackPane fx:id="paymentModalHolder" styleClass="modal-container" StackPane.alignment="CENTER"/>
+        </StackPane>
     </children>
 </StackPane>

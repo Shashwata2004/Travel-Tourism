@@ -20,4 +20,6 @@ public class RoomBookingResponse {
     public String customerName;
     public String idType;
     public String idNumber;
+    public String transactionId;
+    public String cardLast4;
 }

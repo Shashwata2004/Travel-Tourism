@@ -13,5 +13,6 @@ public class PackageSummary {
     public String location;
     public BigDecimal basePrice;
     public String destImageUrl;
+    public String groupSize;
 }
 

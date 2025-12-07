@@ -1,8 +1,14 @@
 package com.travel.frontend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.travel.frontend.net.ApiClient;
+import com.travel.frontend.model.RoomBookingResponse;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,11 +17,20 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.effect.GaussianBlur;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.geometry.Pos;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -36,11 +51,15 @@ public class HotelBookingDialogController {
     @FXML private TextField cardField;
     @FXML private TextField expiryField;
     @FXML private TextField cvvField;
+    @FXML private StackPane paymentOverlay;
+    @FXML private StackPane paymentModalHolder;
+    @FXML private Region paymentBackdrop;
+    @FXML private BorderPane cardRoot;
     @FXML private Button payButton;
     @FXML private Label statusLabel;
 
     private final ApiClient api = ApiClient.get();
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
     private UUID hotelId;
     private LocalDate checkIn;
     private LocalDate checkOut;
@@ -238,6 +257,7 @@ public class HotelBookingDialogController {
         final com.travel.frontend.model.Profile finalProf = prof;
         new Thread(() -> {
             try {
+                String lastTxn = null;
                 for (RoomSelection sel : selections) {
                     Map<String, Object> body = new HashMap<>();
                     body.put("checkIn", checkIn.toString());
@@ -257,17 +277,24 @@ public class HotelBookingDialogController {
                     var res = api.rawPostJson("/hotels/" + hotelId + "/rooms/" + sel.roomId() + "/book", json, true);
                     if (res.statusCode() != 200) {
                         throw new RuntimeException("Booking failed: " + res.body());
+                    } else {
+                        try {
+                            RoomBookingResponse r = mapper.readValue(res.body(), RoomBookingResponse.class);
+                            if (r != null && r.transactionId != null) lastTxn = r.transactionId;
+                        } catch (Exception ignored) {}
                     }
                 }
+                String finalLastTxn = lastTxn;
                 Platform.runLater(() -> {
-                    showStatus("Payment successful! Booking stored.", false);
+                    String msg = (finalLastTxn != null)
+                            ? "Payment successful! Transaction ID: " + finalLastTxn
+                            : "Payment successful! Booking stored.";
+                    showStatus(msg, false);
                     markDirty();
                     if (onSuccess != null) {
                         onSuccess.run();
                     }
-                    PauseTransition close = new PauseTransition(Duration.seconds(1.6));
-                    close.setOnFinished(ev -> onClose());
-                    close.play();
+                    showTxnModal(finalLastTxn == null ? "—" : finalLastTxn);
                 });
             } catch (Exception ex) {
                 Platform.runLater(() -> {
@@ -282,5 +309,118 @@ public class HotelBookingDialogController {
         if (statusLabel == null) return;
         statusLabel.setText(msg);
         statusLabel.setStyle(error ? "-fx-text-fill:#dc2626;" : "-fx-text-fill:#10b981;");
+    }
+
+    private void showTxnModal(String txn) {
+        if (paymentOverlay == null || paymentModalHolder == null || cardRoot == null) {
+            new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION, "Booking confirmed!\nTransaction ID: " + txn, javafx.scene.control.ButtonType.OK).showAndWait();
+            onClose();
+            return;
+        }
+        cardRoot.setDisable(true);
+        cardRoot.setEffect(new GaussianBlur(8));
+        paymentOverlay.setVisible(true);
+        paymentOverlay.setPickOnBounds(true);
+
+        VBox modal = new VBox(14);
+        modal.getStyleClass().add("modal");
+
+        StackPane header = new StackPane();
+        header.getStyleClass().add("modal-header");
+        VBox hText = new VBox(4);
+        hText.setAlignment(Pos.CENTER_LEFT);
+        Label title = new Label("Payment Successful!");
+        title.getStyleClass().add("modal-title");
+        Label desc = new Label("Your transaction has been completed successfully");
+        desc.getStyleClass().add("modal-description");
+        hText.getChildren().addAll(title, desc);
+        Button closeBtn = new Button("✕");
+        closeBtn.getStyleClass().add("modal-close-btn");
+        closeBtn.setOnAction(e -> { closePaymentModal(); onClose(); });
+        StackPane.setAlignment(closeBtn, Pos.TOP_RIGHT);
+
+        StackPane iconWrap = new StackPane();
+        iconWrap.getStyleClass().add("success-icon-wrap");
+        javafx.scene.shape.SVGPath icon = new javafx.scene.shape.SVGPath();
+        icon.setContent("M10 18l-6-6 1.4-1.4L10 15.2 20.6 4.6 22 6z");
+        icon.getStyleClass().add("success-icon");
+        StackPane circle = new StackPane(icon);
+        circle.getStyleClass().add("success-icon-circle");
+        iconWrap.getChildren().add(circle);
+
+        // Animate tick pop
+        Timeline pop = new Timeline(
+                new KeyFrame(Duration.ZERO,
+                        new KeyValue(icon.scaleXProperty(), 0),
+                        new KeyValue(icon.scaleYProperty(), 0),
+                        new KeyValue(icon.opacityProperty(), 0),
+                        new KeyValue(circle.scaleXProperty(), 0),
+                        new KeyValue(circle.scaleYProperty(), 0)
+                ),
+                new KeyFrame(Duration.millis(450),
+                        new KeyValue(icon.scaleXProperty(), 1.6, Interpolator.EASE_OUT),
+                        new KeyValue(icon.scaleYProperty(), 1.6, Interpolator.EASE_OUT),
+                        new KeyValue(icon.opacityProperty(), 1, Interpolator.EASE_OUT),
+                        new KeyValue(circle.scaleXProperty(), 1, Interpolator.EASE_OUT),
+                        new KeyValue(circle.scaleYProperty(), 1, Interpolator.EASE_OUT)
+                )
+        );
+        pop.play();
+
+        header.getChildren().addAll(hText, closeBtn);
+        VBox content = new VBox(12);
+        content.getStyleClass().add("modal-content");
+
+        VBox txBox = new VBox(8);
+        txBox.getStyleClass().add("transaction-box");
+        Label txLabel = new Label("Transaction ID");
+        txLabel.getStyleClass().add("transaction-label");
+        HBox txRow = new HBox(10);
+        txRow.setAlignment(Pos.CENTER_LEFT);
+        Label txValue = new Label(txn);
+        txValue.getStyleClass().add("transaction-id");
+        Button copy = new Button("Copy");
+        copy.getStyleClass().add("copy-btn");
+        copy.setOnAction(e -> {
+            ClipboardContent cc = new ClipboardContent();
+            cc.putString(txn);
+            Clipboard.getSystemClipboard().setContent(cc);
+        });
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        txRow.getChildren().addAll(txValue, spacer, copy);
+        txBox.getChildren().addAll(txLabel, txRow);
+
+        Button ok = new Button("OK");
+        ok.getStyleClass().add("ok-btn");
+        ok.setMaxWidth(Double.MAX_VALUE);
+        ok.setOnAction(e -> { closePaymentModal(); onClose(); });
+
+        content.getChildren().addAll(iconWrap, txBox, ok);
+        modal.getChildren().addAll(header, content);
+        paymentModalHolder.getChildren().setAll(modal);
+        modal.setOpacity(0);
+        modal.setScaleX(0.9);
+        modal.setScaleY(0.9);
+        Timeline tl = new Timeline(
+                new KeyFrame(Duration.ZERO,
+                        new KeyValue(modal.opacityProperty(), 0),
+                        new KeyValue(modal.scaleXProperty(), 0.9),
+                        new KeyValue(modal.scaleYProperty(), 0.9)),
+                new KeyFrame(Duration.millis(240),
+                        new KeyValue(modal.opacityProperty(), 1, Interpolator.EASE_OUT),
+                        new KeyValue(modal.scaleXProperty(), 1, Interpolator.EASE_OUT),
+                        new KeyValue(modal.scaleYProperty(), 1, Interpolator.EASE_OUT))
+        );
+        tl.play();
+    }
+
+    private void closePaymentModal() {
+        if (paymentOverlay != null) paymentOverlay.setVisible(false);
+        if (paymentModalHolder != null) paymentModalHolder.getChildren().clear();
+        if (cardRoot != null) {
+            cardRoot.setDisable(false);
+            cardRoot.setEffect(null);
+        }
     }
 }

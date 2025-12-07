@@ -46,6 +46,7 @@ public class PackageService {
         s.location = p.getLocation();
         s.basePrice = p.getBasePrice();
         s.destImageUrl = p.getDestImageUrl();
+        s.groupSize = p.getGroupSize();
         return s;
     }
 

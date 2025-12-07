@@ -20,4 +20,5 @@ public class RoomBookingAdminView {
     public String idType;
     public String idNumber;
     public Instant createdAt;
+    public String transactionId;
 }

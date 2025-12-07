@@ -156,7 +156,8 @@ public class PackagesController {
         group.getStyleClass().addAll("metaItem", "cardMeta");
         SVGPath peopleIcon = createSvgIcon("M8 3.5a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm8 1.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM8 11c-3.59 0-6.5 2.3-6.5 5v2.5h9V16c0-.59.15-1.17.44-1.69A6.87 6.87 0 0 0 8 11zm5.54 1.16c-.37.16-.71.35-1.02.57-.36.25-.6.47-.74.61-.2.2-.3.33-.34.39-.07.1-.14.22-.18.34-.15.39-.24.81-.24 1.23V18.5H20V17c0-1.82-1.63-3.18-2.8-3.8a5.44 5.44 0 0 0-3.66-.99z",
                 16, "#5f7d9d");
-        Label groupText = new Label("2-6 People");
+        String groupLabel = (p.groupSize == null || p.groupSize.isBlank()) ? "2-6 People" : p.groupSize;
+        Label groupText = new Label(groupLabel);
         groupText.getStyleClass().add("cardMeta");
         group.getChildren().addAll(peopleIcon, groupText);
 
@@ -191,6 +192,7 @@ public class PackagesController {
         public String location;
         public BigDecimal basePrice;
         public String destImageUrl;
+        public String groupSize;
     }
 
     private StackPane createImageNode(String url) {

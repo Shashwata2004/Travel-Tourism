@@ -10,7 +10,9 @@
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/DestinationsController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/model/HistoryRoomItem.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/cache/FileCache.java
+/home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/model/RoomBookingResponse.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/NavbarController.java
+/home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/model/BookingResponse.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/admin/AdminSocketClient.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/AdminHotelsController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/admin/AdminSession.java
