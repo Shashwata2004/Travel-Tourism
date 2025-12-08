@@ -1,0 +1,34 @@
+.overlay-root { -fx-background-color: rgba(0,0,0,0.6); -fx-alignment: center; -fx-padding: 8; -fx-opacity: 1; }
+.modal-root { -fx-background-color: white; -fx-background-radius: 14; -fx-padding: 8 10 8 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 12, 0.18, 0, 6); -fx-text-fill: #111827; }
+.header { -fx-background-color: linear-gradient(to right, #f97316, #f59e0b); -fx-background-radius: 12; -fx-padding: 10; }
+.title { -fx-text-fill: white !important; -fx-font-weight: 800; -fx-font-size: 16px; -fx-effect: null; }
+.subtitle { -fx-text-fill: #fff4d6 !important; -fx-effect: null; }
+.card { -fx-background-radius: 12; -fx-padding: 10; -fx-spacing: 6; }
+.warning-card { -fx-background-color: #fff7ed; -fx-border-color: #fed7aa; -fx-border-radius: 12; }
+.warning-text { -fx-text-fill: #b45309 !important; -fx-font-weight: 700; }
+.refund-card { -fx-background-color: linear-gradient(to bottom right, #eef2ff, #f5f3ff); -fx-border-color: #e0e7ff; -fx-border-radius: 12; -fx-effect: null; }
+.info-card { -fx-background-color: #f8fafc; -fx-border-color: #e2e8f0; -fx-border-radius: 12; -fx-effect: null; }
+.card-title { -fx-text-fill: #0f172a !important; -fx-font-weight: 700; -fx-effect: null; }
+.muted { -fx-text-fill: #1f2937 !important; -fx-font-size: 12px; -fx-font-weight: 700; -fx-effect: null; }
+.support-note { -fx-text-fill: #4f46e5 !important; -fx-font-weight: 700; }
+.value { -fx-text-fill: #0f172a !important; -fx-font-weight: 800; }
+.mono { -fx-font-family: "Consolas", "Menlo", "Monospace"; }
+.fixed-txn { -fx-text-fill: #0f172a !important; -fx-font-weight: 800; -fx-opacity: 1; -fx-effect: null; }
+.ghost-btn { -fx-background-color: #f3f4f6; -fx-text-fill: #111827; -fx-background-radius: 10; -fx-padding: 10 14; }
+.ghost-btn:hover { -fx-background-color: #e5e7eb; -fx-scale-x: 1.02; -fx-scale-y: 1.02; }
+.ghost-btn:pressed { -fx-background-color: #d1d5db; -fx-scale-x: 0.98; -fx-scale-y: 0.98; }
+.primary-btn { -fx-background-color: linear-gradient(to right, #7c3aed, #9333ea); -fx-text-fill: white; -fx-font-weight: 700; -fx-background-radius: 12; -fx-padding: 10 14; }
+.close-btn {
+    -fx-background-color: rgba(255,255,255,0.3) !important;
+    -fx-text-fill: white !important;
+    -fx-background-radius: 10;
+    -fx-border-color: transparent;
+}
+.close-btn:hover {
+    -fx-background-color: rgba(255,255,255,0.4) !important;
+    -fx-scale-x: 1.05; -fx-scale-y: 1.05;
+}
+.close-btn:pressed {
+    -fx-background-color: rgba(255,255,255,0.25) !important;
+    -fx-scale-x: 0.95; -fx-scale-y: 0.95;
+}

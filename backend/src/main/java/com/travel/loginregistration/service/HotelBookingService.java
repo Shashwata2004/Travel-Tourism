@@ -177,4 +177,39 @@ public class HotelBookingService {
     private String generateLast4() {
         return String.format("%04d", ThreadLocalRandom.current().nextInt(0, 10000));
     }
+
+    @Transactional
+    public RoomBookingResponse adminCancel(UUID bookingId, String canceledBy) {
+        HotelRoomBooking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("BOOKING_NOT_FOUND"));
+        if ("CANCELED".equalsIgnoreCase(booking.getStatus())) {
+            throw new IllegalArgumentException("BOOKING_ALREADY_CANCELED");
+        }
+        booking.setStatus("CANCELED");
+        booking.setCanceledAt(java.time.Instant.now());
+        booking.setCanceledBy(canceledBy == null || canceledBy.isBlank() ? "ADMIN" : canceledBy);
+        bookingRepository.save(booking);
+
+        RoomBookingResponse res = new RoomBookingResponse();
+        res.id = booking.getId();
+        res.roomId = booking.getRoomId();
+        res.checkIn = booking.getCheckIn();
+        res.checkOut = booking.getCheckOut();
+        res.rooms = booking.getRoomsBooked() == null ? 0 : booking.getRoomsBooked();
+        res.totalGuests = booking.getTotalGuests() == null ? 0 : booking.getTotalGuests();
+        res.totalPrice = booking.getTotalPrice();
+        res.createdAt = booking.getCreatedAt();
+        res.userId = booking.getUserId();
+        res.roomName = booking.getRoomName();
+        res.hotelName = booking.getHotelName();
+        res.customerName = booking.getCustomerName();
+        res.idType = booking.getIdType();
+        res.idNumber = booking.getIdNumber();
+        res.transactionId = booking.getTransactionId();
+        res.cardLast4 = booking.getCardLast4();
+        res.status = booking.getStatus();
+        res.canceledAt = booking.getCanceledAt();
+        res.canceledBy = booking.getCanceledBy();
+        return res;
+    }
 }

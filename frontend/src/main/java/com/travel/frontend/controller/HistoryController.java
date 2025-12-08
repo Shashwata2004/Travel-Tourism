@@ -451,7 +451,9 @@ public class HistoryController {
         HBox actions = new HBox(10);
         actions.setAlignment(Pos.CENTER_RIGHT);
         if ("Canceled".equalsIgnoreCase(status)) {
-            Button canceled = new Button("Canceled");
+            String by = r.canceledBy == null ? "user" : r.canceledBy.toLowerCase(Locale.ROOT);
+            String pillText = "Canceled by " + ("admin".equals(by) ? "Admin" : "You");
+            Button canceled = new Button(pillText);
             canceled.getStyleClass().addAll("cancel-accent", "canceledPillAction");
             canceled.setDisable(true);
             canceled.setMouseTransparent(true);
@@ -535,7 +537,9 @@ public class HistoryController {
         HBox actions = new HBox(10);
         actions.setAlignment(Pos.CENTER_RIGHT);
         if ("Canceled".equalsIgnoreCase(status)) {
-            Button canceled = new Button("Canceled");
+            String by = p.canceledBy == null ? "user" : p.canceledBy.toLowerCase(Locale.ROOT);
+            String pillText = "Canceled by " + ("admin".equals(by) ? "Admin" : "You");
+            Button canceled = new Button(pillText);
             canceled.getStyleClass().addAll("cancel-accent", "canceledPillAction");
             canceled.setDisable(true);
             canceled.setMouseTransparent(true);

@@ -10,8 +10,8 @@
            styleClass="overlay-root">
     <children>
         <VBox spacing="8" styleClass="modal-root"
-              prefWidth="860" maxWidth="860" minWidth="780"
-              prefHeight="420" maxHeight="420"
+              prefWidth="760" maxWidth="780" minWidth="700"
+              prefHeight="360" maxHeight="380"
               StackPane.alignment="CENTER">
             <children>
                 <HBox spacing="8" alignment="CENTER_LEFT">

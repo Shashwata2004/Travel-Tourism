@@ -2,6 +2,7 @@ package com.travel.frontend.model;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class PackageBookingAdminView {
@@ -15,6 +16,7 @@ public class PackageBookingAdminView {
     public int totalPersons;
     public BigDecimal priceTotal;
     public Instant createdAt;
+    public LocalDate bookingDeadline;
     public String transactionId;
     public String status;
     public Instant canceledAt;
@@ -30,6 +32,7 @@ public class PackageBookingAdminView {
     public int getTotalPersons() { return totalPersons; }
     public BigDecimal getPriceTotal() { return priceTotal; }
     public Instant getCreatedAt() { return createdAt; }
+    public LocalDate getBookingDeadline() { return bookingDeadline; }
     public String getTransactionId() { return transactionId; }
     public String getStatus() { return status; }
     public Instant getCanceledAt() { return canceledAt; }
@@ -45,6 +48,7 @@ public class PackageBookingAdminView {
     public void setTotalPersons(int totalPersons) { this.totalPersons = totalPersons; }
     public void setPriceTotal(BigDecimal priceTotal) { this.priceTotal = priceTotal; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    public void setBookingDeadline(LocalDate bookingDeadline) { this.bookingDeadline = bookingDeadline; }
     public void setTransactionId(String transactionId) { this.transactionId = transactionId; }
     public void setStatus(String status) { this.status = status; }
     public void setCanceledAt(Instant canceledAt) { this.canceledAt = canceledAt; }

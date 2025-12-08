@@ -7,7 +7,9 @@ import com.travel.loginregistration.repository.HotelRoomRepository;
 import com.travel.loginregistration.repository.HotelRepository;
 import com.travel.loginregistration.repository.DestinationRepository;
 import com.travel.loginregistration.repository.UserRepository;
+import com.travel.loginregistration.service.HotelBookingService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,17 +30,20 @@ public class AdminRoomBookingController {
     private final HotelRepository hotelRepository;
     private final DestinationRepository destinationRepository;
     private final UserRepository userRepository;
+    private final HotelBookingService bookingService;
 
     public AdminRoomBookingController(HotelRoomBookingRepository bookingRepository,
                                       HotelRoomRepository roomRepository,
                                       HotelRepository hotelRepository,
                                       DestinationRepository destinationRepository,
-                                      UserRepository userRepository) {
+                                      UserRepository userRepository,
+                                      HotelBookingService bookingService) {
         this.bookingRepository = bookingRepository;
         this.roomRepository = roomRepository;
         this.hotelRepository = hotelRepository;
         this.destinationRepository = destinationRepository;
         this.userRepository = userRepository;
+        this.bookingService = bookingService;
     }
 
     @GetMapping("/{roomId}/bookings")
@@ -77,6 +82,15 @@ public class AdminRoomBookingController {
             return toView(b, roomName, hotelName);
         }).collect(Collectors.toList());
         return ResponseEntity.ok(views);
+    }
+
+    @PostMapping("/bookings/{bookingId}/cancel")
+    public ResponseEntity<?> adminCancel(@PathVariable UUID bookingId) {
+        try {
+            return ResponseEntity.ok(bookingService.adminCancel(bookingId, "ADMIN"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     private RoomBookingAdminView toView(HotelRoomBooking b, String roomName, String hotelName) {

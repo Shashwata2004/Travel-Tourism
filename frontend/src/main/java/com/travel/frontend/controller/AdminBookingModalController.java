@@ -2,6 +2,9 @@ package com.travel.frontend.controller;
 
 import com.travel.frontend.model.PackageBookingAdminView;
 import com.travel.frontend.model.RoomBookingAdminView;
+import com.travel.frontend.net.ApiClient;
+import com.travel.frontend.controller.AdminCancelSuccessController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +17,7 @@ import javafx.geometry.Pos;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -52,6 +56,9 @@ public class AdminBookingModalController {
 
     private Pane host;
     private StackPane overlay;
+    private PackageBookingAdminView packageView;
+    private RoomBookingAdminView roomView;
+    private final ApiClient api = ApiClient.get();
 
     public static void showPackage(Pane host, PackageBookingAdminView v) {
         try {
@@ -59,6 +66,7 @@ public class AdminBookingModalController {
             Parent modal = loader.load();
             AdminBookingModalController c = loader.getController();
             c.host = host;
+            c.packageView = v;
             c.populatePackage(v);
             c.showOverlay(modal);
         } catch (IOException e) {
@@ -72,6 +80,7 @@ public class AdminBookingModalController {
             Parent modal = loader.load();
             AdminBookingModalController c = loader.getController();
             c.host = host;
+            c.roomView = v;
             c.populateRoom(v);
             c.showOverlay(modal);
         } catch (IOException e) {
@@ -110,9 +119,11 @@ public class AdminBookingModalController {
         toggleAlert(isCanceled, v.canceledAt);
         applyStatusText(isCanceled);
 
+        boolean past = v.bookingDeadline != null && !v.bookingDeadline.isAfter(LocalDate.now());
         if (cancelActionButton != null) {
-            cancelActionButton.setDisable(true);
-            cancelActionButton.setText("Cancel Booking");
+            cancelActionButton.setDisable(isCanceled || v.id == null || past);
+            cancelActionButton.setText(isCanceled ? "Canceled" : (past ? "Past booking" : "Cancel Booking"));
+            cancelActionButton.setOnAction(e -> triggerCancelPackage());
         }
         wireCloseButtons();
     }
@@ -140,9 +151,11 @@ public class AdminBookingModalController {
         toggleAlert(isCanceled, v.canceledAt);
         applyStatusText(isCanceled);
 
+        boolean past = v.checkIn != null && !v.checkIn.isAfter(LocalDate.now());
         if (cancelActionButton != null) {
-            cancelActionButton.setDisable(true);
-            cancelActionButton.setText("Cancel Booking");
+            cancelActionButton.setDisable(isCanceled || v.id == null || past);
+            cancelActionButton.setText(isCanceled ? "Canceled" : (past ? "Past booking" : "Cancel Booking"));
+            cancelActionButton.setOnAction(e -> triggerCancelRoom());
         }
         wireCloseButtons();
     }
@@ -209,6 +222,69 @@ public class AdminBookingModalController {
     private void wireCloseButtons() {
         if (closeButton != null) closeButton.setOnAction(e -> close());
         if (headerCloseButton != null) headerCloseButton.setOnAction(e -> close());
+    }
+
+    private void triggerCancelPackage() {
+        if (packageView == null || packageView.id == null) return;
+        if (cancelActionButton != null) {
+            cancelActionButton.setDisable(true);
+            cancelActionButton.setText("Canceling...");
+        }
+        new Thread(() -> {
+            try {
+                var res = api.adminCancelPackageBooking(packageView.id);
+                packageView.status = res.status;
+                packageView.canceledAt = res.canceledAt;
+                packageView.canceledBy = res.canceledBy;
+                Platform.runLater(() -> {
+                    populatePackage(packageView);
+                    AdminCancelSuccessController.show(host, AdminCancelSuccessController.Mode.PACKAGE, packageView, null);
+                });
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    if (cancelActionButton != null) {
+                        cancelActionButton.setDisable(false);
+                        cancelActionButton.setText("Cancel Booking");
+                    }
+                    showError(e.getMessage());
+                });
+            }
+        }).start();
+    }
+
+    private void triggerCancelRoom() {
+        if (roomView == null || roomView.id == null) return;
+        if (cancelActionButton != null) {
+            cancelActionButton.setDisable(true);
+            cancelActionButton.setText("Canceling...");
+        }
+        new Thread(() -> {
+            try {
+                var res = api.adminCancelRoomBooking(roomView.id);
+                roomView.status = res.status;
+                roomView.canceledAt = res.canceledAt;
+                roomView.canceledBy = res.canceledBy;
+                Platform.runLater(() -> {
+                    populateRoom(roomView);
+                    AdminCancelSuccessController.show(host, AdminCancelSuccessController.Mode.ROOM, null, roomView);
+                });
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    if (cancelActionButton != null) {
+                        cancelActionButton.setDisable(false);
+                        cancelActionButton.setText("Cancel Booking");
+                    }
+                    showError(e.getMessage());
+                });
+            }
+        }).start();
+    }
+
+    private void showError(String msg) {
+        javafx.scene.control.Alert a = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+        a.setHeaderText("Cancel failed");
+        a.setContentText(msg);
+        a.showAndWait();
     }
 
     private void close() {

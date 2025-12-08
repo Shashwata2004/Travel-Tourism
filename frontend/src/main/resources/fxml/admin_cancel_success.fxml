@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.travel.frontend.controller.AdminCancelSuccessController"
+           stylesheets="@/css/admin_cancel_success.css"
+           styleClass="overlay-root">
+    <children>
+                                <VBox spacing="12" alignment="TOP_CENTER" styleClass="modal-root" fillWidth="true"
+                            prefWidth="420" maxWidth="440" minWidth="360"
+                            StackPane.alignment="CENTER">
+            <children>
+                <VBox spacing="6" alignment="CENTER" styleClass="header">
+                    <HBox alignment="CENTER_RIGHT" prefWidth="999">
+                        <Pane HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="closeButton" text="✕" styleClass="close-btn"/>
+                    </HBox>
+                    <Label fx:id="titleLabel" text="Booking Cancelled Successfully" styleClass="title"/>
+                    <Label fx:id="subtitleLabel" text="Admin action completed" styleClass="subtitle"/>
+                    <StackPane styleClass="success-icon">
+                        <Label text="✔" styleClass="check-icon"/>
+                    </StackPane>
+                </VBox>
+
+                <VBox spacing="6" alignment="CENTER">
+                    <Label text="Booking has been cancelled" styleClass="heading"/>
+                    <Label text="The customer has been notified about this cancellation."
+                           styleClass="muted" wrapText="true" textOverrun="CLIP" maxWidth="Infinity" prefWidth="420"/>
+                </VBox>
+
+                <VBox spacing="8" styleClass="card info-card" VBox.vgrow="NEVER" fillWidth="true" prefWidth="420">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label text="Customer" styleClass="muted"/>
+                            <Pane HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="customerLabel" text="—" styleClass="value" wrapText="true" maxWidth="Infinity" prefWidth="300" alignment="CENTER_RIGHT"/>
+                        </HBox>
+                        <Separator/>
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label fx:id="itemLabel" text="Room" styleClass="muted"/>
+                            <Pane HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="itemValue" text="—" styleClass="value" wrapText="true" maxWidth="Infinity" prefWidth="300" alignment="CENTER_RIGHT"/>
+                        </HBox>
+                        <Separator/>
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label fx:id="dateLabel" text="Check-in Date" styleClass="muted"/>
+                            <Pane HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="dateValue" text="—" styleClass="value" wrapText="true" maxWidth="Infinity" prefWidth="300" alignment="CENTER_RIGHT"/>
+                        </HBox>
+                        <Separator/>
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label text="Transaction ID" styleClass="muted"/>
+                            <Pane HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="txnValue" text="—" styleClass="value mono" wrapText="true" maxWidth="Infinity" prefWidth="300" alignment="CENTER_RIGHT"/>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <VBox spacing="8" styleClass="card notify-card" VBox.vgrow="NEVER" fillWidth="true" prefWidth="420">
+                    <children>
+                        <Label text="Customer Notified" styleClass="notify-title"/>
+                        <Label text="An email and SMS notification has been sent to the customer with cancellation details and refund information."
+                               styleClass="muted" wrapText="true" maxWidth="380" />
+                    </children>
+                </VBox>
+
+                <VBox spacing="8" styleClass="card refund-card" VBox.vgrow="NEVER" fillWidth="true" prefWidth="420">
+                    <children>
+                        <Label text="Refund Initiated" styleClass="refund-title"/>
+                        <Label fx:id="refundLabel" text="Refund will be processed within 3–7 business days."
+                               styleClass="muted" wrapText="true" maxWidth="380"/>
+                    </children>
+                </VBox>
+
+                <HBox spacing="10" alignment="CENTER">
+                    <Button fx:id="doneButton" text="Done" styleClass="primary-btn" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</StackPane>

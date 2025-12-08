@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.Region?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.travel.frontend.controller.CancelNoticeController"
+           stylesheets="@/css/cancel_notice.css"
+           styleClass="overlay-root">
+    <children>
+          <VBox spacing="10" alignment="TOP_CENTER" styleClass="modal-root"
+              fillWidth="true"
+              prefWidth="380" maxWidth="400" minWidth="340"
+              prefHeight="480" minHeight="480" maxHeight="480"
+              StackPane.alignment="CENTER">
+            <children>
+                <VBox spacing="6" alignment="CENTER" styleClass="header">
+                    <HBox alignment="CENTER_RIGHT" prefWidth="999">
+                        <Pane HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="closeButton" text="✕" styleClass="close-btn"/>
+                    </HBox>
+                    <Label fx:id="titleLabel" text="Booking Cancelled" styleClass="title"/>
+                    <Label fx:id="subtitleLabel" text="By our support team" styleClass="subtitle"/>
+                </VBox>
+
+                <VBox spacing="10" styleClass="card warning-card">
+                    <Label fx:id="warningLabel" text="Your booking has been cancelled." wrapText="true" styleClass="warning-text" maxWidth="380" />
+                </VBox>
+
+                <VBox spacing="10" styleClass="card refund-card">
+                    <Label text="Refund Status" styleClass="card-title"/>
+                    <Label text="Refund is in progress and may take 3–7 business days to reflect in your account." styleClass="muted" wrapText="true" maxWidth="380"/>
+                    <Separator/>
+                    <HBox alignment="CENTER_LEFT" spacing="6" fillHeight="false">
+                        <Label text="Transaction ID" styleClass="muted"
+                               wrapText="true" textOverrun="CLIP" prefWidth="200" />
+                        <Pane HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="txnLabel" text="—" styleClass="value mono fixed-txn"
+                               style="-fx-text-fill: #0f172a; -fx-font-weight: 800; -fx-opacity: 1;"
+                               wrapText="true" textOverrun="CLIP" prefWidth="140" alignment="CENTER_RIGHT"/>
+                    </HBox>
+                </VBox>
+
+                <VBox spacing="10" styleClass="card info-card">
+                    <Label text="If you have any questions or concerns about this cancellation, please contact our support team." wrapText="true" styleClass="muted" maxWidth="380"/>
+                    <Label text="We apologize for any inconvenience caused." styleClass="support-note"/>
+                </VBox>
+
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Pane HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="closeActionButton" text="Close" styleClass="ghost-btn"/>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</StackPane>

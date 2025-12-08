@@ -5,6 +5,7 @@ package com.travel.frontend.net;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travel.frontend.model.Profile;
+import com.travel.frontend.model.HistoryResponse;
 import com.travel.frontend.session.Session;
 
 import java.net.URI;
@@ -236,6 +237,42 @@ public final class ApiClient {
             }
         }
         throw error(res, "Cancel booking failed");
+    }
+
+    public com.travel.frontend.model.BookingResponse adminCancelPackageBooking(java.util.UUID bookingId) throws ApiException {
+        HttpResponse<String> res = post("/admin/packages/bookings/" + bookingId + "/cancel", "{}", true);
+        if (res.statusCode() == 200) {
+            try {
+                return mapper.readValue(res.body(), com.travel.frontend.model.BookingResponse.class);
+            } catch (Exception e) {
+                throw new ApiException("Invalid cancel response", e);
+            }
+        }
+        throw error(res, "Cancel booking failed");
+    }
+
+    public com.travel.frontend.model.RoomBookingResponse adminCancelRoomBooking(java.util.UUID bookingId) throws ApiException {
+        HttpResponse<String> res = post("/admin/rooms/bookings/" + bookingId + "/cancel", "{}", true);
+        if (res.statusCode() == 200) {
+            try {
+                return mapper.readValue(res.body(), com.travel.frontend.model.RoomBookingResponse.class);
+            } catch (Exception e) {
+                throw new ApiException("Invalid cancel response", e);
+            }
+        }
+        throw error(res, "Cancel booking failed");
+    }
+
+    public HistoryResponse getHistory() throws ApiException {
+        HttpResponse<String> res = get("/history", true);
+        if (res.statusCode() == 200) {
+            try {
+                return mapper.readValue(res.body(), HistoryResponse.class);
+            } catch (Exception e) {
+                throw new ApiException("Invalid history response", e);
+            }
+        }
+        throw error(res, "Load history failed");
     }
 
     // --- Low-level helpers ---

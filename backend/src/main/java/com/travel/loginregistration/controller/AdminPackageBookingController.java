@@ -8,7 +8,9 @@ import com.travel.loginregistration.repository.BookingRepository;
 import com.travel.loginregistration.repository.UserRepository;
 import com.travel.loginregistration.repository.UserProfileRepository;
 import com.travel.loginregistration.repository.TravelPackageRepository;
+import com.travel.loginregistration.service.BookingService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,15 +28,18 @@ public class AdminPackageBookingController {
     private final TravelPackageRepository travelPackageRepository;
     private final UserRepository userRepository;
     private final UserProfileRepository userProfileRepository;
+    private final BookingService bookingService;
 
     public AdminPackageBookingController(BookingRepository bookingRepository,
                                          TravelPackageRepository travelPackageRepository,
                                          UserRepository userRepository,
-                                         UserProfileRepository userProfileRepository) {
+                                         UserProfileRepository userProfileRepository,
+                                         BookingService bookingService) {
         this.bookingRepository = bookingRepository;
         this.travelPackageRepository = travelPackageRepository;
         this.userRepository = userRepository;
         this.userProfileRepository = userProfileRepository;
+        this.bookingService = bookingService;
     }
 
     @GetMapping("/{packageId}/bookings")
@@ -69,6 +74,15 @@ public class AdminPackageBookingController {
         return ResponseEntity.ok(items);
     }
 
+    @PostMapping("/bookings/{bookingId}/cancel")
+    public ResponseEntity<?> adminCancel(@PathVariable UUID bookingId) {
+        try {
+            return ResponseEntity.ok(bookingService.adminCancel(bookingId, "ADMIN"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private PackageBookingAdminView toView(Booking b, String packageName) {
         PackageBookingAdminView v = new PackageBookingAdminView();
         v.id = b.getId();
@@ -91,6 +105,9 @@ public class AdminPackageBookingController {
         v.totalPersons = b.getTotalPersons();
         v.priceTotal = b.getPriceTotal();
         v.createdAt = b.getCreatedAt();
+        v.bookingDeadline = travelPackageRepository.findById(b.getPackageId())
+                .map(TravelPackage::getBookingDeadline)
+                .orElse(null);
         v.transactionId = b.getTransactionId();
         v.status = b.getStatus();
         v.canceledAt = b.getCanceledAt();

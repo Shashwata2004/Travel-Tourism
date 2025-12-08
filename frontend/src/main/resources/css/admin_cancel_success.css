@@ -1,0 +1,73 @@
+.overlay-root {
+    -fx-background-color: rgba(0,0,0,0.55);
+    -fx-alignment: center;
+    -fx-padding: 14;
+}
+.modal-root {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 18;
+    -fx-padding: 8 12 8 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.24), 18, 0.18, 0, 6);
+}
+.header {
+    -fx-background-color: linear-gradient(to right, #04c972, #07b689, #06a0a0);
+    -fx-background-radius: 14;
+    -fx-padding: 8 10 8 10;
+}
+.title { -fx-text-fill: white; -fx-font-weight: 800; -fx-font-size: 16px; }
+.subtitle { -fx-text-fill: #e6fff5; }
+.success-icon {
+    -fx-background-color: rgba(255,255,255,0.18);
+    -fx-background-radius: 50%;
+    -fx-padding: 10;
+    -fx-max-width: 64;
+    -fx-max-height: 64;
+}
+.check-icon { -fx-text-fill: #08a55a; -fx-font-size: 28px; -fx-font-weight: 800; }
+.heading { -fx-font-size: 16px; -fx-text-fill: #1f2937; -fx-font-weight: 700; }
+.muted { -fx-text-fill: #6b7280; -fx-font-size: 12px; }
+.card {
+    -fx-background-radius: 12;
+    -fx-padding: 8;
+    -fx-min-height: 0;
+}
+.info-card {
+    -fx-background-color: linear-gradient(to bottom right, #eef2ff, #f7f9ff);
+    -fx-border-color: #dbeafe;
+    -fx-border-radius: 12;
+    -fx-spacing: 8;
+}
+.notify-card {
+    -fx-background-color: #ecfdf3;
+    -fx-border-color: #bbf7d0;
+    -fx-border-radius: 12;
+}
+.refund-card {
+    -fx-background-color: #fdf2f8;
+    -fx-border-color: #f5d0fe;
+    -fx-border-radius: 12;
+}
+.notify-title { -fx-text-fill: #15803d; -fx-font-weight: 700; }
+.refund-title { -fx-text-fill: #a21caf; -fx-font-weight: 700; }
+.value { -fx-text-fill: #111827; -fx-font-weight: 700; }
+.mono { -fx-font-family: "Consolas", "Menlo", "Monospace"; }
+.ghost-btn {
+    -fx-background-color: #f3f4f6;
+    -fx-text-fill: #111827;
+    -fx-padding: 10 14;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+.primary-btn {
+    -fx-background-color: linear-gradient(to right, #16a34a, #0ea5e9);
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-padding: 10 14;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+}
+.close-btn {
+    -fx-background-color: rgba(255,255,255,0.25);
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+}

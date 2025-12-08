@@ -82,6 +82,9 @@
 .table-view .table-row-cell.canceledRow .table-cell {
     -fx-text-fill: #b91c1c;
 }
+.table-view .table-row-cell.upcomingRow .table-cell {
+    -fx-text-fill: #15803d;
+}
 .table-view .table-row-cell.canceledRow:filled:selected {
     -fx-background-color: linear-gradient(to right, #ffe5e5, #ffdede);
 }

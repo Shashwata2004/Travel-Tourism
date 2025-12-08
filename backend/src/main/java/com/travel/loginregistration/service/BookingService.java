@@ -175,4 +175,30 @@ public class BookingService {
     private String generateLast4() {
         return String.format("%04d", ThreadLocalRandom.current().nextInt(0, 10000));
     }
+
+    @Transactional
+    public BookingResponse adminCancel(UUID bookingId, String canceledBy) {
+        Booking booking = bookingRepo.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+        if ("CANCELED".equalsIgnoreCase(booking.getStatus())) {
+            throw new IllegalArgumentException("Booking already canceled");
+        }
+        booking.setStatus("CANCELED");
+        booking.setCanceledAt(Instant.now());
+        booking.setCanceledBy(canceledBy == null || canceledBy.isBlank() ? "ADMIN" : canceledBy);
+        bookingRepo.save(booking);
+
+        BookingResponse res = new BookingResponse();
+        res.id = booking.getId();
+        res.packageId = booking.getPackageId();
+        res.totalPersons = booking.getTotalPersons();
+        res.priceTotal = booking.getPriceTotal();
+        res.createdAt = booking.getCreatedAt();
+        res.transactionId = booking.getTransactionId();
+        res.cardLast4 = booking.getCardLast4();
+        res.status = booking.getStatus();
+        res.canceledAt = booking.getCanceledAt();
+        res.canceledBy = booking.getCanceledBy();
+        return res;
+    }
 }

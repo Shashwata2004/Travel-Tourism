@@ -25,6 +25,7 @@ public final class Navigator {
     private static Stage STAGE;
     private static StackPane ROOT_WRAPPER;
     private static ToggleButton THEME_TOGGLE;
+    private static StackPane LAST_ROOT;
 
     private Navigator() {}
 
@@ -61,6 +62,7 @@ public final class Navigator {
                 ROOT_WRAPPER = new StackPane();
                 ROOT_WRAPPER.getChildren().add(root);
                 ROOT_WRAPPER.setPickOnBounds(true);
+                LAST_ROOT = ROOT_WRAPPER;
 
                 scene = new Scene(ROOT_WRAPPER, 920, 600);
 
@@ -81,14 +83,15 @@ public final class Navigator {
             } else {
                 // Replace content inside wrapper while keeping overlay toggle
                 if (ROOT_WRAPPER != null) {
-                    if (!ROOT_WRAPPER.getChildren().isEmpty()) {
-                        ROOT_WRAPPER.getChildren().set(0, root);
-                    } else {
-                        ROOT_WRAPPER.getChildren().add(0, root);
-                    }
+                if (!ROOT_WRAPPER.getChildren().isEmpty()) {
+                    ROOT_WRAPPER.getChildren().set(0, root);
                 } else {
-                    scene.setRoot(root);
+                    ROOT_WRAPPER.getChildren().add(0, root);
                 }
+                LAST_ROOT = ROOT_WRAPPER;
+            } else {
+                scene.setRoot(root);
+            }
             }
             if (THEME_TOGGLE != null) {
                 THEME_TOGGLE.setVisible(!isAdmin);
@@ -161,6 +164,9 @@ public final class Navigator {
         THEME_TOGGLE.setText(ThemeManager.isDark() ? "☀" : "☾");
     }
     public static void goAdminPackageBookings() { load("admin_package_bookings.fxml"); }
+
+    // Allows other controllers to retrieve the current root wrapper for overlays.
+    public static StackPane peekRoot() { return LAST_ROOT; }
 
     private static void syncThemeToggles(Scene scene) {
         if (THEME_TOGGLE != null) {

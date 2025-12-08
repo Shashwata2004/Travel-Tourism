@@ -8,10 +8,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -40,7 +42,7 @@ public class AdminAllRoomBookingsController {
     @FXML
     private void initialize() {
         if (table != null) {
-            table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+            table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
             customerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
             emailCol.setCellValueFactory(new PropertyValueFactory<>("userEmail"));
             destinationCol.setCellValueFactory(new PropertyValueFactory<>("destinationName"));
@@ -54,6 +56,26 @@ public class AdminAllRoomBookingsController {
             bookedCol.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
             canceledCol.setCellValueFactory(new PropertyValueFactory<>("canceledAt"));
             txnCol.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
+            table.setRowFactory(tv -> new TableRow<>() {
+                @Override
+                protected void updateItem(RoomBookingAdminView item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        getStyleClass().remove("canceledRow");
+                        getStyleClass().remove("upcomingRow");
+                        return;
+                    }
+                    boolean canceled = item.status != null && item.status.equalsIgnoreCase("CANCELED");
+                    getStyleClass().remove("upcomingRow");
+                    getStyleClass().remove("canceledRow");
+                    if (canceled) getStyleClass().add("canceledRow");
+                    else {
+                        LocalDate today = LocalDate.now();
+                        boolean upcoming = item.checkIn != null && item.checkIn.isAfter(today);
+                        if (upcoming) getStyleClass().add("upcomingRow");
+                    }
+                }
+            });
             table.setOnMouseClicked(evt -> {
                 if (evt.getClickCount() == 2) {
                     RoomBookingAdminView sel = table.getSelectionModel().getSelectedItem();

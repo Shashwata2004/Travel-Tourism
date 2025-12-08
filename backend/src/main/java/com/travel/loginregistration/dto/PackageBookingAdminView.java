@@ -2,6 +2,7 @@ package com.travel.loginregistration.dto;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class PackageBookingAdminView {
@@ -15,6 +16,7 @@ public class PackageBookingAdminView {
     public int totalPersons;
     public BigDecimal priceTotal;
     public Instant createdAt;
+    public LocalDate bookingDeadline;
     public String transactionId;
     public String status;
     public Instant canceledAt;

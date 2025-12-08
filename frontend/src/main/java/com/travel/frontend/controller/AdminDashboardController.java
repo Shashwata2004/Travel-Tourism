@@ -64,19 +64,19 @@ public class AdminDashboardController {
                 List<PackageVM> items = com.travel.frontend.cache.FileCache.getOrLoad("admin:packages",
                         new com.fasterxml.jackson.core.type.TypeReference<List<PackageVM>>(){},
                         () -> {
-                            try {
-                                return client.list();
-                            } catch (Exception ex) {
-                                throw new RuntimeException(ex);
-                            }
+                            try { return client.list(); }
+                            catch (Exception ex) { throw new RuntimeException(ex); }
                         });
                 Platform.runLater(() -> {
                     listView.getItems().setAll(items);
                     statusLabel.setText("");
                 });
             } catch (Exception e) {
-                e.printStackTrace();
-                Platform.runLater(() -> statusLabel.setText("Load failed: " + detailedMessage(e)));
+                String msg = detailedMessage(e);
+                Platform.runLater(() -> {
+                    listView.getItems().clear();
+                    statusLabel.setText("Admin socket unavailable: " + msg + " (start admin server on 127.0.0.1:9090 and retry)");
+                });
             }
         }).start();
     }

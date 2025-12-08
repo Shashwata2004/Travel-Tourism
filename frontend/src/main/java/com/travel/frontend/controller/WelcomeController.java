@@ -6,7 +6,14 @@ package com.travel.frontend.controller;
 
 import com.travel.frontend.net.ApiClient;
 import com.travel.frontend.cache.DataCache;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import com.travel.frontend.ui.Navigator;
+import com.travel.frontend.model.HistoryResponse;
+import com.travel.frontend.model.HistoryPackageItem;
+import com.travel.frontend.model.HistoryRoomItem;
+import com.travel.frontend.model.Profile;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
@@ -16,20 +23,24 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import javafx.animation.Timeline;
 import javafx.animation.Interpolator;
 import javafx.scene.Node;
 import javafx.scene.shape.Circle;
 import java.util.Random;
+import java.time.Instant;
 
 /** Shows the gradient welcome hero after login. */
 public class WelcomeController {
     @FXML private Label usernameLabel;
     @FXML private VBox contentBox;
     @FXML private Pane floatingDots;
+    @FXML private StackPane rootPane;
 
     private final ApiClient api = ApiClient.get();
+    private Profile profile;
 
     /* On load, fetches the cached profile (or makes a new API call) on a
        background thread, then updates the label via Platform.runLater so we
@@ -40,8 +51,10 @@ public class WelcomeController {
         // Fetch profile to display username
         new Thread(() -> {
             try {
-                var p = DataCache.getOrLoad("myProfile", api::getMyProfile);
+                Profile p = DataCache.getOrLoad("myProfile", api::getMyProfile);
+                this.profile = p;
                 Platform.runLater(() -> usernameLabel.setText(p.username));
+                checkAdminCancellations(p);
             } catch (Exception ignore) { }
         }).start();
     }
@@ -59,6 +72,124 @@ public class WelcomeController {
         a.setTitle("Coming soon");
         a.setContentText("This section will be available later.");
         a.showAndWait();
+    }
+
+    private void checkAdminCancellations(Profile p) {
+        if (p == null || rootPane == null) return;
+        new Thread(() -> {
+            try {
+                HistoryResponse history = api.getHistory();
+                String key = "cancelSeen:" + (p.email == null ? "anon" : p.email.toLowerCase());
+                Instant seen = loadSeen(key);
+                var queue = collectAdminCancels(history, seen);
+                if (queue.isEmpty()) return;
+                final java.util.List<AdminCancel> queueFinal = queue;
+                final Pane hostFinal = hostPane();
+                final Instant latestFinal = queue.get(queue.size() - 1).canceledAt;
+                System.out.println("[CancelNotice] Showing " + queueFinal.size() + " admin cancel notice(s)");
+                // Persist immediately so repeated app opens don't re-show the same notice
+                saveSeen(key, latestFinal);
+                Platform.runLater(() -> showQueue(queueFinal, 0, key, latestFinal, hostFinal));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    private String safe(String s) { return s == null ? "" : s; }
+
+    private static class AdminCancel {
+        final boolean isPackage;
+        final HistoryPackageItem pkg;
+        final HistoryRoomItem room;
+        final Instant canceledAt;
+        AdminCancel(HistoryPackageItem p) { this.isPackage = true; this.pkg = p; this.room = null; this.canceledAt = p.canceledAt; }
+        AdminCancel(HistoryRoomItem r) { this.isPackage = false; this.pkg = null; this.room = r; this.canceledAt = r.canceledAt; }
+    }
+
+    private java.util.List<AdminCancel> collectAdminCancels(HistoryResponse history, Instant seen) {
+        java.util.List<AdminCancel> list = new java.util.ArrayList<>();
+        if (history != null && history.packages != null) {
+            for (HistoryPackageItem item : history.packages) {
+                if (item.canceledAt != null && "ADMIN".equalsIgnoreCase(safe(item.canceledBy))) {
+                    if (seen == null || item.canceledAt.isAfter(seen)) list.add(new AdminCancel(item));
+                }
+            }
+        }
+        if (history != null && history.rooms != null) {
+            for (HistoryRoomItem item : history.rooms) {
+                if (item.canceledAt != null && "ADMIN".equalsIgnoreCase(safe(item.canceledBy))) {
+                    if (seen == null || item.canceledAt.isAfter(seen)) list.add(new AdminCancel(item));
+                }
+            }
+        }
+        list.sort(java.util.Comparator.comparing(a -> a.canceledAt));
+        return list;
+    }
+
+    private void showQueue(java.util.List<AdminCancel> queue, int idx, String cacheKey, Instant latest, Pane host) {
+        if (host == null) {
+            System.out.println("[CancelNotice] Host pane missing; deferring notices");
+            return;
+        }
+        if (idx >= queue.size()) {
+            saveSeen(cacheKey, latest);
+            return;
+        }
+        AdminCancel entry = queue.get(idx);
+        Runnable next = () -> showQueue(queue, idx + 1, cacheKey, latest, host);
+        if (entry.isPackage && entry.pkg != null) {
+            CancelNoticeController.show(host, entry.pkg, next);
+        } else if (!entry.isPackage && entry.room != null) {
+            CancelNoticeController.show(host, entry.room, next);
+        } else {
+            next.run();
+        }
+    }
+
+    private Pane hostPane() {
+        if (rootPane != null && rootPane.getScene() != null) return rootPane;
+        try {
+            if (rootPane != null && rootPane.getScene() != null && rootPane.getScene().getRoot() instanceof Pane p) {
+                return p;
+            }
+        } catch (Exception ignored) { }
+        // fallback to last known host
+        Pane cached = com.travel.frontend.ui.Navigator.peekRoot();
+        return cached instanceof StackPane ? cached : cached;
+    }
+
+    private Instant loadSeen(String key) {
+        try {
+            Object mem = DataCache.peek(key);
+            if (mem instanceof Instant i) return i;
+        } catch (Exception ignored) { }
+        try {
+            Path dir = Paths.get(System.getProperty("user.home"), ".travel-notices");
+            Path file = dir.resolve(sanitize(key) + ".txt");
+            if (Files.exists(file)) {
+                String s = Files.readString(file).trim();
+                if (!s.isEmpty()) {
+                    return Instant.parse(s);
+                }
+            }
+        } catch (Exception ignored) { }
+        return null;
+    }
+
+    private void saveSeen(String key, Instant value) {
+        if (value == null) return;
+        DataCache.put(key, value);
+        try {
+            Path dir = Paths.get(System.getProperty("user.home"), ".travel-notices");
+            Files.createDirectories(dir);
+            Path file = dir.resolve(sanitize(key) + ".txt");
+            Files.writeString(file, value.toString());
+        } catch (Exception ignored) { }
+    }
+
+    private String sanitize(String key) {
+        return key == null ? "notice" : key.replaceAll("[^a-zA-Z0-9._-]", "_");
     }
 
     private void runEntranceAnimation() {
