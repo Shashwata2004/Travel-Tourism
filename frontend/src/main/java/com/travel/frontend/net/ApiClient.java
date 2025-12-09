@@ -275,6 +275,14 @@ public final class ApiClient {
         throw error(res, "Load history failed");
     }
 
+    public byte[] downloadInvoice(String kind, java.util.UUID id) throws ApiException {
+        HttpResponse<byte[]> res = getBytes("/history/invoice/" + kind + "/" + id, true);
+        if (res.statusCode() == 200) {
+            return res.body();
+        }
+        throw error(res, "Invoice download failed");
+    }
+
     // --- Low-level helpers ---
     /* Core POST builder using HttpClient; attaches JSON headers and the token
        when requested. */
@@ -310,6 +318,20 @@ public final class ApiClient {
         }
     }
 
+    private HttpResponse<byte[]> getBytes(String path, boolean withAuth) throws ApiException {
+        try {
+            HttpRequest.Builder b = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE + path))
+                    .GET();
+            if (withAuth && Session.isAuthenticated()) {
+                b.header("Authorization", "Bearer " + Session.getToken());
+            }
+            return http.send(b.build(), HttpResponse.BodyHandlers.ofByteArray());
+        } catch (Exception e) {
+            throw new ApiException("Network error: " + e.getMessage(), e);
+        }
+    }
+
     /* PUT helper similar to post(...), used mainly for profile updates. */
     private HttpResponse<String> put(String path, String body, boolean withAuth) throws ApiException {
         try {
@@ -330,10 +352,13 @@ public final class ApiClient {
         return s == null ? "" : s.replace("\\", "\\\\").replace("\"", "\\\"");
     }
 
-    private static ApiException error(HttpResponse<String> res, String prefix) {
-        String msg = res.body() == null || res.body().isBlank()
-                ? (prefix + " (HTTP " + res.statusCode() + ")")
-                : (prefix + ": " + res.body());
+    private static ApiException error(HttpResponse<?> res, String prefix) {
+        String msg;
+        if (res.body() instanceof String text && !text.isBlank()) {
+            msg = prefix + ": " + text;
+        } else {
+            msg = prefix + " (HTTP " + res.statusCode() + ")";
+        }
         return new ApiException(msg);
     }
 

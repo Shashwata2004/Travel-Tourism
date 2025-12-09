@@ -2,6 +2,7 @@ package com.travel.frontend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.travel.frontend.MainApp;
 import com.travel.frontend.cache.DataCache;
 import com.travel.frontend.cache.FileCache;
 import com.travel.frontend.model.HistoryPackageItem;
@@ -37,6 +38,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -46,6 +50,7 @@ import java.util.Locale;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * History page: renders booking cards and a slide-in detail panel using real
@@ -325,8 +330,7 @@ public class HistoryController {
                 kv("Check-out", fmt(r.checkOut))));
 
         root.getChildren().add(section("Documents",
-                pillButton("Download invoice (PDF)"),
-                pillButton("Download receipt")));
+                invoiceButton("room", r.id)));
 
         root.getChildren().add(section("Need help?",
                 pillButton("Contact support about this booking")));
@@ -394,11 +398,10 @@ public class HistoryController {
                 kv("End date", fmt(end))));
 
         root.getChildren().add(section("Documents",
-                pillButton("Invoice (PDF)"),
-                pillButton("Receipt (PDF)")));
+                invoiceButton("package", p.id)));
 
         root.getChildren().add(section("Help",
-                pillButton("Contact support")));
+                pillButton("Contact support about this booking")));
 
         return root;
     }
@@ -795,6 +798,32 @@ public class HistoryController {
         Button b = new Button(text);
         b.getStyleClass().add("pillButton");
         return b;
+    }
+
+    private Button invoiceButton(String kind, UUID id) {
+        Button b = pillButton("Invoice (PDF)");
+        b.setOnAction(evt -> openInvoice(kind, id));
+        return b;
+    }
+
+    private void openInvoice(String kind, UUID id) {
+        if (id == null) {
+            return;
+        }
+        try {
+            byte[] pdf = ApiClient.get().downloadInvoice(kind, id);
+            Path temp = Files.createTempFile("invoice-", ".pdf");
+            Files.write(temp, pdf);
+            if (MainApp.hostServices() != null) {
+                MainApp.hostServices().showDocument(temp.toUri().toString());
+            } else {
+                System.out.println("[History] Invoice saved to " + temp);
+            }
+        } catch (IOException e) {
+            System.err.println("[History] Failed to write invoice: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private Region spacer() {

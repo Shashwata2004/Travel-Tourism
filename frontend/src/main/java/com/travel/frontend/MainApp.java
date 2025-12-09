@@ -6,9 +6,19 @@ package com.travel.frontend;
 import com.travel.frontend.ui.Navigator;
 
 import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
+    private static MainApp INSTANCE;
+
+    public MainApp() {
+        INSTANCE = this;
+    }
+
+    public static HostServices hostServices() {
+        return INSTANCE == null ? null : INSTANCE.getHostServices();
+    }
 
     /* JavaFX lifecycle hook: hands us the Stage so we can set up shared styling
        and pass control to the Navigator. Uses the standard Application.start

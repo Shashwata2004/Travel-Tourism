@@ -37,8 +37,10 @@ com/travel/frontend/controller/BookingDialogController.class
 com/travel/frontend/controller/HistoryController$CancelContext.class
 com/travel/frontend/controller/HotelSearchController$2.class
 com/travel/frontend/controller/AdminHotelsController.class
+com/travel/frontend/controller/AdminCancelWatcher.class
 com/travel/frontend/controller/AdminAllRoomBookingsController$1.class
 com/travel/frontend/model/HistoryResponse.class
+com/travel/frontend/controller/AdminCancelWatcher$AdminCancel.class
 com/travel/frontend/controller/AdminAllPackageBookingsController.class
 com/travel/frontend/controller/AdminHotelsState.class
 com/travel/frontend/controller/CancelNoticeController.class
