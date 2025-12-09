@@ -167,8 +167,6 @@ public final class Navigator {
         if (THEME_TOGGLE == null) return;
         THEME_TOGGLE.setText(ThemeManager.isDark() ? "☀" : "☾");
     }
-    public static void goAdminPackageBookings() { load("admin_package_bookings.fxml"); }
-
     // Allows other controllers to retrieve the current root wrapper for overlays.
     public static StackPane peekRoot() { return LAST_ROOT; }
 

@@ -151,21 +151,6 @@ public class AdminDashboardController {
         }).start();
     }
 
-    @FXML public void onViewBookings() {
-        PackageVM sel = listView.getSelectionModel().getSelectedItem();
-        if (sel == null) {
-            statusLabel.setText("Select a package first to view bookings");
-            return;
-        }
-        if (sel.id == null || sel.id.isBlank()) {
-            statusLabel.setText("Selected package is missing an id. Try Refresh.");
-            return;
-        }
-        AdminPackagesState.set(sel.id.trim(), sel.name);
-        statusLabel.setText("");
-        Navigator.goAdminPackageBookings();
-    }
-
     @FXML public void onViewAllBookings() {
         Navigator.goAdminAllPackageBookings();
     }

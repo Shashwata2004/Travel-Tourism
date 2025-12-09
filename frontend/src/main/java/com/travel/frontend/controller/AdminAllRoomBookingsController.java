@@ -68,8 +68,13 @@ public class AdminAllRoomBookingsController {
                     boolean canceled = item.status != null && item.status.equalsIgnoreCase("CANCELED");
                     getStyleClass().remove("upcomingRow");
                     getStyleClass().remove("canceledRow");
-                    if (canceled) getStyleClass().add("canceledRow");
-                    else {
+                    getStyleClass().remove("adminCanceledRow");
+                    if (canceled) {
+                        getStyleClass().add("canceledRow");
+                        if (item.canceledBy != null && item.canceledBy.equalsIgnoreCase("ADMIN")) {
+                            getStyleClass().add("adminCanceledRow");
+                        }
+                    } else {
                         LocalDate today = LocalDate.now();
                         boolean upcoming = item.checkIn != null && item.checkIn.isAfter(today);
                         if (upcoming) getStyleClass().add("upcomingRow");

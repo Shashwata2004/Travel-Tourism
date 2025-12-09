@@ -55,14 +55,18 @@ public class AdminAllPackageBookingsController {
                     super.updateItem(item, empty);
                     if (empty || item == null) {
                         getStyleClass().remove("canceledRow");
+                        getStyleClass().remove("adminCanceledRow");
                         getStyleClass().remove("upcomingRow");
                         return;
                     }
                     boolean canceled = item.status != null && item.status.equalsIgnoreCase("CANCELED");
                     getStyleClass().remove("upcomingRow");
                     getStyleClass().remove("canceledRow");
+                    getStyleClass().remove("adminCanceledRow");
                     if (canceled) getStyleClass().add("canceledRow");
-                    else {
+                    if (item.canceledBy != null && item.canceledBy.equalsIgnoreCase("ADMIN")) {
+                        getStyleClass().add("adminCanceledRow");
+                    } else if (!canceled) {
                         LocalDate today = LocalDate.now();
                         boolean upcoming = item.bookingDeadline != null && item.bookingDeadline.isAfter(today);
                         if (upcoming) getStyleClass().add("upcomingRow");

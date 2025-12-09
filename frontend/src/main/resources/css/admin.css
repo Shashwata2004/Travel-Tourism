@@ -80,7 +80,12 @@
     -fx-background-color: #fff5f5;
 }
 .table-view .table-row-cell.canceledRow .table-cell {
-    -fx-text-fill: #b91c1c;
+    -fx-text-fill: #991b1b;
+}
+.table-view .table-row-cell.adminCanceledRow .table-cell {
+    -fx-text-fill: #4c010f;
+    -fx-font-weight: 700;
+    -fx-background-color: rgba(134, 21, 21, 0.05);
 }
 .table-view .table-row-cell.upcomingRow .table-cell {
     -fx-text-fill: #15803d;

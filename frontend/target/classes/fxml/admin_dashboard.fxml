@@ -22,7 +22,6 @@
             <Button text="Refresh" onAction="#onRefresh"/>
             <Button text="New" onAction="#onNew"/>
             <Button text="Save" onAction="#onSave" id="primaryBtn"/>
-            <Button text="View Bookings" onAction="#onViewBookings"/>
             <Button text="Delete" onAction="#onDelete"/>
         </HBox>
     </top>

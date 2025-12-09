@@ -29,8 +29,6 @@
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/BookingDialogController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/HotelBookingDialogController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/HotelSearchController.java
-/home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/AdminPackagesState.java
-/home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/AdminPackageBookingsController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/RegisterController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/controller/AdminAllPackageBookingsController.java
 /home/shashwata/Documents/Travel-Tourism/frontend/src/main/java/com/travel/frontend/model/HistoryPackageItem.java

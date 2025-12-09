@@ -1,7 +1,6 @@
 com/travel/frontend/controller/NavbarController.class
 com/travel/frontend/controller/AdminCancelSuccessController.class
 com/travel/frontend/model/HistoryRoomItem.class
-com/travel/frontend/controller/AdminPackagesState.class
 com/travel/frontend/ui/ThemeManager$Theme.class
 com/travel/frontend/controller/AdminHotelsController$1.class
 com/travel/frontend/model/BookingResponse.class
@@ -10,7 +9,6 @@ com/travel/frontend/ui/ThemeManager.class
 com/travel/frontend/controller/HistoryController.class
 com/travel/frontend/controller/PackagesController.class
 com/travel/frontend/model/PackageBookingAdminView.class
-com/travel/frontend/controller/AdminPackageBookingsController$2.class
 com/travel/frontend/controller/AdminRoomsController$1.class
 com/travel/frontend/controller/AdminDashboardController$1.class
 com/travel/frontend/controller/AdminRoomBookingsController$1.class
@@ -20,7 +18,6 @@ com/travel/frontend/controller/NavbarController$ActivePage.class
 com/travel/frontend/cache/DataCache.class
 com/travel/frontend/admin/AdminSession.class
 com/travel/frontend/controller/PackageDetailsController$ItineraryItem.class
-com/travel/frontend/controller/AdminPackageBookingsController.class
 com/travel/frontend/controller/HotelBookingDialogController.class
 com/travel/frontend/controller/WelcomeController$AdminCancel.class
 com/travel/frontend/cache/DataCache$Entry.class
@@ -69,7 +66,6 @@ com/travel/frontend/admin/AdminSocketClient$DestinationVM.class
 com/travel/frontend/admin/AdminSocketClient$1.class
 com/travel/frontend/controller/AdminCancelSuccessController$Mode.class
 com/travel/frontend/controller/HotelDetailsController.class
-com/travel/frontend/controller/AdminPackageBookingsController$1.class
 com/travel/frontend/controller/HistoryController$FeeBreakdown.class
 com/travel/frontend/admin/AdminSocketClient$ItineraryVM.class
 com/travel/frontend/controller/HistoryController$CancelKind.class
