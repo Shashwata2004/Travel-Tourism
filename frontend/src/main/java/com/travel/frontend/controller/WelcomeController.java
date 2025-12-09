@@ -54,7 +54,7 @@ public class WelcomeController {
                 Profile p = DataCache.getOrLoad("myProfile", api::getMyProfile);
                 this.profile = p;
                 Platform.runLater(() -> usernameLabel.setText(p.username));
-                checkAdminCancellations(p);
+                AdminCancelWatcher.start(p);
             } catch (Exception ignore) { }
         }).start();
     }
@@ -170,7 +170,19 @@ public class WelcomeController {
             if (Files.exists(file)) {
                 String s = Files.readString(file).trim();
                 if (!s.isEmpty()) {
-                    return Instant.parse(s);
+                    try {
+                        return Instant.parse(s);
+                    } catch (Exception ignored) {
+                        try {
+                            long epoch = Long.parseLong(s);
+                            // if stored as millis vs seconds
+                            if (epoch > 9999999999L) {
+                                return Instant.ofEpochMilli(epoch);
+                            } else {
+                                return Instant.ofEpochSecond(epoch);
+                            }
+                        } catch (Exception ignoredToo) { }
+                    }
                 }
             }
         } catch (Exception ignored) { }

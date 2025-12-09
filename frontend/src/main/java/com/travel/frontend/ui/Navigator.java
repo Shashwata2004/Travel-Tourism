@@ -21,6 +21,7 @@ import javafx.scene.layout.StackPane;
 import javafx.animation.RotateTransition;
 import javafx.util.Duration;
 
+import com.travel.frontend.controller.AdminCancelWatcher;
 public final class Navigator {
     private static Stage STAGE;
     private static StackPane ROOT_WRAPPER;
@@ -103,6 +104,9 @@ public final class Navigator {
 
             STAGE.centerOnScreen();
             STAGE.show();
+            if (!"login.fxml".equals(fxmlFileName) && !"register.fxml".equals(fxmlFileName)) {
+                AdminCancelWatcher.start(null);
+            }
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to load " + fxmlFileName + ": " + e.getMessage(), e);
