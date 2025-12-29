@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.travel.frontend.controller.ForgotResetController"
+           stylesheets="@/css/forgot_password.css"
+           styleClass="fp-overlay">
+    <children>
+        <VBox spacing="0" styleClass="fp-card" StackPane.alignment="CENTER">
+            <StackPane styleClass="fp-header">
+                <Button fx:id="closeButton" text="✕" styleClass="fp-close" StackPane.alignment="TOP_RIGHT"/>
+                <VBox spacing="8" alignment="CENTER">
+                    <StackPane styleClass="fp-icon-wrap">
+                        <SVGPath styleClass="fp-icon"
+                                 content="M12 2a5 5 0 0 0-5 5v3H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-2V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 1 1 6 0v3H9z"/>
+                    </StackPane>
+                    <Label text="Create New Password" styleClass="fp-title"/>
+                    <Label text="Your new password must be different from previous passwords" styleClass="fp-subtitle"/>
+                </VBox>
+            </StackPane>
+
+            <VBox spacing="12" styleClass="fp-body">
+                <HBox spacing="4">
+                    <Label text="New Password" styleClass="fp-label"/>
+                    <Label text="*" styleClass="fp-required"/>
+                </HBox>
+                <HBox styleClass="fp-input-wrap">
+                    <PasswordField fx:id="newPasswordField" promptText="Enter new password" styleClass="fp-input-inner" HBox.hgrow="ALWAYS"/>
+                    <TextField fx:id="newPasswordTextField" promptText="Enter new password" styleClass="fp-input-inner"
+                               visible="false" managed="false" HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="toggleNewBtn" styleClass="fp-eye">
+                        <graphic>
+                            <SVGPath styleClass="fp-eye-icon"
+                                     content="M1 12s4-6 11-6 11 6 11 6-4 6-11 6-11-6-11-6zm11 4a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>
+                        </graphic>
+                    </Button>
+                </HBox>
+
+                <HBox spacing="4">
+                    <Label text="Confirm Password" styleClass="fp-label"/>
+                    <Label text="*" styleClass="fp-required"/>
+                </HBox>
+                <HBox styleClass="fp-input-wrap">
+                    <PasswordField fx:id="confirmPasswordField" promptText="Confirm new password" styleClass="fp-input-inner" HBox.hgrow="ALWAYS"/>
+                    <TextField fx:id="confirmPasswordTextField" promptText="Confirm new password" styleClass="fp-input-inner"
+                               visible="false" managed="false" HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="toggleConfirmBtn" styleClass="fp-eye">
+                        <graphic>
+                            <SVGPath styleClass="fp-eye-icon"
+                                     content="M1 12s4-6 11-6 11 6 11 6-4 6-11 6-11-6-11-6zm11 4a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>
+                        </graphic>
+                    </Button>
+                </HBox>
+
+                <Label fx:id="errorLabel" text="" styleClass="fp-error" wrapText="true"/>
+
+                <HBox alignment="CENTER_RIGHT" spacing="12" styleClass="fp-actions">
+                    <Button fx:id="cancelButton" text="Cancel" styleClass="fp-btn ghost"/>
+                    <Button fx:id="confirmButton" text="Confirm Password" styleClass="fp-btn primary"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </children>
+</StackPane>

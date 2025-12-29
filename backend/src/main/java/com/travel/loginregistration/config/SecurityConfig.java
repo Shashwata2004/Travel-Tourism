@@ -45,7 +45,7 @@ public class SecurityConfig {
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()                     // can access without jwt
-                .requestMatchers("/api/auth/register", "/api/auth/login", "/actuator/health").permitAll()
+                .requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/forgot/**", "/actuator/health").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/destinations/**").permitAll()
                 .requestMatchers("/api/admin/rooms/**").permitAll()
                 .requestMatchers("/api/admin/packages/**").permitAll()

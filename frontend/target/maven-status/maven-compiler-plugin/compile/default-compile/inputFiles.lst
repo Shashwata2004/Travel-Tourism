@@ -23,6 +23,7 @@ D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\controller\HomeCont
 D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\controller\AdminAllRoomBookingsController.java
 D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\MainApp.java
 D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\model\HistoryPackageItem.java
+D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\controller\ForgotResetController.java
 D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\cache\FileCache.java
 D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\controller\CancelNoticeController.java
 D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\controller\AdminDashboardController.java
@@ -33,9 +34,11 @@ D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\controller\HotelBoo
 D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\model\RoomBookingAdminView.java
 D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\controller\WelcomeController.java
 D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\model\HistoryRoomItem.java
+D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\controller\ForgotVerifyController.java
 D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\controller\RegisterController.java
 D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\controller\PackageDetailsController.java
 D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\controller\AdminRoomsController.java
+D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\controller\ForgotSuccessController.java
 D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\ui\Navigator.java
 D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\cache\DataCache.java
 D:\Travel-Tourism\frontend\src\main\java\com\travel\frontend\controller\DestinationsController.java

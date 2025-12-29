@@ -28,7 +28,7 @@
 
     <!-- Right: gradient backdrop + glass card -->
     <center>
-        <StackPane styleClass="formHost">
+        <StackPane fx:id="formHost" styleClass="formHost">
             <VBox id="card" fx:id="cardBox" styleClass="loginCard" maxWidth="480" spacing="18">
                 <VBox spacing="6">
                     <Label text="Welcome back 👋" id="cardTitle"/>

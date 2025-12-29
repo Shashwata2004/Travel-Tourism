@@ -61,6 +61,42 @@ public final class ApiClient {
         throw error(res, "Admin login failed");
     }
 
+    // --- Forgot password ---
+    public void verifyIdentityForReset(String email, String idType, String idNumber) throws ApiException {
+        try {
+            java.util.Map<String, Object> body = new java.util.HashMap<>();
+            body.put("email", email);
+            body.put("idType", idType);
+            body.put("idNumber", idNumber);
+            String json = mapper.writeValueAsString(body);
+            HttpResponse<String> res = post("/auth/forgot/verify", json, false);
+            if (res.statusCode() == 200) return;
+            throw error(res, "Verification failed");
+        } catch (ApiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ApiException("Verification error: " + e.getMessage(), e);
+        }
+    }
+
+    public void resetPassword(String email, String idType, String idNumber, String newPassword) throws ApiException {
+        try {
+            java.util.Map<String, Object> body = new java.util.HashMap<>();
+            body.put("email", email);
+            body.put("idType", idType);
+            body.put("idNumber", idNumber);
+            body.put("newPassword", newPassword);
+            String json = mapper.writeValueAsString(body);
+            HttpResponse<String> res = post("/auth/forgot/reset", json, false);
+            if (res.statusCode() == 200) return;
+            throw error(res, "Password reset failed");
+        } catch (ApiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ApiException("Password reset error: " + e.getMessage(), e);
+        }
+    }
+
     /* Builds a registration JSON payload and posts it without auth headers,
        expecting the backend to confirm the new user with a 200 message. */
     public String register(String email, String username, String password, String location) throws ApiException {

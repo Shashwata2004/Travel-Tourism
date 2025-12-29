@@ -2,6 +2,8 @@ package com.travel.loginregistration.controller;
 
 import com.travel.loginregistration.dto.RegisterRequest;
 import com.travel.loginregistration.dto.LoginRequest;
+import com.travel.loginregistration.dto.ForgotPasswordVerifyRequest;
+import com.travel.loginregistration.dto.ForgotPasswordResetRequest;
 import com.travel.loginregistration.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -52,5 +54,30 @@ public class AuthController {
     @GetMapping("/ping")
     public ResponseEntity<String> ping() {
         return ResponseEntity.ok("AuthController is alive 🚀");
+    }
+
+    // ---------- FORGOT PASSWORD ----------
+    @PostMapping("/forgot/verify")
+    public ResponseEntity<String> verifyIdentity(@RequestBody ForgotPasswordVerifyRequest req) {
+        try {
+            authService.verifyIdentity(req);
+            return ResponseEntity.ok("VERIFIED");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Unexpected error: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/forgot/reset")
+    public ResponseEntity<String> resetPassword(@RequestBody ForgotPasswordResetRequest req) {
+        try {
+            authService.resetPassword(req);
+            return ResponseEntity.ok("PASSWORD_RESET");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Unexpected error: " + e.getMessage());
+        }
     }
 }

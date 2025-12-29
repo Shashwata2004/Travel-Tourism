@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.travel.frontend.controller.ForgotSuccessController"
+           stylesheets="@/css/forgot_password.css"
+           styleClass="fp-overlay">
+    <children>
+        <VBox spacing="16" styleClass="fp-success-card" StackPane.alignment="CENTER">
+            <StackPane styleClass="fp-success-header">
+                <StackPane styleClass="fp-success-icon">
+                    <SVGPath styleClass="fp-success-check"
+                             content="M9 16l-4-4 1.4-1.4L9 13.2 17.6 4.6 19 6z"/>
+                </StackPane>
+            </StackPane>
+            <Label text="Password Reset Successful!" styleClass="fp-success-title"/>
+            <Label text="Your password has been successfully reset. You can now sign in with your new password."
+                   wrapText="true" styleClass="fp-success-subtitle" maxWidth="360" alignment="CENTER"/>
+            <Button fx:id="continueButton" text="Continue to Sign In" styleClass="fp-success-btn" maxWidth="Infinity"/>
+        </VBox>
+    </children>
+</StackPane>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.travel.frontend.controller.ForgotVerifyController"
+           stylesheets="@/css/forgot_password.css"
+           styleClass="fp-overlay">
+    <children>
+        <VBox spacing="0" styleClass="fp-card" StackPane.alignment="CENTER">
+            <StackPane styleClass="fp-header">
+                <Button fx:id="closeButton" text="✕" styleClass="fp-close" StackPane.alignment="TOP_RIGHT"/>
+                <VBox spacing="8" alignment="CENTER">
+                    <StackPane styleClass="fp-icon-wrap">
+                        <SVGPath styleClass="fp-icon"
+                                 content="M12 2l8 4v6c0 5.25-3.5 9.75-8 11-4.5-1.25-8-5.75-8-11V6l8-4z"/>
+                    </StackPane>
+                    <Label text="Verify Your Identity" styleClass="fp-title"/>
+                    <Label text="Please enter your ID details to reset your password" styleClass="fp-subtitle"/>
+                </VBox>
+            </StackPane>
+
+            <VBox spacing="12" styleClass="fp-body">
+                <HBox spacing="4">
+                    <Label text="ID Type" styleClass="fp-label"/>
+                    <Label text="*" styleClass="fp-required"/>
+                </HBox>
+                <HBox spacing="10" styleClass="fp-pill-row">
+                    <fx:define>
+                        <ToggleGroup fx:id="idTypeGroup"/>
+                    </fx:define>
+                    <ToggleButton fx:id="idNid" text="NID" styleClass="fp-pill">
+                        <toggleGroup><fx:reference source="idTypeGroup"/></toggleGroup>
+                    </ToggleButton>
+                    <ToggleButton fx:id="idBirth" text="Birth Certificate" styleClass="fp-pill">
+                        <toggleGroup><fx:reference source="idTypeGroup"/></toggleGroup>
+                    </ToggleButton>
+                    <ToggleButton fx:id="idPassport" text="Passport" styleClass="fp-pill">
+                        <toggleGroup><fx:reference source="idTypeGroup"/></toggleGroup>
+                    </ToggleButton>
+                </HBox>
+
+                <HBox spacing="4">
+                    <Label text="ID Number" styleClass="fp-label"/>
+                    <Label text="*" styleClass="fp-required"/>
+                </HBox>
+                <TextField fx:id="idNumberField" promptText="Enter your ID number" styleClass="fp-input"/>
+
+                <HBox spacing="10" styleClass="fp-note">
+                    <StackPane styleClass="fp-note-icon">
+                        <SVGPath styleClass="fp-note-shield"
+                                 content="M12 2l8 4v6c0 5.25-3.5 9.75-8 11-4.5-1.25-8-5.75-8-11V6l8-4z"/>
+                    </StackPane>
+                    <Label text="Enter the same ID information you provided during registration. This helps us verify your identity securely."
+                           wrapText="true"
+                           styleClass="fp-note-text"/>
+                </HBox>
+
+                <Label fx:id="errorLabel" text="" styleClass="fp-error" wrapText="true"/>
+
+                <HBox alignment="CENTER_RIGHT" spacing="12" styleClass="fp-actions">
+                    <Button fx:id="cancelButton" text="Cancel" styleClass="fp-btn ghost"/>
+                    <Button fx:id="verifyButton" text="Verify Identity" styleClass="fp-btn primary">
+                        <graphic>
+                            <SVGPath styleClass="fp-icon"
+                                     content="M10 6a4 4 0 1 1 8 0v2h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1V6zm2 2h4V6a2 2 0 0 0-4 0v2z"/>
+                        </graphic>
+                    </Button>
+                </HBox>
+            </VBox>
+        </VBox>
+    </children>
+</StackPane>

@@ -37,6 +37,7 @@ public class LoginController {
     @FXML private StackPane brandPane;
     @FXML private VBox brandCopy;
     @FXML private VBox cardBox;
+    @FXML private StackPane formHost;
 
     private final ApiClient api = ApiClient.get();
     private final AdminSocketClient adminClient = new AdminSocketClient();
@@ -109,7 +110,22 @@ public class LoginController {
 
     @FXML
     private void onForgotPassword() {
-        showInfo("Coming soon", "Password reset flow is not implemented yet.");
+        String email = emailField.getText() == null ? "" : emailField.getText().trim();
+        if (email.isEmpty()) {
+            showInfo("Missing email", "Please enter your email first.");
+            return;
+        }
+        if (formHost == null) {
+            showInfo("Unavailable", "Password reset UI is not available right now.");
+            return;
+        }
+        ForgotVerifyController.show(formHost, email, (idType, idNumber) -> {
+            ForgotResetController.show(formHost, email, idType, idNumber, () -> {
+                ForgotSuccessController.show(formHost, () -> {
+                    if (passwordField != null) passwordField.clear();
+                });
+            });
+        });
     }
 
     private void showInfo(String title, String msg) {
