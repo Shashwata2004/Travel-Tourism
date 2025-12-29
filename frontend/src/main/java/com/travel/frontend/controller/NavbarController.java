@@ -2,6 +2,8 @@ package com.travel.frontend.controller;
 
 import com.travel.frontend.cache.DataCache;
 import com.travel.frontend.ui.Navigator;
+import com.travel.frontend.session.Session;
+import com.travel.frontend.admin.AdminSession;
 import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -43,6 +45,8 @@ public class NavbarController {
         aboutBtn.setOnAction(e -> { /* no-op until implemented */ });
         logoutBtn.setOnAction(e -> {
             DataCache.clear();
+            Session.clear();
+            AdminSession.clear();
             Navigator.goLogin();
         });
     }

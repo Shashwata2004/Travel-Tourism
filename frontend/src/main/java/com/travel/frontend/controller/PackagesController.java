@@ -238,7 +238,12 @@ public class PackagesController {
     @FXML private void goDestinations() { Navigator.goDestinations(); }
     @FXML private void goHistory() { Navigator.goHistory(); }
     @FXML private void goAbout() { /* placeholder */ }
-    @FXML private void onLogout() { com.travel.frontend.cache.DataCache.clear(); Navigator.goLogin(); }
+    @FXML private void onLogout() {
+        com.travel.frontend.cache.DataCache.clear();
+        com.travel.frontend.session.Session.clear();
+        com.travel.frontend.admin.AdminSession.clear();
+        Navigator.goLogin();
+    }
 
     @FXML
     private void reloadPackages() {

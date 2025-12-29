@@ -1,6 +1,7 @@
 package com.travel.frontend.controller;
 
 import com.travel.frontend.cache.DataCache;
+import com.travel.frontend.admin.AdminSession;
 import com.travel.frontend.model.HistoryPackageItem;
 import com.travel.frontend.model.HistoryResponse;
 import com.travel.frontend.model.HistoryRoomItem;
@@ -41,6 +42,7 @@ public final class AdminCancelWatcher {
     private AdminCancelWatcher() {}
 
     public static void start(Profile profile) {
+        if (AdminSession.isAuthenticated()) return;
         if (!STARTED.compareAndSet(false, true)) return;
         new Thread(() -> init(profile)).start();
     }
@@ -63,6 +65,7 @@ public final class AdminCancelWatcher {
 
     private static void checkOnce(Profile p) {
         try {
+            if (AdminSession.isAuthenticated()) return;
             HistoryResponse history = api.getHistory();
             String key = "cancelSeen:" + (p.email == null ? "anon" : p.email.toLowerCase());
             Instant seen = loadSeen(key);

@@ -344,7 +344,10 @@
     -fx-padding: 14 16 16 16;
     -fx-spacing: 12;
     -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.22), 20, 0.35, 0, 8);
-    -fx-min-width: 240;
+    -fx-min-width: 310;
+    -fx-pref-width: 310;
+    -fx-max-width: 310;
+    -fx-min-height: 210;
 }
 .guestStepperMini { -fx-spacing: 12; -fx-alignment: center; }
 .roundBtnMini {
@@ -363,6 +366,9 @@
     -fx-text-fill: #4338ca;
     -fx-font-size: 12px;
     -fx-alignment: center;
+    -fx-wrap-text: true;
+    -fx-text-overrun: clip;
+    -fx-max-width: 280;
 }
 .doneBtnMini {
     -fx-background-radius: 16;

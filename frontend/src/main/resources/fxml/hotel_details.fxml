@@ -11,7 +11,8 @@
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="com.travel.frontend.controller.HotelDetailsController"
            stylesheets="@/css/hotel_details.css"
-           fx:id="rootStack">
+           fx:id="rootStack"
+           styleClass="detailsBackdrop">
     <children>
         <ScrollPane fx:id="rootScroll"
                     styleClass="rootScroll"

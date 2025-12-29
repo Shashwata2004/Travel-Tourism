@@ -7,6 +7,8 @@ package com.travel.frontend.controller;
 import com.travel.frontend.admin.AdminSocketClient;
 import com.travel.frontend.admin.AdminSocketClient.PackageVM;
 import com.travel.frontend.ui.Navigator;
+import com.travel.frontend.admin.AdminSession;
+import com.travel.frontend.session.Session;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -48,7 +50,11 @@ public class AdminDashboardController {
         onRefresh();
     }
 
-    @FXML public void onBack() { Navigator.goLogin(); }
+    @FXML public void onBack() {
+        AdminSession.clear();
+        Session.clear();
+        Navigator.goLogin();
+    }
     @FXML public void goDestinations() { Navigator.goAdminDestinations(); }
 
     /* Pulls the latest packages from the AdminSocketClient.list() call on a

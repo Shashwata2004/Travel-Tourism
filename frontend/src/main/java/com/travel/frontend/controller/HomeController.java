@@ -128,6 +128,8 @@ public class HomeController {
     @FXML
     private void onLogout() {
         com.travel.frontend.cache.DataCache.clear();
+        com.travel.frontend.session.Session.clear();
+        com.travel.frontend.admin.AdminSession.clear();
         Navigator.goLogin();
     }
 

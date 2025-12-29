@@ -144,7 +144,8 @@
                                                             styleClass="roundBtnMini"/>
                                                 </HBox>
                                                 <Separator />
-                                                <Label text="Above 10 years are all considered as adults"
+                                                <Label fx:id="guestHelperNote"
+                                                       text="Above 10 years are all considered as adults"
                                                        wrapText="true"
                                                        textAlignment="CENTER"
                                                        styleClass="helperNoteMini"/>

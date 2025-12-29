@@ -27,3 +27,9 @@
 2025-12-07T06:20:22.221484720Z | booking cc3cf188-d678-43e2-be44-b9da6864d3da | user=s@k.com | package=SREEMANGAL TEA GARDEN TOUR | persons=1 | total=8999.00 | id=43284832202 | name=afasd
 2025-12-08T10:00:05.339751858Z | booking 55447adb-8bd8-495e-a779-fde9c65f739f | user=s@k.com | package=Bandarban Hills Escape | persons=1 | total=10999.00 | id=43284832202 | name=afasd
 2025-12-08T10:00:46.538724746Z | booking 7de39b18-8527-4571-a163-487d6bc2c736 | user=s@k.com | package=Cox's Bazar Getaway | persons=1 | total=4999.00 | id=43284832202 | name=afasd
+2025-12-25T18:32:15.456947Z | booking ec9b928c-7667-4bb3-a5d3-6236ca0d7e54 | user=s@k.com | package=Cox's Bazar Getaway | persons=1 | total=4999.00 | id=43284832202 | name=afasd
+2025-12-25T18:33:00.522460100Z | booking e80d36f9-fb24-4492-ab35-ec5467426a7e | user=s@k.com | package=Sajek Valley Cloud Experience | persons=4 | total=39996.00 | id=43284832202 | name=afasd
+2025-12-25T20:55:25.587431600Z | booking b51dbeb8-b51c-4218-b59b-9ea625da20f6 | user=f@k.com | package=Rangamati Lake & Hills Escape | persons=3 | total=28500.00 | id=1321321 | name=fasf
+2025-12-25T20:57:45.369083500Z | booking e78aab34-d5a5-4db6-a109-abfe2aedd027 | user=f@k.com | package=Bandarban Hills Escape | persons=1 | total=10999.00 | id=1321321 | name=fasf
+2025-12-25T21:19:19.241255800Z | booking f27f0fa7-d07f-4441-a695-53afc47c62f2 | user=f@k.com | package=Cox's Bazar Getaway | persons=2 | total=9998.00 | id=1321321 | name=fasf
+2025-12-29T20:00:01.602469Z | booking 9c332890-febe-4042-9ff7-85324ed59ab8 | user=u@u.com | package=Sajek Valley Cloud Experience | persons=2 | total=19998.00 | id=12345 | name=nn nn

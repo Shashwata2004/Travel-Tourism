@@ -16,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.Scene;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;
@@ -73,6 +74,7 @@ public class HotelDetailsController {
     @FXML
     private void initialize() {
         if (backButton != null) backButton.setOnAction(e -> goBack());
+        ensureBackdropCoversScene();
 
         if (orbLayer != null && orbLayer.getParent() instanceof Region reg) {
             orbLayer.prefWidthProperty().bind(reg.widthProperty());
@@ -93,6 +95,21 @@ public class HotelDetailsController {
 
         animateOrbs();
         loadData();
+    }
+
+    private void ensureBackdropCoversScene() {
+        if (rootStack == null) return;
+        rootStack.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        rootStack.sceneProperty().addListener((obs, oldScene, scene) -> {
+            if (scene == null) return;
+            rootStack.prefWidthProperty().bind(scene.widthProperty());
+            rootStack.prefHeightProperty().bind(scene.heightProperty());
+        });
+        Scene scene = rootStack.getScene();
+        if (scene != null) {
+            rootStack.prefWidthProperty().bind(scene.widthProperty());
+            rootStack.prefHeightProperty().bind(scene.heightProperty());
+        }
     }
 
     @FXML

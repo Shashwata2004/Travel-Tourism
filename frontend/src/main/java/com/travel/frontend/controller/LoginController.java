@@ -8,6 +8,7 @@ import com.travel.frontend.net.ApiClient;
 import com.travel.frontend.session.Session;
 import com.travel.frontend.ui.Navigator;
 import com.travel.frontend.admin.AdminSocketClient;
+import com.travel.frontend.admin.AdminSession;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
@@ -63,6 +64,7 @@ public class LoginController {
         new Thread(() -> {
             try {
                 if (adminSelected) {
+                    Session.clear();
                     boolean ok = adminClient.auth(email, pass);
                     Platform.runLater(() -> {
                         if (ok) {
@@ -78,6 +80,7 @@ public class LoginController {
                     });
                     return;
                 } else {
+                    AdminSession.clear();
                     String jwt = api.login(email, pass);
                     Session.setToken(jwt);
                     Platform.runLater(() -> {

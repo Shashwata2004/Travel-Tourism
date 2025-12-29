@@ -142,3 +142,23 @@
     -fx-padding: 10;
     -fx-effect: dropshadow(gaussian, rgba(148,163,184,0.20), 14, 0.25, 0, 6);
 }
+
+/* Hide native ScrollPane scrollbars while preserving scroll behavior */
+.hide-scroll .scroll-bar {
+    -fx-opacity: 0; /* visually hide */
+    -fx-max-width: 0; /* collapse space on vertical bars */
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-height: 0; /* collapse horizontal if present */
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-padding: 0;
+}
+.hide-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Allow mouse wheel/pan to still work comfortably */
+.hide-scroll {
+    -fx-pannable: true;
+}

@@ -45,6 +45,29 @@
         radial-gradient(center 0% 0%, radius 60%, rgba(79, 209, 197, 0.3), rgba(79, 209, 197, 0.0)),
         linear-gradient(to bottom right, #0D4D45, #1A2F2E, #0A0F0E);
 }
+.dark-theme.detailsBackdrop,
+.dark-theme .detailsBackdrop {
+    -fx-background-color:
+        radial-gradient(center 0% 0%, radius 60%, rgba(79, 209, 197, 0.3), rgba(79, 209, 197, 0.0)),
+        linear-gradient(to bottom right, #0D4D45, #1A2F2E, #0A0F0E);
+}
+.dark-theme.detailsBackdrop .orbLayer,
+.dark-theme.detailsBackdrop .orbA,
+.dark-theme.detailsBackdrop .orbB,
+.dark-theme.detailsBackdrop .orbC,
+.dark-theme.detailsBackdrop .orbD,
+.dark-theme.detailsBackdrop .orbE {
+    -fx-background-color: transparent;
+    -fx-fill: transparent;
+}
+.dark-theme .galleryCard,
+.dark-theme .infoCard,
+.dark-theme .roomCard {
+    -fx-background-color: rgba(255,255,255,0.08);
+}
+.dark-theme .roomGallery {
+    -fx-background-color: rgba(255,255,255,0.06);
+}
 .dark-theme .historyShell { -fx-background-color: rgba(255,255,255,0.04); }
 .dark-theme .historyTitle { -fx-text-fill: #e5e7eb; }
 .dark-theme .historySubtitle { -fx-text-fill: #cbd5e1; }
@@ -342,8 +365,8 @@
 .dark-theme .orbE { -fx-fill: rgba(59,130,246,0.20); }
 .dark-theme .summaryCard,
 .dark-theme .galleryCard, .dark-theme .infoCard {
-    -fx-background-color: linear-gradient(to bottom, #0f172a, #111827);
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 24, 0.35, 0, 12);
+    -fx-background-color: rgba(255,255,255,0.08);
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.2), 16, 0.28, 0, 8);
 }
 .dark-theme .summaryHeader { -fx-background-color: linear-gradient(to right, #1d4ed8, #312e81); }
 .dark-theme .summarySubhead,
@@ -425,10 +448,10 @@
 .dark-theme .facilityTileCoffee { -fx-background-color: linear-gradient(to right, #f3dfc1, #ebd3ae) !important; }
 .dark-theme .aboutText { -fx-text-fill: #e5e7eb; }
 .dark-theme .roomCard {
-    -fx-background-color: linear-gradient(to bottom, #0f172a, #111827);
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 20, 0.35, 0, 10);
+    -fx-background-color: rgba(255,255,255,0.08);
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.2), 16, 0.28, 0, 8);
 }
-.dark-theme .roomGallery { -fx-background-color: #0b1024; }
+.dark-theme .roomGallery { -fx-background-color: rgba(255,255,255,0.06); }
 .dark-theme .roomTitle { -fx-text-fill: #f8fafc; }
 .dark-theme .bedMeta, .dark-theme .capMeta {
     -fx-background-color: rgba(59,130,246,0.15);
@@ -470,6 +493,28 @@
 .dark-theme .rootScroll,
 .dark-theme .rootScroll > .viewport {
     -fx-background-color: linear-gradient(to bottom right, #0b1024, #0f172a, #0b2542);
+}
+
+/* Hotel details: let the history-style backdrop show through in dark mode */
+.dark-theme .detailsBackdrop .rootScroll,
+.dark-theme .detailsBackdrop .rootScroll > .viewport,
+.dark-theme .detailsBackdrop .rootScroll > .viewport > .content {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-control-inner-background: transparent;
+}
+.dark-theme .detailsBackdrop .orbLayer {
+    -fx-background-color: transparent;
+}
+.dark-theme .detailsBackdrop .orbA,
+.dark-theme .detailsBackdrop .orbB,
+.dark-theme .detailsBackdrop .orbC,
+.dark-theme .detailsBackdrop .orbD,
+.dark-theme .detailsBackdrop .orbE,
+.dark-theme .detailsBackdrop .ray,
+.dark-theme .detailsBackdrop .shimmerSweep {
+    -fx-fill: transparent;
+    -fx-stroke: transparent;
 }
 
 /* Welcome page: keep light styling in dark mode */

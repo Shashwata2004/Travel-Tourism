@@ -75,15 +75,20 @@ public class BookingDialogController {
     /* Static helper that loads the booking_dialog.fxml file, seeds the controller
        with the chosen package id + base price, and opens a modal Stage. */
     public static void open(UUID packageId, String packageName, String priceText, String groupSizeText) {
+        open(packageId, packageName, parsePrice(priceText), groupSizeText);
+    }
+
+    public static void open(UUID packageId, String packageName, BigDecimal basePrice, String groupSizeText) {
         try {
             URL url = BookingDialogController.class.getResource("/fxml/booking_dialog.fxml");
             FXMLLoader loader = new FXMLLoader(url);
             Parent root = loader.load();
             BookingDialogController c = loader.getController();
             c.packageId = packageId;
-            c.basePrice = parsePrice(priceText);
+            c.basePrice = basePrice == null ? BigDecimal.ZERO : basePrice;
             c.applyGroupBounds(groupSizeText);
             c.reseedPrice();
+            c.loadBasePriceFromApiIfMissing();
 
             Stage s = new Stage();
             s.setTitle("Book: " + packageName);
@@ -314,6 +319,21 @@ public class BookingDialogController {
         updatePrice();
     }
 
+    private void loadBasePriceFromApiIfMissing() {
+        if (packageId == null) return;
+        if (basePrice != null && basePrice.signum() > 0) return;
+        new Thread(() -> {
+            try {
+                var res = api.rawGet("/packages/" + packageId, true);
+                if (res.statusCode() != 200) return;
+                PackagePrice payload = mapper.readValue(res.body(), PackagePrice.class);
+                if (payload == null || payload.basePrice == null || payload.basePrice.signum() <= 0) return;
+                basePrice = payload.basePrice;
+                Platform.runLater(this::reseedPrice);
+            } catch (Exception ignore) { }
+        }).start();
+    }
+
     private void applyGroupBounds(String groupSize) {
         if (groupSize == null || groupSize.isBlank()) return;
         Matcher m = Pattern.compile("(\\d+)").matcher(groupSize);
@@ -334,7 +354,8 @@ public class BookingDialogController {
 
     private void updatePrice() {
         int n = personsSpinner.getValue();
-        priceLabel.setText("BDT " + basePrice.multiply(BigDecimal.valueOf(n)));
+        BigDecimal unit = basePrice == null ? BigDecimal.ZERO : basePrice;
+        priceLabel.setText("BDT " + unit.multiply(BigDecimal.valueOf(n)));
         refreshPersonCount();
     }
 
@@ -421,6 +442,10 @@ public class BookingDialogController {
         System.out.println("[BookingDialog] payButton classes=" + (payButton != null ? payButton.getStyleClass() : "null"));
         System.out.println("[BookingDialog] upBtn classes=" + (upBtn != null ? upBtn.getStyleClass() : "null"));
         System.out.println("[BookingDialog] downBtn classes=" + (downBtn != null ? downBtn.getStyleClass() : "null"));
+    }
+
+    private static class PackagePrice {
+        public BigDecimal basePrice;
     }
 
     private void closePaymentModal() {

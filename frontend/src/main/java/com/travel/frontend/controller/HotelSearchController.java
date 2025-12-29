@@ -12,9 +12,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -51,6 +53,8 @@ public class HotelSearchController {
     @FXML private Label guestValue;
     @FXML private Label overlayGuestValue;
     @FXML private StackPane guestOverlay;
+    @FXML private VBox guestCard;
+    @FXML private Label guestHelperNote;
     @FXML private Label propertiesCountLabel;
     @FXML private VBox hotelsList;
     @FXML private javafx.scene.control.ComboBox<String> sortBox;
@@ -93,6 +97,7 @@ public class HotelSearchController {
         configureHeroTexts();
         setupDatePickers();
         updateGuestLabels();
+        configureGuestHelperNote();
         hideGuestsOverlay();
         if (guestOverlay != null) {
             guestOverlay.setViewOrder(-10000); // render above everything
@@ -104,6 +109,18 @@ public class HotelSearchController {
         }
         loadHotelCount();
         setupSearchButtonAnimation();
+    }
+
+    private void configureGuestHelperNote() {
+        if (guestHelperNote == null) return;
+        guestHelperNote.setWrapText(true);
+        guestHelperNote.setTextOverrun(OverrunStyle.CLIP);
+        guestHelperNote.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        guestHelperNote.setMaxWidth(Double.MAX_VALUE);
+        if (guestCard != null) {
+            guestHelperNote.prefWidthProperty().bind(guestCard.widthProperty().subtract(32));
+            guestHelperNote.maxWidthProperty().bind(guestCard.widthProperty().subtract(32));
+        }
     }
 
     private void configureHeroTexts() {

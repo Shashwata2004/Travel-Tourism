@@ -78,6 +78,7 @@ public class PackageDetailsController {
     private final ApiClient api = ApiClient.get();
     private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
     private UUID packageId;
+    private BigDecimal basePrice;
     private java.time.LocalDate bookingDeadline;
 
     /* Entry point from the packages list: stores the selected id, loads the
@@ -130,6 +131,7 @@ public class PackageDetailsController {
     private void fill(PackageDetailsVM vm) {
         if (nameLabel != null) nameLabel.setText(vm.name);
         if (locationLabel != null) locationLabel.setText(vm.location);
+        basePrice = vm.basePrice;
         if (priceLabel != null) priceLabel.setText("BDT " + vm.basePrice);
         if (durationLabel != null) durationLabel.setText(n(vm.timing).isBlank() ? "3 Days, 2 Nights" : vm.timing);
         if (groupLabel != null) groupLabel.setText(n(vm.groupSize).isBlank() ? "2-6 People" : vm.groupSize);
@@ -193,7 +195,7 @@ public class PackageDetailsController {
             a.showAndWait();
             return;
         }
-        BookingDialogController.open(packageId, nameLabel.getText(), priceLabel.getText(), groupLabel.getText());
+        BookingDialogController.open(packageId, nameLabel.getText(), basePrice, groupLabel.getText());
     }
 
     @FXML

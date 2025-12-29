@@ -104,7 +104,7 @@ public final class Navigator {
 
             STAGE.centerOnScreen();
             STAGE.show();
-            if (!"login.fxml".equals(fxmlFileName) && !"register.fxml".equals(fxmlFileName)) {
+            if (!isAdmin && !"login.fxml".equals(fxmlFileName) && !"register.fxml".equals(fxmlFileName)) {
                 AdminCancelWatcher.start(null);
             }
 

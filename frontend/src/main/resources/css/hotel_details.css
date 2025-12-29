@@ -1,17 +1,35 @@
+.detailsBackdrop {
+    -fx-background-color:
+        radial-gradient(center 0% 0%, radius 60%, rgba(79, 209, 197, 0.7), rgba(79, 209, 197, 0.0)),
+        linear-gradient(to bottom right, #4FD1C5, #C6F6D5, #FFFFFF);
+    -fx-background-insets: 0;
+}
 .detailsRoot {
     -fx-padding: 24 64 32 64;
     -fx-spacing: 18;
     -fx-background-color: transparent;
     -fx-alignment: top-center;
 }
-.orbLayer { -fx-background-color: linear-gradient(to bottom right, #eef2ff, #f3e8ff, #e0f2fe, #fde2ff); }
-.orbA { -fx-fill: rgba(216,180,254,0.6); }
-.orbB { -fx-fill: rgba(147,197,253,0.55); }
-.orbC { -fx-fill: rgba(253,186,248,0.5); }
-.orbD { -fx-fill: rgba(167,139,250,0.52); }
-.orbE { -fx-fill: rgba(129,140,248,0.48); }
+.rootScroll {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-control-inner-background: transparent;
+}
+.rootScroll > .viewport {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+.rootScroll > .viewport > .content {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+.rootScroll .corner { -fx-background-color: transparent; }
+.orbLayer { -fx-background-color: transparent; }
+.orbA, .orbB, .orbC, .orbD, .orbE { -fx-fill: transparent; }
 .ray { -fx-fill: transparent; -fx-stroke: transparent; }
-.shimmerSweep { -fx-fill: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.35) 45%, rgba(255,255,255,0.55) 52%, rgba(255,255,255,0.3) 60%, transparent 100%); }
+.shimmerSweep { -fx-fill: transparent; }
 .summaryCard {
     -fx-background-color: white;
     -fx-background-radius: 18;
@@ -109,14 +127,16 @@
     -fx-padding: 8 12;
 }
 .galleryCard, .infoCard {
-    -fx-background-color: white;
+    -fx-background-color: rgba(255,255,255,0.42);
     -fx-background-radius: 22;
     -fx-padding: 18;
-    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.12), 22, 0.35, 0, 10);
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.16), 14, 0.25, 0, 8);
     -fx-max-width: 1040;
     -fx-min-width: 1040;
     -fx-pref-width: 1040;
     -fx-alignment: center;
+    -fx-border-color: rgba(255,255,255,0.4);
+    -fx-border-radius: 22;
 }
 .thumbRow {
     -fx-padding: 8 4 0 4;
@@ -238,15 +258,20 @@
     -fx-line-spacing: 4px;
 }
 .roomCard {
-    -fx-background-color: white;
+    -fx-background-color: rgba(255,255,255,0.42);
     -fx-background-radius: 18;
-    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.12), 20, 0.35, 0, 6);
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.16), 14, 0.25, 0, 8);
     -fx-padding: 12;
+    -fx-border-color: rgba(255,255,255,0.4);
+    -fx-border-radius: 18;
 }
 .roomGallery {
-    -fx-background-color: #f8fafc;
+    -fx-background-color: rgba(255,255,255,0.35);
     -fx-background-radius: 14;
     -fx-padding: 8;
+    -fx-border-color: rgba(255,255,255,0.35);
+    -fx-border-radius: 14;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.18), 16, 0.25, 0, 8);
 }
 .roomThumb {
     -fx-cursor: hand;

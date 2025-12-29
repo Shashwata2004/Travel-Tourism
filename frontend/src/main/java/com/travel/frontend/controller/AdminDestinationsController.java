@@ -4,6 +4,8 @@ import com.travel.frontend.admin.AdminSession;
 import com.travel.frontend.admin.AdminSocketClient;
 import com.travel.frontend.admin.AdminSocketClient.DestinationVM;
 import com.travel.frontend.ui.Navigator;
+import com.travel.frontend.admin.AdminSession;
+import com.travel.frontend.session.Session;
 import com.travel.frontend.controller.AdminHotelsState;
 import com.travel.frontend.cache.FileCache;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -36,7 +38,11 @@ public class AdminDestinationsController {
         onRefresh();
     }
 
-    @FXML public void onBack() { Navigator.goLogin(); }
+    @FXML public void onBack() {
+        AdminSession.clear();
+        Session.clear();
+        Navigator.goLogin();
+    }
     @FXML public void goPackages() { Navigator.goAdminDashboard(); }
     @FXML public void goHotels() {
         DestinationVM sel = listView.getSelectionModel().getSelectedItem();
