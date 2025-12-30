@@ -147,10 +147,13 @@ public class HotelSearchController {
         if (checkInPicker == null || checkOutPicker == null) return;
 
         LocalDate minCheckIn = LocalDate.now().plusDays(1);
-        checkInPicker.setDayCellFactory(picker -> disableOutsideRange(picker, minCheckIn, null));
+        LocalDate maxCheckIn = minCheckIn.plusDays(30);
+        checkInPicker.setDayCellFactory(picker -> disableOutsideRange(picker, minCheckIn, maxCheckIn));
         LocalDate cachedIn = DataCache.peek("hotel:checkIn");
         LocalDate cachedOut = DataCache.peek("hotel:checkOut");
         LocalDate effectiveIn = (cachedIn != null) ? cachedIn : minCheckIn;
+        if (effectiveIn.isBefore(minCheckIn)) effectiveIn = minCheckIn;
+        if (effectiveIn.isAfter(maxCheckIn)) effectiveIn = maxCheckIn;
         checkInPicker.setValue(effectiveIn);
 
         refreshCheckOutFactory();
@@ -161,10 +164,13 @@ public class HotelSearchController {
         DataCache.put("hotel:checkOut", effectiveOut);
 
         checkInPicker.valueProperty().addListener((obs, old, val) -> {
-            LocalDate selected = val == null ? LocalDate.now().plusDays(1) : val;
-            if (val == null || val.isBefore(minCheckIn)) {
+            LocalDate selected = val == null ? minCheckIn : val;
+            if (val == null || selected.isBefore(minCheckIn)) {
                 checkInPicker.setValue(minCheckIn);
                 selected = minCheckIn;
+            } else if (selected.isAfter(maxCheckIn)) {
+                checkInPicker.setValue(maxCheckIn);
+                selected = maxCheckIn;
             }
             LocalDate maxCheckout = selected.plusDays(14);
             LocalDate currentOut = checkOutPicker.getValue();

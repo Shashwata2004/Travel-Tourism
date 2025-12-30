@@ -9,6 +9,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.shape.SVGPath?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -42,7 +43,17 @@
 
                 <VBox spacing="10">
                     <Label text="Password" styleClass="fieldLabel"/>
-                    <PasswordField fx:id="passwordField" promptText="••••••••"/>
+                    <StackPane styleClass="passwordToggleWrap" maxWidth="Infinity">
+                        <PasswordField fx:id="passwordField" promptText="••••••••" styleClass="text-field password-field with-eye" StackPane.alignment="CENTER_LEFT"/>
+                        <TextField fx:id="passwordTextField" promptText="••••••••" styleClass="text-field with-eye"
+                                   visible="false" managed="false" StackPane.alignment="CENTER_LEFT"/>
+                        <Button fx:id="togglePasswordBtn" styleClass="eye-btn" StackPane.alignment="CENTER_RIGHT">
+                            <graphic>
+                                <SVGPath styleClass="eye-icon"
+                                         content="M1 12s4-6 11-6 11 6 11 6-4 6-11 6-11-6-11-6zm11 4a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>
+                            </graphic>
+                        </Button>
+                    </StackPane>
                 </VBox>
 
                 <!-- Login mode selection: User (default) or Admin -->

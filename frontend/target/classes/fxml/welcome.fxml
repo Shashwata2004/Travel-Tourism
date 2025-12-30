@@ -69,6 +69,11 @@
                         <Label text="ℹ" styleClass="heroIcon"/>
                     </graphic>
                 </Button>
+                <Button text="Logout" contentDisplay="TOP" onAction="#goLogout" styleClass="heroAction">
+                    <graphic>
+                        <Label text="⎋" styleClass="heroIcon"/>
+                    </graphic>
+                </Button>
             </HBox>
         </VBox>
     </children>

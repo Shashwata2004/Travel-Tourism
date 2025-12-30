@@ -266,6 +266,30 @@
     -fx-border-radius: 12;
 }
 
+/* Password visibility toggle */
+.passwordToggleWrap {
+    -fx-max-width: Infinity;
+    -fx-alignment: center-left;
+}
+.with-eye {
+    -fx-padding: 10 44 10 12;
+}
+.eye-btn {
+    -fx-background-color: transparent;
+    -fx-padding: 6 10;
+    -fx-cursor: hand;
+    -fx-background-radius: 10;
+}
+.eye-btn:hover { -fx-background-color: rgba(99,102,241,0.08); }
+.eye-btn:pressed { -fx-background-color: rgba(99,102,241,0.14); }
+.eye-icon { -fx-fill: #94a3b8; }
+.bg-gradient .with-eye {
+    -fx-padding: 10 44 10 12;
+}
+.bg-gradient .eye-btn:hover { -fx-background-color: rgba(255,255,255,0.10); }
+.bg-gradient .eye-btn:pressed { -fx-background-color: rgba(255,255,255,0.16); }
+.bg-gradient .eye-icon { -fx-fill: #cbd5f5; }
+
 /* === RESPONSIVENESS === */
 @media screen and (max-width: 900px) {
     #brandPane {

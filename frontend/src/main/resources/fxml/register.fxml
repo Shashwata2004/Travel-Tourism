@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.shape.SVGPath?>
 
 <StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.travel.frontend.controller.RegisterController" stylesheets="@/css/login.css">
     <children>
@@ -18,8 +19,28 @@
                     <VBox spacing="12" maxWidth="420" styleClass="glass-card">
                         <TextField fx:id="emailField" promptText="Email" />
                         <TextField fx:id="usernameField" promptText="Username" />
-                        <PasswordField fx:id="passwordField" promptText="Password" />
-                        <PasswordField fx:id="confirmField" promptText="Confirm Password" />
+                        <StackPane styleClass="passwordToggleWrap" maxWidth="Infinity">
+                            <PasswordField fx:id="passwordField" promptText="Password" styleClass="text-field password-field with-eye" StackPane.alignment="CENTER_LEFT"/>
+                            <TextField fx:id="passwordTextField" promptText="Password" styleClass="text-field with-eye"
+                                       visible="false" managed="false" StackPane.alignment="CENTER_LEFT"/>
+                            <Button fx:id="togglePasswordBtn" styleClass="eye-btn" StackPane.alignment="CENTER_RIGHT">
+                                <graphic>
+                                    <SVGPath styleClass="eye-icon"
+                                             content="M1 12s4-6 11-6 11 6 11 6-4 6-11 6-11-6-11-6zm11 4a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>
+                                </graphic>
+                            </Button>
+                        </StackPane>
+                        <StackPane styleClass="passwordToggleWrap" maxWidth="Infinity">
+                            <PasswordField fx:id="confirmField" promptText="Confirm Password" styleClass="text-field password-field with-eye" StackPane.alignment="CENTER_LEFT"/>
+                            <TextField fx:id="confirmTextField" promptText="Confirm Password" styleClass="text-field with-eye"
+                                       visible="false" managed="false" StackPane.alignment="CENTER_LEFT"/>
+                            <Button fx:id="toggleConfirmBtn" styleClass="eye-btn" StackPane.alignment="CENTER_RIGHT">
+                                <graphic>
+                                    <SVGPath styleClass="eye-icon"
+                                             content="M1 12s4-6 11-6 11 6 11 6-4 6-11 6-11-6-11-6zm11 4a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>
+                                </graphic>
+                            </Button>
+                        </StackPane>
                         <TextField fx:id="locationField" promptText="Location (e.g., Dhaka)"/>
 
                         <Button text="Register" onAction="#onRegister" styleClass="primary-btn" maxWidth="Infinity"/>

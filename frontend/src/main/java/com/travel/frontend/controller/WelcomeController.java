@@ -6,6 +6,8 @@ package com.travel.frontend.controller;
 
 import com.travel.frontend.net.ApiClient;
 import com.travel.frontend.cache.DataCache;
+import com.travel.frontend.session.Session;
+import com.travel.frontend.admin.AdminSession;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -64,6 +66,12 @@ public class WelcomeController {
     @FXML private void goDestinations() { Navigator.goDestinations(); }
     @FXML private void goHistory() { Navigator.goHistory(); }
     @FXML private void goAbout() { Navigator.goAbout(); }
+    @FXML private void goLogout() {
+        DataCache.clear();
+        Session.clear();
+        AdminSession.clear();
+        Navigator.goLogin();
+    }
     /* Reusable “coming soon” helper that shows a JavaFX Alert so we don’t need
        separate placeholder screens yet. */
     private void showSoon() {

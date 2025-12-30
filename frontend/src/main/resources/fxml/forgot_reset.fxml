@@ -19,7 +19,6 @@
                                  content="M12 2a5 5 0 0 0-5 5v3H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-2V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 1 1 6 0v3H9z"/>
                     </StackPane>
                     <Label text="Create New Password" styleClass="fp-title"/>
-                    <Label text="Your new password must be different from previous passwords" styleClass="fp-subtitle"/>
                 </VBox>
             </StackPane>
 

@@ -13,10 +13,12 @@ import com.travel.frontend.admin.AdminSession;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -31,6 +33,8 @@ public class LoginController {
 
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
+    @FXML private TextField passwordTextField;
+    @FXML private Button togglePasswordBtn;
     @FXML private Label statusLabel;
     @FXML private RadioButton userMode;
     @FXML private RadioButton adminMode;
@@ -44,6 +48,7 @@ public class LoginController {
 
     @FXML
     private void initialize() {
+        setupPasswordToggle();
         runEntranceAnimation();
     }
 
@@ -126,6 +131,47 @@ public class LoginController {
                 });
             });
         });
+    }
+
+    private void setupPasswordToggle() {
+        bindPasswordFields(passwordField, passwordTextField);
+        if (togglePasswordBtn != null) {
+            togglePasswordBtn.setOnAction(e -> togglePasswordVisibility(passwordField, passwordTextField, togglePasswordBtn));
+        }
+    }
+
+    private void bindPasswordFields(PasswordField hiddenField, TextField visibleField) {
+        if (hiddenField == null || visibleField == null) return;
+        visibleField.setVisible(false);
+        visibleField.setManaged(false);
+        visibleField.textProperty().bindBidirectional(hiddenField.textProperty());
+    }
+
+    private void togglePasswordVisibility(PasswordField hiddenField, TextField visibleField, Button toggleBtn) {
+        if (hiddenField == null || visibleField == null) return;
+        boolean show = !visibleField.isVisible();
+        visibleField.setVisible(show);
+        visibleField.setManaged(show);
+        hiddenField.setVisible(!show);
+        hiddenField.setManaged(!show);
+        if (show) {
+            visibleField.requestFocus();
+            visibleField.positionCaret(visibleField.getText().length());
+        } else {
+            hiddenField.requestFocus();
+            hiddenField.positionCaret(hiddenField.getText().length());
+        }
+        animateToggle(toggleBtn);
+    }
+
+    private void animateToggle(Button toggleBtn) {
+        if (toggleBtn == null) return;
+        RotateTransition rt = new RotateTransition(Duration.millis(140), toggleBtn);
+        rt.setFromAngle(0);
+        rt.setToAngle(20);
+        rt.setAutoReverse(true);
+        rt.setCycleCount(2);
+        rt.play();
     }
 
     private void showInfo(String title, String msg) {

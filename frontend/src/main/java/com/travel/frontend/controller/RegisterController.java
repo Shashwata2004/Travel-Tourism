@@ -7,12 +7,15 @@ package com.travel.frontend.controller;
 import com.travel.frontend.net.ApiClient;
 import com.travel.frontend.ui.Navigator;
 
+import javafx.animation.RotateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
 
 public class RegisterController {
 
@@ -21,9 +24,19 @@ public class RegisterController {
     @FXML private TextField locationField;
     @FXML private PasswordField passwordField;
     @FXML private PasswordField confirmField;
+    @FXML private TextField passwordTextField;
+    @FXML private TextField confirmTextField;
+    @FXML private Button togglePasswordBtn;
+    @FXML private Button toggleConfirmBtn;
     @FXML private Label statusLabel;
 
     private final ApiClient api = ApiClient.get();
+
+    @FXML
+    private void initialize() {
+        setupPasswordToggle(passwordField, passwordTextField, togglePasswordBtn);
+        setupPasswordToggle(confirmField, confirmTextField, toggleConfirmBtn);
+    }
 
     // Called by: <Button onAction="#onRegister"/>
     /* Main registration handler: trims inputs, runs simple validation, calls
@@ -71,6 +84,43 @@ public class RegisterController {
     @FXML
     private void onGoLogin() {
         Navigator.goLogin();
+    }
+
+    private void setupPasswordToggle(PasswordField hiddenField, TextField visibleField, Button toggleBtn) {
+        if (hiddenField == null || visibleField == null) return;
+        visibleField.setVisible(false);
+        visibleField.setManaged(false);
+        visibleField.textProperty().bindBidirectional(hiddenField.textProperty());
+        if (toggleBtn != null) {
+            toggleBtn.setOnAction(e -> togglePasswordVisibility(hiddenField, visibleField, toggleBtn));
+        }
+    }
+
+    private void togglePasswordVisibility(PasswordField hiddenField, TextField visibleField, Button toggleBtn) {
+        if (hiddenField == null || visibleField == null) return;
+        boolean show = !visibleField.isVisible();
+        visibleField.setVisible(show);
+        visibleField.setManaged(show);
+        hiddenField.setVisible(!show);
+        hiddenField.setManaged(!show);
+        if (show) {
+            visibleField.requestFocus();
+            visibleField.positionCaret(visibleField.getText().length());
+        } else {
+            hiddenField.requestFocus();
+            hiddenField.positionCaret(hiddenField.getText().length());
+        }
+        animateToggle(toggleBtn);
+    }
+
+    private void animateToggle(Button toggleBtn) {
+        if (toggleBtn == null) return;
+        RotateTransition rt = new RotateTransition(Duration.millis(140), toggleBtn);
+        rt.setFromAngle(0);
+        rt.setToAngle(20);
+        rt.setAutoReverse(true);
+        rt.setCycleCount(2);
+        rt.play();
     }
 
     private String safe(String s) { return s == null ? "" : s.trim(); }
