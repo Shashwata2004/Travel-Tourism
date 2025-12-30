@@ -1,6 +1,15 @@
 package com.travel.frontend.controller;
 
+
+import java.io.IOException;
+import java.net.URL;
+
 import com.travel.frontend.net.ApiClient;
+
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,14 +20,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.animation.FadeTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.ParallelTransition;
-import javafx.animation.RotateTransition;
 import javafx.util.Duration;
-
-import java.io.IOException;
-import java.net.URL;
 
 public class ForgotResetController {
     @FXML private PasswordField newPasswordField;

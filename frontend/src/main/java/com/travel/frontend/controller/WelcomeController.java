@@ -63,7 +63,7 @@ public class WelcomeController {
     @FXML private void goPackages() { Navigator.goPackages(); }
     @FXML private void goDestinations() { Navigator.goDestinations(); }
     @FXML private void goHistory() { Navigator.goHistory(); }
-    @FXML private void goAbout() { showSoon(); }
+    @FXML private void goAbout() { Navigator.goAbout(); }
     /* Reusable “coming soon” helper that shows a JavaFX Alert so we don’t need
        separate placeholder screens yet. */
     private void showSoon() {

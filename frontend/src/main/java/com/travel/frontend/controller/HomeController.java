@@ -137,7 +137,7 @@ public class HomeController {
     @FXML private void goPackages() { Navigator.goPackages(); }
     @FXML private void goDestinations() { Navigator.goDestinations(); }
     @FXML private void goHistory() { Navigator.goHistory(); }
-    @FXML private void goAbout() { /* placeholder */ }
+    @FXML private void goAbout() { Navigator.goAbout(); }
 
     private static String nullToEmpty(String s) { return s == null ? "" : s; }
     private static String emptyToNull(String s) { return s == null || s.isBlank() ? null : s; }

@@ -1,0 +1,199 @@
+/* About page layout and developer cards */
+.aboutRoot {
+    -fx-background-color: transparent;
+}
+.aboutRoot .blobLayer {
+    -fx-opacity: 0.35;
+}
+.aboutRoot .blobA {
+    -fx-fill: rgba(168,85,247,0.18);
+    -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.2), 80, 0.6, 0, 0);
+}
+.aboutRoot .blobB {
+    -fx-fill: rgba(59,130,246,0.16);
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.2), 80, 0.6, 0, 0);
+}
+.aboutRoot .blobC {
+    -fx-fill: rgba(236,72,153,0.12);
+    -fx-effect: dropshadow(gaussian, rgba(236,72,153,0.18), 80, 0.6, 0, 0);
+}
+.aboutContent {
+    -fx-padding: 16 18 24 18;
+}
+.aboutScroll {
+    -fx-background-color: transparent;
+}
+.aboutScroll > .viewport {
+    -fx-background-color: transparent;
+}
+.aboutBody {
+    -fx-padding: 16 12 40 12;
+    -fx-alignment: top_center;
+}
+.aboutHeader {
+    -fx-alignment: center;
+}
+.aboutBadge {
+    -fx-background-color: transparent;
+    -fx-background-radius: 999;
+    -fx-padding: 6 14 6 10;
+    -fx-effect: none;
+}
+.badgeIcon {
+    -fx-background-color: rgba(168,85,247,0.16);
+    -fx-background-radius: 10;
+    -fx-padding: 4;
+}
+.badgeSpark { -fx-fill: #a855f7; }
+.aboutBadgeText {
+    -fx-text-fill: #a855f7;
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+}
+.aboutTitle {
+    -fx-font-size: 28px;
+    -fx-font-weight: 800;
+    -fx-text-fill: linear-gradient(to right, #a855f7, #ec4899, #3b82f6);
+}
+
+.aboutGrid {
+    -fx-padding: 12 0 40 0;
+}
+
+.devCard {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 28;
+    -fx-border-radius: 28;
+    -fx-border-color: rgba(148,163,184,0.12);
+    -fx-border-width: 1;
+    -fx-padding: 24 22 24 22;
+    -fx-pref-width: 250;
+    -fx-alignment: center;
+    -fx-spacing: 18;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.16), 34, 0.32, 0, 14);
+}
+.devName {
+    -fx-font-size: 15px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #1f2937;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-max-width: 210;
+}
+
+.devImageWrap {
+    -fx-padding: 10;
+    -fx-background-radius: 24;
+    -fx-alignment: center;
+}
+.devImageGlow {
+    -fx-background-radius: 22;
+    -fx-background-color: transparent;
+}
+.devCodeBadge {
+    -fx-min-width: 34;
+    -fx-min-height: 34;
+    -fx-max-width: 34;
+    -fx-max-height: 34;
+    -fx-background-radius: 999;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.2), 12, 0.3, 0, 4);
+    -fx-translate-x: -8;
+    -fx-translate-y: 8;
+}
+.devCodeText {
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-font-size: 12px;
+}
+
+.devAction,
+.button.devAction {
+    -fx-background-color: #f1f2f4;
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-border-color: #e2e8f0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-pref-width: 210;
+    -fx-min-width: 210;
+    -fx-max-width: 210;
+    -fx-min-height: 44;
+    -fx-pref-height: 44;
+    -fx-max-height: 44;
+    -fx-alignment: center;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.12), 16, 0.25, 0, 6);
+}
+.devAction:hover,
+.button.devAction:hover {
+    -fx-background-color: #e5e7eb;
+    -fx-translate-y: -1;
+}
+.devAction:pressed,
+.button.devAction:pressed {
+    -fx-opacity: 0.95;
+    -fx-translate-y: 0;
+}
+
+/* Color variants */
+.devPurple .devImageWrap {
+    -fx-background-color: rgba(217,70,239,0.08);
+    -fx-effect: dropshadow(gaussian, rgba(217,70,239,0.35), 24, 0.4, 0, 6);
+}
+.devPurple .devImageGlow {
+    -fx-background-color: radial-gradient(center 35% 25%, radius 70%, rgba(217,70,239,0.28), rgba(217,70,239,0.0));
+}
+.devPurple .devCodeBadge { -fx-background-color: #d946ef; }
+.devCard.devPurple:hover { -fx-border-color: #d946ef; -fx-effect: dropshadow(gaussian, rgba(217,70,239,0.35), 22, 0.35, 0, 10); }
+
+.devBlue .devImageWrap {
+    -fx-background-color: rgba(59,130,246,0.08);
+    -fx-effect: dropshadow(gaussian, rgba(14,165,233,0.35), 24, 0.4, 0, 6);
+}
+.devBlue .devImageGlow {
+    -fx-background-color: radial-gradient(center 35% 25%, radius 70%, rgba(14,165,233,0.28), rgba(14,165,233,0.0));
+}
+.devBlue .devCodeBadge { -fx-background-color: #0ea5e9; }
+.devCard.devBlue:hover { -fx-border-color: #0ea5e9; -fx-effect: dropshadow(gaussian, rgba(14,165,233,0.35), 22, 0.35, 0, 10); }
+
+.devGreen .devImageWrap {
+    -fx-background-color: rgba(16,185,129,0.08);
+    -fx-effect: dropshadow(gaussian, rgba(16,185,129,0.35), 24, 0.4, 0, 6);
+}
+.devGreen .devImageGlow {
+    -fx-background-color: radial-gradient(center 35% 25%, radius 70%, rgba(16,185,129,0.28), rgba(16,185,129,0.0));
+}
+.devGreen .devCodeBadge { -fx-background-color: #10b981; }
+.devCard.devGreen:hover { -fx-border-color: #10b981; -fx-effect: dropshadow(gaussian, rgba(16,185,129,0.35), 22, 0.35, 0, 10); }
+
+.devOrange .devImageWrap {
+    -fx-background-color: rgba(249,115,22,0.08);
+    -fx-effect: dropshadow(gaussian, rgba(249,115,22,0.35), 24, 0.4, 0, 6);
+}
+.devOrange .devImageGlow {
+    -fx-background-color: radial-gradient(center 35% 25%, radius 70%, rgba(249,115,22,0.28), rgba(249,115,22,0.0));
+}
+.devOrange .devCodeBadge { -fx-background-color: #f97316; }
+.devCard.devOrange:hover { -fx-border-color: #f97316; -fx-effect: dropshadow(gaussian, rgba(249,115,22,0.35), 22, 0.35, 0, 10); }
+
+/* Keep About page colors in dark theme */
+.dark-theme .aboutRoot .aboutBadgeText {
+    -fx-text-fill: #a855f7;
+}
+.dark-theme .aboutRoot .aboutTitle {
+    -fx-text-fill: linear-gradient(to right, #a855f7, #ec4899, #3b82f6);
+}
+.dark-theme .aboutRoot .devName {
+    -fx-text-fill: #1f2937;
+}
+.dark-theme .aboutRoot .devAction,
+.dark-theme .aboutRoot .button.devAction {
+    -fx-background-color: #f1f5f9;
+    -fx-border-color: transparent;
+    -fx-text-fill: #334155;
+}
+.dark-theme .aboutRoot .devAction:hover,
+.dark-theme .aboutRoot .button.devAction:hover {
+    -fx-background-color: #e2e8f0;
+}

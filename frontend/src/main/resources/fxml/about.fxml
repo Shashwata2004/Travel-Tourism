@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- About page with team cards (same layout as provided design). -->
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.SVGPath?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:id="aboutRoot"
+           fx:controller="com.travel.frontend.controller.AboutController"
+           stylesheets="@/css/login.css,@/css/packages.css,@/css/about.css"
+           styleClass="packagesRoot,aboutRoot">
+    <children>
+        <Pane fx:id="blobLayer" styleClass="blobLayer">
+            <children>
+                <Circle fx:id="blobA" centerX="160" centerY="160" radius="180" styleClass="blobA"/>
+                <Circle fx:id="blobB" centerX="840" centerY="520" radius="200" styleClass="blobB"/>
+                <Circle fx:id="blobC" centerX="1180" centerY="240" radius="180" styleClass="blobC"/>
+            </children>
+        </Pane>
+
+        <VBox spacing="18" fillWidth="true" styleClass="packagesContent,aboutContent">
+            <fx:include source="navbar.fxml" fx:id="navbar"/>
+
+            <ScrollPane fitToWidth="true" vbarPolicy="AS_NEEDED" hbarPolicy="NEVER" styleClass="aboutScroll">
+                <content>
+                    <VBox spacing="26" alignment="TOP_CENTER" styleClass="aboutBody">
+                        <VBox spacing="12" alignment="CENTER" styleClass="aboutHeader">
+                            <HBox spacing="8" alignment="CENTER" styleClass="aboutBadge">
+                                <StackPane styleClass="badgeIcon">
+                                    <SVGPath styleClass="badgeSpark"
+                                             content="M12 2l1.9 4.7L19 8.1l-4.2 3.2L16 16l-4-2.3L8 16l1.2-4.7L5 8.1l5.1-1.4L12 2z"/>
+                                </StackPane>
+                                <Label text="Meet Our Team" styleClass="aboutBadgeText"/>
+                            </HBox>
+                            <Label text="Built with Passion" styleClass="aboutTitle"/>
+                        </VBox>
+
+                        <FlowPane fx:id="cardsPane"
+                                  alignment="CENTER"
+                                  hgap="26"
+                                  vgap="26"
+                                  prefWrapLength="1100"
+                                  styleClass="aboutGrid">
+                            <!-- Card 1 -->
+                            <VBox fx:id="cardShashwata" spacing="12" alignment="CENTER" styleClass="devCard,devPurple">
+                                <StackPane fx:id="imageWrapShashwata" styleClass="devImageWrap,devPurple">
+                                    <Region prefWidth="220" prefHeight="220" styleClass="devImageGlow,devPurple"/>
+                                    <ImageView fx:id="imgShashwata" fitWidth="220" fitHeight="220" preserveRatio="false" smooth="true">
+                                        <image>
+                                            <Image url="@/images/Shashwata.JPG"/>
+                                        </image>
+                                    </ImageView>
+                                    <StackPane styleClass="devCodeBadge,devPurple" StackPane.alignment="TOP_RIGHT">
+                                        <Label text="&lt;/&gt;" styleClass="devCodeText"/>
+                                    </StackPane>
+                                </StackPane>
+                                <Label text="Shashwata Nandi" styleClass="devName"/>
+                                <Button onAction="#openMail"
+                                        userData="mailto:nandisantu274@gmail.com"
+                                        styleClass="devAction,devMail">
+                                    <graphic>
+                                        <ImageView fitWidth="26" fitHeight="26" preserveRatio="true">
+                                            <image>
+                                                <Image url="@/images/icons/gmail.png"/>
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <Button onAction="#openGithub"
+                                        userData="https://github.com/Shashwata2004"
+                                        styleClass="devAction,devGithub">
+                                    <graphic>
+                                        <ImageView fitWidth="26" fitHeight="26" preserveRatio="true">
+                                            <image>
+                                                <Image url="@/images/icons/github.png"/>
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </VBox>
+
+                            <!-- Card 2 -->
+                            <VBox fx:id="cardSwarlok" spacing="12" alignment="CENTER" styleClass="devCard,devBlue">
+                                <StackPane fx:id="imageWrapSwarlok" styleClass="devImageWrap,devBlue">
+                                    <Region prefWidth="220" prefHeight="220" styleClass="devImageGlow,devBlue"/>
+                                    <ImageView fx:id="imgSwarlok" fitWidth="220" fitHeight="220" preserveRatio="false" smooth="true">
+                                        <image>
+                                            <Image url="@/images/Swarlok.jpg"/>
+                                        </image>
+                                    </ImageView>
+                                    <StackPane styleClass="devCodeBadge,devBlue" StackPane.alignment="TOP_RIGHT">
+                                        <Label text="&lt;/&gt;" styleClass="devCodeText"/>
+                                    </StackPane>
+                                </StackPane>
+                                <Label text="Swarlok Samadder" styleClass="devName"/>
+                                <Button onAction="#openMail"
+                                        userData="mailto:sswarlok@gmail.com"
+                                        styleClass="devAction,devMail">
+                                    <graphic>
+                                        <ImageView fitWidth="26" fitHeight="26" preserveRatio="true">
+                                            <image>
+                                                <Image url="@/images/icons/gmail.png"/>
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <Button onAction="#openGithub"
+                                        userData="https://github.com/Swarlok"
+                                        styleClass="devAction,devGithub">
+                                    <graphic>
+                                        <ImageView fitWidth="26" fitHeight="26" preserveRatio="true">
+                                            <image>
+                                                <Image url="@/images/icons/github.png"/>
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </VBox>
+
+                            <!-- Card 3 -->
+                            <VBox fx:id="cardFahmid" spacing="12" alignment="CENTER" styleClass="devCard,devGreen">
+                                <StackPane fx:id="imageWrapFahmid" styleClass="devImageWrap,devGreen">
+                                    <Region prefWidth="220" prefHeight="220" styleClass="devImageGlow,devGreen"/>
+                                    <ImageView fx:id="imgFahmid" fitWidth="220" fitHeight="220" preserveRatio="false" smooth="true">
+                                        <image>
+                                            <Image url="@/images/fahmid.JPG"/>
+                                        </image>
+                                    </ImageView>
+                                    <StackPane styleClass="devCodeBadge,devGreen" StackPane.alignment="TOP_RIGHT">
+                                        <Label text="&lt;/&gt;" styleClass="devCodeText"/>
+                                    </StackPane>
+                                </StackPane>
+                                <Label text="Mohammad Mahmudul Kabir Fahmid" styleClass="devName" wrapText="true"/>
+                                <Button onAction="#openMail"
+                                        userData="mailto:mohammadmahmudulkabir-2023715983@cs.du.ac.bd"
+                                        styleClass="devAction,devMail">
+                                    <graphic>
+                                        <ImageView fitWidth="26" fitHeight="26" preserveRatio="true">
+                                            <image>
+                                                <Image url="@/images/icons/gmail.png"/>
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <Button onAction="#openGithub"
+                                        userData="https://github.com/mohammad30395"
+                                        styleClass="devAction,devGithub">
+                                    <graphic>
+                                        <ImageView fitWidth="26" fitHeight="26" preserveRatio="true">
+                                            <image>
+                                                <Image url="@/images/icons/github.png"/>
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </VBox>
+
+                            <!-- Card 4 -->
+                            <VBox fx:id="cardSudipto" spacing="12" alignment="CENTER" styleClass="devCard,devOrange">
+                                <StackPane fx:id="imageWrapSudipto" styleClass="devImageWrap,devOrange">
+                                    <Region prefWidth="220" prefHeight="220" styleClass="devImageGlow,devOrange"/>
+                                    <ImageView fx:id="imgSudipto" fitWidth="220" fitHeight="220" preserveRatio="false" smooth="true">
+                                        <image>
+                                            <Image url="@/images/Sudipto.jpg"/>
+                                        </image>
+                                    </ImageView>
+                                    <StackPane styleClass="devCodeBadge,devOrange" StackPane.alignment="TOP_RIGHT">
+                                        <Label text="&lt;/&gt;" styleClass="devCodeText"/>
+                                    </StackPane>
+                                </StackPane>
+                                <Label text="Sudipto Debnath" styleClass="devName"/>
+                                <Button onAction="#openMail"
+                                        userData="mailto:sudiptodebnath0000@gmail.com"
+                                        styleClass="devAction,devMail">
+                                    <graphic>
+                                        <ImageView fitWidth="26" fitHeight="26" preserveRatio="true">
+                                            <image>
+                                                <Image url="@/images/icons/gmail.png"/>
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <Button onAction="#openGithub"
+                                        userData="https://github.com/SudiptoDebnath"
+                                        styleClass="devAction,devGithub">
+                                    <graphic>
+                                        <ImageView fitWidth="26" fitHeight="26" preserveRatio="true">
+                                            <image>
+                                                <Image url="@/images/icons/github.png"/>
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </VBox>
+                        </FlowPane>
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </VBox>
+    </children>
+</StackPane>

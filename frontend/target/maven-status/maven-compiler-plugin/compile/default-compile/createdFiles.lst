@@ -1,3 +1,4 @@
+com\travel\frontend\controller\ForgotSuccessController.class
 com\travel\frontend\controller\AdminRoomBookingsController$3.class
 com\travel\frontend\cache\DataCache$SupplierX.class
 com\travel\frontend\admin\AdminSocketClient$3.class
@@ -7,6 +8,7 @@ com\travel\frontend\ui\ThemeManager$Theme.class
 com\travel\frontend\model\HotelDetails.class
 com\travel\frontend\controller\PackageDetailsController$PackageDetailsState.class
 com\travel\frontend\controller\AdminCancelSuccessController$Mode.class
+com\travel\frontend\controller\ForgotVerifyController.class
 com\travel\frontend\MainApp.class
 com\travel\frontend\controller\HistoryController$CancelKind.class
 com\travel\frontend\controller\CancelNoticeController.class
@@ -35,6 +37,7 @@ com\travel\frontend\controller\AdminDashboardController$1.class
 com\travel\frontend\controller\AdminRoomsController$1.class
 com\travel\frontend\model\BookingResponse.class
 com\travel\frontend\cache\DataCache.class
+com\travel\frontend\controller\BookingDialogController$PackagePrice.class
 com\travel\frontend\controller\DestinationsController.class
 com\travel\frontend\controller\PackagesController$PackageCard.class
 com\travel\frontend\controller\PackagesController.class
@@ -51,6 +54,8 @@ com\travel\frontend\controller\HotelSearchController$HotelCard.class
 com\travel\frontend\controller\PackagesController$2.class
 com\travel\frontend\cache\FileCache.class
 com\travel\frontend\controller\HotelBookingDialogController.class
+com\travel\frontend\controller\ForgotResetController.class
+com\travel\frontend\controller\AboutController.class
 com\travel\frontend\cache\DataCache$Entry.class
 com\travel\frontend\ui\Navigator.class
 com\travel\frontend\controller\PackageDetailsController.class

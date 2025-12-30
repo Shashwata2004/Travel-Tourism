@@ -42,7 +42,7 @@ public class NavbarController {
         packagesBtn.setOnAction(e -> Navigator.goPackages());
         destinationsBtn.setOnAction(e -> Navigator.goDestinations());
         historyBtn.setOnAction(e -> Navigator.goHistory());
-        aboutBtn.setOnAction(e -> { /* no-op until implemented */ });
+        aboutBtn.setOnAction(e -> Navigator.goAbout());
         logoutBtn.setOnAction(e -> {
             DataCache.clear();
             Session.clear();

@@ -122,6 +122,7 @@ public final class Navigator {
     public static void goHotelSearch() { load("hotel_search.fxml"); }
     public static void goHotelDetails() { load("hotel_details.fxml"); }
     public static void goWelcome() { load("welcome.fxml"); }
+    public static void goAbout() { load("about.fxml"); }
     // Admin login view removed; reuse main login screen
     public static void goAdminLogin() { load("login.fxml"); }
     public static void goAdminDashboard() { load("admin_dashboard.fxml"); }
