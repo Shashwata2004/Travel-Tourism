@@ -13,3 +13,6 @@ Thumbs.db
 # Java
 *.class
 
+# Env
+.env
+
