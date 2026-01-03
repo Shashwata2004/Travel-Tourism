@@ -5,7 +5,25 @@ This repository contains a Java-based Travel & Tourism application with:
 - a JavaFX desktop frontend (customer + admin UI)
 
 The goal of this README is to explain how the app works from startup through
-real user flows so you can understand the system without digging into every file.
+real user flows so we can understand the system without digging into every file.
+
+## How to Run
+
+Prerequisites:
+- JDK 21+, Maven, and PostgreSQL running with credentials matching backend/src/main/resources/application.properties or .env overrides.
+- Set any required JWT/DB env vars (see EnvLoader expectations in the backend).
+
+### Backend (Spring Boot)
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+### Frontend (JavaFX)
+```bash
+cd frontend
+mvn javafx:run
+```
 
 ## High-Level Architecture
 
@@ -114,7 +132,7 @@ Admin booking oversight:
 - Backend runs on port 8080.
 - Admin socket runs on port 9090.
 - PostgreSQL connection defaults are in backend/src/main/resources/application.properties.
-- You can override settings via .env or environment variables.
+- We can override settings via .env or environment variables.
 
 ## Where to Start Reading Code
 
